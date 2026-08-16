@@ -1,3 +1,8 @@
+---
+name: database
+description: Database design principles, Prisma schema guidelines, migration rules, invariant modeling, and historical pricing snapshot preservation. Use when designing models, writing migrations, or accessing PostgreSQL via Prisma.
+---
+
 # Database Skill
 
 - Model business invariants explicitly where practical.

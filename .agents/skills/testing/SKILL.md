@@ -1,3 +1,8 @@
+---
+name: testing
+description: Testing strategies, test layer definitions (Unit, Integration, E2E), critical customer journeys, failure-path testing, and Playwright/Vitest standards. Use when writing, modifying, or reviewing tests.
+---
+
 # Testing Skill
 
 ## Layers

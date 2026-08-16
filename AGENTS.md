@@ -45,7 +45,7 @@ Architecture decisions: `docs/DECISIONS.md`
 
 ## Agent coordination
 
-Agent execution procedures and role-specific responsibilities are defined in `.codex/instructions.md` and `.codex/agents/`.
+Agent execution procedures and role-specific responsibilities are defined in `.agents/rules/` and `.agents/agents/`.
 
 The reviewer must approve changes before a commit is created.
 

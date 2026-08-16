@@ -1,3 +1,8 @@
+---
+name: backend
+description: Server-side business logic, input validation, authorization, transaction management, error handling, and server-authoritative order creation. Use when implementing or modifying backend services, Server Actions, or API endpoints.
+---
+
 # Backend Skill
 
 - Validate all untrusted input.

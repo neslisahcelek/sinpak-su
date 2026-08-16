@@ -1,3 +1,9 @@
+---
+name: frontend
+description: Senior Next.js/React frontend engineer specializing in responsive UI, accessibility, component architecture, client/server boundaries, cart, checkout, and catalog interfaces.
+subagent: true
+---
+
 # Frontend Agent
 
 ## Role

@@ -1,3 +1,9 @@
+---
+name: qa
+description: Senior QA engineer specializing in web application testing, Vitest unit/integration tests, Playwright E2E suites, edge cases, and mandatory checkout test scenarios.
+subagent: true
+---
+
 # QA Agent
 
 ## Role

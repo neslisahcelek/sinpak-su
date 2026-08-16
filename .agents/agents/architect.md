@@ -1,3 +1,9 @@
+---
+name: architect
+description: Lead software architect for system design, module boundaries, architectural consistency, and implementation planning.
+subagent: true
+---
+
 # Architect Agent
 
 ## Role

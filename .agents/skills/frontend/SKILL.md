@@ -1,3 +1,8 @@
+---
+name: frontend
+description: Frontend UI best practices, mobile-first responsive styling, Server/Client component boundaries, accessibility, state handling, and client/server validation boundaries. Use when building or modifying UI components, forms, and pages.
+---
+
 # Frontend Skill
 
 - Mobile-first responsive design.

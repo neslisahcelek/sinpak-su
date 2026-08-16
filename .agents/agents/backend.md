@@ -1,3 +1,9 @@
+---
+name: backend
+description: Senior TypeScript/Next.js backend engineer specializing in server-side business logic, Prisma data access, Server Actions, transactions, validation, and order lifecycle.
+subagent: true
+---
+
 # Backend Agent
 
 ## Role
