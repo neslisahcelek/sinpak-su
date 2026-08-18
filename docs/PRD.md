@@ -18,7 +18,9 @@ Guest cart contents persist on the device across refreshes. The cart stores prod
 
 ### Checkout and delivery
 
-Checkout requires a phone number and free-form/open delivery address in İzmit district. Delivery notes are optional and length-limited. There is no delivery fee, minimum order, zone selection, or customer-selectable time slot; delivery is ASAP.
+Checkout requires customer name, a phone number, and a free-form/open delivery address in İzmit district. Turkish phone numbers are accepted in common user-entered forms and normalized server-side. Delivery notes are optional and capped at a maximum length of 500 characters. There is no delivery fee, minimum order, zone selection, or customer-selectable time slot; delivery is ASAP.
+
+Orders may be submitted only between 09:00 and 19:00 in the business time zone (`Europe/Istanbul`). Orders submitted before 09:00 or at/after 19:00 are rejected. Server-side validation of operating hours is authoritative; client UI checks are for user guidance only.
 
 For each damacana item, checkout accepts an empty-damacana quantity from zero through the ordered quantity. The server uses the current product data to calculate the line:
 

@@ -36,20 +36,20 @@ Products referenced by orders must be deactivated rather than hard-deleted. Appl
 
 ## Order
 
-| Field                                                  | Notes                                                                                          |
-| ------------------------------------------------------ | ---------------------------------------------------------------------------------------------- |
-| `id`                                                   | Internal primary key.                                                                          |
-| `publicId`                                             | Unique high-entropy identifier for a confirmation URL; it grants only a minimal, non-PII view. |
-| `idempotencyKey`                                       | Unique checkout-attempt UUID.                                                                  |
-| `status`                                               | Required `OrderStatus`; initially `PENDING`.                                                   |
-| `paymentMethod`                                        | Required `PaymentMethod`.                                                                      |
-| `customerName`, `phone`                                | Required contact snapshots; exact phone normalization policy remains open.                     |
-| `addressLine1`                                         | Required free-form delivery address in İzmit district.                                         |
-| `deliveryNotes`                                        | Optional length-limited text.                                                                  |
-| `subtotal`                                             | Sum of historical `OrderItem.lineTotal` values.                                                |
-| `deliveryFee`                                          | Historical snapshot, always 0 TL in MVP.                                                       |
-| `total`                                                | `subtotal + deliveryFee`.                                                                      |
-| `createdAt`, `updatedAt`, `cancelledAt`, `deliveredAt` | Timestamps; terminal-action timestamps may be null.                                            |
+| Field                                                  | Notes                                                                                                  |
+| ------------------------------------------------------ | ------------------------------------------------------------------------------------------------------ |
+| `id`                                                   | Internal primary key.                                                                                  |
+| `publicId`                                             | Unique high-entropy identifier for a confirmation URL; it grants only a minimal, non-PII view.         |
+| `idempotencyKey`                                       | Unique checkout-attempt UUID.                                                                          |
+| `status`                                               | Required `OrderStatus`; initially `PENDING`.                                                           |
+| `paymentMethod`                                        | Required `PaymentMethod`.                                                                              |
+| `customerName`, `phone`                                | Required contact snapshots; Turkish phone numbers accepted in common forms and normalized server-side. |
+| `addressLine1`                                         | Required free-form delivery address in İzmit district.                                                 |
+| `deliveryNotes`                                        | Optional text, capped at max 500 characters.                                                           |
+| `subtotal`                                             | Sum of historical `OrderItem.lineTotal` values.                                                        |
+| `deliveryFee`                                          | Historical snapshot, always 0 TL in MVP.                                                               |
+| `total`                                                | `subtotal + deliveryFee`.                                                                              |
+| `createdAt`, `updatedAt`, `cancelledAt`, `deliveredAt` | Timestamps; terminal-action timestamps may be null.                                                    |
 
 Relationships: one `Order` has many `OrderItem` records. Indexes: unique `publicId`, unique `idempotencyKey`, and `(status, createdAt)` for the admin queue. A `(phone, createdAt)` index is deferred until operational search needs justify it.
 

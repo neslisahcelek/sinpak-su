@@ -2,14 +2,16 @@
 
 Resolved decisions are retained here as scope records. Remaining questions are genuinely open and non-blocking until their affected feature or policy is implemented.
 
-## RESOLVED: Delivery
+## RESOLVED: Delivery and Customer Input
 
 - Service area is **İzmit district**; delivery zones are not required.
 - Delivery fee is **0 TL**.
 - There is no minimum order amount or quantity.
 - Delivery is **ASAP**; there are no customer-selectable delivery slots.
-- Checkout requires free-form/open address text and a phone number.
-- Delivery notes are optional and length-limited.
+- Order submission hours are **09:00 to 19:00** in the **Europe/Istanbul** business time zone. Orders submitted before 09:00 or at/after 19:00 are rejected. Server-side validation is authoritative.
+- Checkout requires customer name, free-form address text, and a phone number.
+- Turkish phone numbers are accepted in common user-entered forms and normalized server-side to a consistent format.
+- Delivery notes are optional and capped at a maximum length of **500 characters**.
 - Inventory is not tracked, so cancellation/failure never causes a stock return.
 
 ## RESOLVED: Catalog, pricing, damacana, and deposit
@@ -37,14 +39,11 @@ Resolved decisions are retained here as scope records. Remaining questions are g
 
 ## OPEN: Delivery operations
 
-1. What are the approved operating hours and any same-day cutoff messaging for ASAP delivery?
-2. How should staff record a failed, refused, or partially completed post-dispatch delivery? This must be decided before adding an operational exception status.
-3. What exact maximum length and content policy applies to delivery notes?
+1. How should staff record a failed, refused, or partially completed post-dispatch delivery? This must be decided before adding an operational exception status.
 
 ## OPEN: Customer confirmation and privacy
 
-1. What phone country/format normalization rule is required for launch?
-2. What minimal information may a guest revisit on an order-confirmation URL, and does it require a signed/expiring link or phone/reference verification?
+1. What minimal information may a guest revisit on an order-confirmation URL, and does it require a signed/expiring link or phone/reference verification?
 
 ## OPEN: Pricing, tax, and catalog detail
 

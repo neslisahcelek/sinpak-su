@@ -14,8 +14,8 @@ Sinpak Su is a modular monolith: one Next.js deployment and one PostgreSQL datab
 1. **Home** presents the service in İzmit and links to the catalog.
 2. **Catalog and product detail** show active bottled-water, damacana-water, and beverage products with their current product data and optional primary image.
 3. **Cart** persists only product IDs and quantities locally; it never stores authoritative pricing.
-4. **Checkout** is guest-only and collects a required phone number, required free-form delivery address, optional length-limited delivery notes, and an empty-damacana quantity for each damacana line.
-5. **Order creation** validates input, reloads active products, calculates base prices and damacana deposits on the server, creates a `PENDING` order with an idempotency key, and records the selected collection method.
+4. **Checkout** is guest-only and collects a required customer name, required phone number (normalized server-side), required free-form delivery address, optional delivery notes (max 500 characters), and an empty-damacana quantity for each damacana line.
+5. **Order creation** validates input, verifies submission is within operating hours (09:00 to 19:00 Europe/Istanbul), reloads active products, calculates base prices and damacana deposits on the server, creates a `PENDING` order with an idempotency key, and records the selected collection method.
 6. **Confirmation** uses a high-entropy opaque `publicId` and shows the committed order's minimal immutable pricing snapshot. It never shows the customer phone or delivery address. The admin dashboard is the MVP notification mechanism.
 
 Delivery is ASAP: there are no delivery zones, fees, minimums, stock reservations, or customer-selectable delivery slots. Failed checkout leaves the local cart and entered values available for correction/retry. Repeated submission with the same idempotency key returns the existing order.
@@ -52,7 +52,7 @@ Use Server Components by default. Client Components are limited to cart controls
 
 First-party mutations use Server Actions as thin adapters over server-only services. Product/order reads use Server Components. Route Handlers are deferred until an external integration has a real HTTP need; online-payment providers, WhatsApp integration, and automated notifications are not MVP requirements. Confirmation access uses `publicId` alone: OTP, phone verification, and signed/expiring token flows are out of scope.
 
-The create-order service validates input, verifies products are active, enforces that empty-bottle quantity is an integer from zero through the damacana line quantity, computes all snapshots, and persists the order atomically. There is no stock check, decrement, reservation, or restoration.
+The create-order service validates input, verifies order submission is within business operating hours (09:00 to 19:00 Europe/Istanbul), verifies products are active, enforces that empty-bottle quantity is an integer from zero through the damacana line quantity, computes all snapshots, and persists the order atomically. There is no stock check, decrement, reservation, or restoration.
 
 ## Admin boundary
 

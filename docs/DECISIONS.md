@@ -42,11 +42,11 @@ Status: Accepted.
 
 MVP products are `DAMACANA_WATER`, `BOTTLED_WATER`, or `BEVERAGE`. Only damacana products carry a deposit. Each missing empty damacana adds the current per-unit deposit to the base product price. The current damacana base price and deposit are both 50 TL, maintained as product data.
 
-## ADR-008: Delivery policy
+## ADR-008: Delivery policy, customer input, and delivery notes
 
 Status: Accepted.
 
-Service is limited to İzmit district. There are no delivery zones, delivery fee, minimum order, or selectable delivery slot. Delivery is ASAP. Checkout requires a free-form address and phone; notes are optional and length-limited.
+Service is limited to İzmit district. There are no delivery zones, delivery fee (0 TL fixed for MVP), minimum order, or selectable delivery slot. Delivery is ASAP. Checkout requires customer name, phone number, and a free-form address. Turkish phone numbers are accepted in common user-entered forms and normalized server-side. Delivery notes are optional and limited to a maximum length of 500 characters.
 
 ## ADR-009: Payment methods without online integration
 
@@ -71,3 +71,9 @@ One `ADMIN` role is sufficient. Admins manage products and orders, not stock. Th
 Status: Accepted.
 
 Do not invent structured-data identity/location values or create multi-location models. WhatsApp ordering/integration and related database structures are deferred pending a later business and provider-cost decision.
+
+## ADR-013: Server-enforced order acceptance hours
+
+Status: Accepted.
+
+Orders may be submitted only between 09:00 and 19:00 in the business time zone (`Europe/Istanbul`). Orders submitted before 09:00 or at/after 19:00 are rejected. Server-side validation is authoritative; client-side UI messaging is for user guidance only.
