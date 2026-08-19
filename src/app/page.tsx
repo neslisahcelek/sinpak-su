@@ -1,17 +1,28 @@
-export default function HomePage() {
+import { listActiveProducts, type ProductDto } from "@/server/services/product.service";
+import { ProductGrid } from "@/features/products/product-grid";
+
+export default async function HomePage() {
+  let products: ProductDto[] = [];
+  let fetchError = false;
+
+  try {
+    products = await listActiveProducts();
+  } catch {
+    fetchError = true;
+  }
+
   return (
-    <main className="flex min-h-screen items-center justify-center px-6">
-      <section className="max-w-xl text-center">
-        <p className="text-sm font-medium uppercase tracking-[0.2em] text-sky-700">
-          Sinpak Su
+    <main className="px-4 lg:px-6 py-8 max-w-5xl mx-auto">
+      <h1 className="text-3xl font-semibold tracking-tight text-slate-950 mb-6">
+        Ürünlerimiz
+      </h1>
+      {fetchError ? (
+        <p className="text-red-600 text-base">
+          Ürünler yüklenirken bir hata oluştu. Lütfen sayfayı yenileyin.
         </p>
-        <h1 className="mt-4 text-4xl font-semibold tracking-tight text-slate-950 sm:text-5xl">
-          Project foundation is ready.
-        </h1>
-        <p className="mt-5 text-lg leading-8 text-slate-600">
-          A scalable foundation for the retail bottled-water experience.
-        </p>
-      </section>
+      ) : (
+        <ProductGrid products={products} />
+      )}
     </main>
   );
 }

@@ -1,9 +1,9 @@
 import { expect, test } from "@playwright/test";
 
-test("renders the foundation page", async ({ page }) => {
+test("renders the catalog page heading", async ({ page }) => {
   await page.goto("/");
 
   await expect(
-    page.getByRole("heading", { name: "Project foundation is ready." })
+    page.getByRole("heading", { name: "Ürünlerimiz" })
   ).toBeVisible();
 });
