@@ -12,6 +12,7 @@ export function CartDrawer() {
     items,
     products,
     updateQuantity,
+    updateEmptyBottles,
     removeFromCart,
   } = useCart();
 
@@ -228,6 +229,35 @@ export function CartDrawer() {
                         </svg>
                       </button>
                     </div>
+
+                    {/* Empty bottle selector for DAMACANA_WATER only */}
+                    {di.product.type === 'DAMACANA_WATER' && (
+                      <div className="mt-2 pt-2 border-t border-slate-100 flex items-center justify-between gap-2 text-xs">
+                        <label
+                          htmlFor={`empty-bottle-${di.productId}`}
+                          className="text-slate-600 font-medium"
+                        >
+                          İade Boş Damacana:
+                        </label>
+                        <select
+                          id={`empty-bottle-${di.productId}`}
+                          value={di.emptyBottleQuantity}
+                          onChange={(e) =>
+                            updateEmptyBottles(
+                              di.productId,
+                              parseInt(e.target.value, 10)
+                            )
+                          }
+                          className="bg-white border border-slate-300 rounded-md px-2 py-1 text-slate-900 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sky-700 text-xs"
+                        >
+                          {Array.from({ length: di.quantity + 1 }, (_, i) => (
+                            <option key={i} value={i}>
+                              {i} adet {i === di.quantity ? '(Depozitosuz)' : ''}
+                            </option>
+                          ))}
+                        </select>
+                      </div>
+                    )}
                   </div>
                 </div>
               );
