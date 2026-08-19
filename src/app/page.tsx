@@ -1,4 +1,7 @@
-import { listActiveProducts, type ProductDto } from "@/server/services/product.service";
+import {
+  listActiveProducts,
+  type ProductDto,
+} from "@/server/services/product.service";
 import { ProductGrid } from "@/features/products/product-grid";
 
 export default async function HomePage() {

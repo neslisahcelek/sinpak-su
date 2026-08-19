@@ -1,7 +1,7 @@
-'use client';
+"use client";
 
-import { createContext, useContext } from 'react';
-import type { ProductDto } from '@/server/services/product.service';
+import { createContext, useContext } from "react";
+import type { ProductDto } from "@/server/services/product.service";
 
 /**
  * Minimal shape persisted to localStorage.
@@ -28,15 +28,18 @@ export type CartContextType = {
   updateQuantity: (productId: string, qty: number) => void;
   updateEmptyBottles: (productId: string, qty: number) => void;
   removeFromCart: (productId: string) => void;
+  clearCart: () => void;
   totalItems: number;
   isCartOpen: boolean;
   setIsCartOpen: (open: boolean) => void;
 };
 
-export const CartContext = createContext<CartContextType | undefined>(undefined);
+export const CartContext = createContext<CartContextType | undefined>(
+  undefined
+);
 
 export function useCart(): CartContextType {
   const ctx = useContext(CartContext);
-  if (!ctx) throw new Error('useCart must be used within a CartProvider');
+  if (!ctx) throw new Error("useCart must be used within a CartProvider");
   return ctx;
 }

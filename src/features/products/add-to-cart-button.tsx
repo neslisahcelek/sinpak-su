@@ -1,7 +1,7 @@
-'use client';
+"use client";
 
-import { useCart } from '@/features/cart/cart-context';
-import type { ProductDto } from '@/server/services/product.service';
+import { useCart } from "@/features/cart/cart-context";
+import type { ProductDto } from "@/server/services/product.service";
 
 interface Props {
   product: ProductDto;

@@ -1,7 +1,7 @@
-'use client';
+"use client";
 
-import Link from 'next/link';
-import { useCart } from '@/features/cart/cart-context';
+import Link from "next/link";
+import { useCart } from "@/features/cart/cart-context";
 
 export function Header() {
   const { totalItems, setIsCartOpen } = useCart();

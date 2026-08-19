@@ -1,8 +1,8 @@
-'use client';
+"use client";
 
-import { useState, useEffect, useRef, type ReactNode } from 'react';
-import type { ProductDto } from '@/server/services/product.service';
-import { CartContext, type StorageCartItem } from './cart-context';
+import { useState, useEffect, useRef, type ReactNode } from "react";
+import type { ProductDto } from "@/server/services/product.service";
+import { CartContext, type StorageCartItem } from "./cart-context";
 
 interface CartProviderProps {
   children: ReactNode;
@@ -10,7 +10,7 @@ interface CartProviderProps {
   products: ProductDto[];
 }
 
-const STORAGE_KEY = 'sinpak-cart-v1';
+const STORAGE_KEY = "sinpak-cart-v1";
 
 function loadCartFromStorage(): StorageCartItem[] {
   try {
@@ -19,10 +19,10 @@ function loadCartFromStorage(): StorageCartItem[] {
     const parsed: unknown = JSON.parse(raw);
     if (
       parsed !== null &&
-      typeof parsed === 'object' &&
-      'version' in parsed &&
+      typeof parsed === "object" &&
+      "version" in parsed &&
       (parsed as { version: unknown }).version === 1 &&
-      'items' in parsed &&
+      "items" in parsed &&
       Array.isArray((parsed as { items: unknown }).items)
     ) {
       return (parsed as { version: number; items: StorageCartItem[] }).items;
@@ -74,9 +74,7 @@ export function CartProvider({ children, products }: CartProviderProps) {
       const existing = prev.find((i) => i.productId === productId);
       if (existing) {
         return prev.map((i) =>
-          i.productId === productId
-            ? { ...i, quantity: i.quantity + qty }
-            : i
+          i.productId === productId ? { ...i, quantity: i.quantity + qty } : i
         );
       }
       return [...prev, { productId, quantity: qty, emptyBottleQuantity: 0 }];
@@ -117,6 +115,15 @@ export function CartProvider({ children, products }: CartProviderProps) {
     setItems((prev) => prev.filter((i) => i.productId !== productId));
   };
 
+  const clearCart = () => {
+    setItems([]);
+    try {
+      localStorage.removeItem(STORAGE_KEY);
+    } catch {
+      // Ignore storage errors
+    }
+  };
+
   return (
     <CartContext.Provider
       value={{
@@ -126,6 +133,7 @@ export function CartProvider({ children, products }: CartProviderProps) {
         updateQuantity,
         updateEmptyBottles,
         removeFromCart,
+        clearCart,
         totalItems,
         isCartOpen,
         setIsCartOpen,

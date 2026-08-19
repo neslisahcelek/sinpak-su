@@ -1,9 +1,10 @@
-'use client';
+"use client";
 
-import Image from 'next/image';
-import { useEffect } from 'react';
-import { useCart } from './cart-context';
-import { formatPrice } from '../products/format-price';
+import Image from "next/image";
+import Link from "next/link";
+import { useEffect } from "react";
+import { useCart } from "./cart-context";
+import { formatPrice } from "../products/format-price";
 
 export function CartDrawer() {
   const {
@@ -19,10 +20,10 @@ export function CartDrawer() {
   // Close on ESC key
   useEffect(() => {
     const handleEsc = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') setIsCartOpen(false);
+      if (e.key === "Escape") setIsCartOpen(false);
     };
-    if (isCartOpen) document.addEventListener('keydown', handleEsc);
-    return () => document.removeEventListener('keydown', handleEsc);
+    if (isCartOpen) document.addEventListener("keydown", handleEsc);
+    return () => document.removeEventListener("keydown", handleEsc);
   }, [isCartOpen, setIsCartOpen]);
 
   if (!isCartOpen) return null;
@@ -41,7 +42,7 @@ export function CartDrawer() {
   );
   const depositTotal = displayItems.reduce((acc, di) => {
     if (
-      di.product.type === 'DAMACANA_WATER' &&
+      di.product.type === "DAMACANA_WATER" &&
       di.emptyBottleQuantity < di.quantity
     ) {
       return (
@@ -127,11 +128,13 @@ export function CartDrawer() {
             </div>
           ) : (
             displayItems.map((di) => {
+              const missingBottles =
+                di.product.type === "DAMACANA_WATER"
+                  ? Math.max(0, di.quantity - di.emptyBottleQuantity)
+                  : 0;
               const itemDeposit =
-                di.product.type === 'DAMACANA_WATER' &&
-                di.emptyBottleQuantity < di.quantity
-                  ? parseFloat(di.product.depositAmount) *
-                    (di.quantity - di.emptyBottleQuantity)
+                di.product.type === "DAMACANA_WATER" && missingBottles > 0
+                  ? parseFloat(di.product.depositAmount) * missingBottles
                   : 0;
               const lineTotal =
                 parseFloat(di.product.price) * di.quantity + itemDeposit;
@@ -172,11 +175,16 @@ export function CartDrawer() {
                       {formatPrice(lineTotal.toString())}
                     </div>
 
-                    {itemDeposit > 0 && (
-                      <div className="text-xs text-amber-600">
-                        + {formatPrice(itemDeposit.toString())} depozito
+                    {itemDeposit > 0 ? (
+                      <div className="text-xs text-amber-600 bg-amber-50 px-2 py-0.5 rounded-full inline-block">
+                        + {formatPrice(itemDeposit.toString())} depozito (
+                        {missingBottles} adet boş iadesiz)
                       </div>
-                    )}
+                    ) : di.product.type === "DAMACANA_WATER" ? (
+                      <div className="text-xs text-green-700 bg-green-50 px-2 py-0.5 rounded-full inline-block">
+                        Depozitosuz (Tüm boş damacanalar iade edilecek)
+                      </div>
+                    ) : null}
 
                     {/* Quantity stepper */}
                     <div className="flex items-center gap-2 mt-1">
@@ -231,31 +239,43 @@ export function CartDrawer() {
                     </div>
 
                     {/* Empty bottle selector for DAMACANA_WATER only */}
-                    {di.product.type === 'DAMACANA_WATER' && (
-                      <div className="mt-2 pt-2 border-t border-slate-100 flex items-center justify-between gap-2 text-xs">
-                        <label
-                          htmlFor={`empty-bottle-${di.productId}`}
-                          className="text-slate-600 font-medium"
-                        >
-                          İade Boş Damacana:
-                        </label>
-                        <select
-                          id={`empty-bottle-${di.productId}`}
-                          value={di.emptyBottleQuantity}
-                          onChange={(e) =>
-                            updateEmptyBottles(
-                              di.productId,
-                              parseInt(e.target.value, 10)
-                            )
-                          }
-                          className="bg-white border border-slate-300 rounded-md px-2 py-1 text-slate-900 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sky-700 text-xs"
-                        >
-                          {Array.from({ length: di.quantity + 1 }, (_, i) => (
-                            <option key={i} value={i}>
-                              {i} adet {i === di.quantity ? '(Depozitosuz)' : ''}
-                            </option>
-                          ))}
-                        </select>
+                    {di.product.type === "DAMACANA_WATER" && (
+                      <div className="mt-2 pt-2 border-t border-slate-100 flex flex-col gap-1 text-xs">
+                        <div className="flex items-center justify-between gap-2">
+                          <label
+                            htmlFor={`empty-bottle-${di.productId}`}
+                            className="text-slate-700 font-medium"
+                          >
+                            İade Boş Damacana:
+                          </label>
+                          <select
+                            id={`empty-bottle-${di.productId}`}
+                            value={di.emptyBottleQuantity}
+                            onChange={(e) =>
+                              updateEmptyBottles(
+                                di.productId,
+                                parseInt(e.target.value, 10)
+                              )
+                            }
+                            className="bg-white border border-slate-300 rounded-md px-2 py-1.5 text-slate-900 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sky-700 text-xs min-h-[36px]"
+                          >
+                            {Array.from({ length: di.quantity + 1 }, (_, i) => (
+                              <option key={i} value={i}>
+                                {i} adet{" "}
+                                {i === di.quantity
+                                  ? "(Depozitosuz)"
+                                  : `(+${formatPrice(((di.quantity - i) * parseFloat(di.product.depositAmount)).toString())} depozito)`}
+                              </option>
+                            ))}
+                          </select>
+                        </div>
+                        {missingBottles > 0 && (
+                          <p className="text-slate-500 text-[11px]">
+                            Boş damacana vermediğiniz her adet için{" "}
+                            {formatPrice(di.product.depositAmount)} depozito
+                            ücreti eklenir.
+                          </p>
+                        )}
                       </div>
                     )}
                   </div>
@@ -282,14 +302,13 @@ export function CartDrawer() {
               <span>Toplam</span>
               <span>{formatPrice(total.toString())}</span>
             </div>
-            {/* Phase 4: checkout — disabled placeholder */}
-            <button
-              disabled
-              title="Yakında"
-              className="w-full mt-1 bg-sky-700 text-white font-semibold text-base rounded-lg px-5 py-3 min-h-[44px] opacity-50 cursor-not-allowed"
+            <Link
+              href="/checkout"
+              onClick={() => setIsCartOpen(false)}
+              className="w-full mt-1 bg-sky-700 hover:bg-sky-800 active:bg-sky-900 text-white font-semibold text-base rounded-lg px-5 py-3 min-h-[44px] flex items-center justify-center transition-colors duration-150 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sky-700"
             >
               Siparişi Tamamla
-            </button>
+            </Link>
           </div>
         )}
       </div>
