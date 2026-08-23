@@ -21,6 +21,20 @@
 - Reuse existing components, utilities, and abstractions.
 - Adhere strictly to the global security, validation, pricing, and client/server boundaries specified in `AGENTS.md`.
 
+## Implementation & Execution Workflow
+
+The default lifecycle for implementing any fix, feature, refactoring, or addition is:
+
+`READ → MODIFY FILES → RUN RELEVANT VERIFICATION → REPORT RESULT`
+
+not:
+
+`READ → GENERATE CODE IN RESPONSE → CLAIM COMPLETION`
+
+- **Apply changes to disk**: Implementation agents must modify, create, and delete files directly in the repository rather than printing code snippets or theoretical changes.
+- **Concise communication**: Avoid printing large source-code blocks into chat or terminal unless explicitly asked. Edit files on disk and summarize the changes concisely.
+- **Accurate status reporting**: Clearly distinguish "I prepared/proposed this change" from "I applied this change to the working tree". Only report completion after verifying that files physically exist on disk and pass appropriate checks.
+
 ## Change Boundaries & Decisions
 
 - Do not silently change architecture, database semantics, authentication strategy, or public API contracts.

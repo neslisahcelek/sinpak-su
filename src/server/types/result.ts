@@ -6,8 +6,20 @@ export type OrderErrorCode =
   | "IDEMPOTENCY_CONFLICT"
   | "ORDER_CREATION_FAILED";
 
-export interface SafeError {
-  code: OrderErrorCode;
+export type AdminErrorCode =
+  | "VALIDATION_ERROR"
+  | "UNAUTHORIZED"
+  | "INVALID_CREDENTIALS"
+  | "SESSION_EXPIRED"
+  | "ORDER_NOT_FOUND"
+  | "INVALID_STATUS_TRANSITION"
+  | "CONCURRENT_MODIFICATION"
+  | "INTERNAL_ERROR";
+
+export type AppErrorCode = OrderErrorCode | AdminErrorCode;
+
+export interface SafeError<TCode extends string = AppErrorCode> {
+  code: TCode;
   message: string;
   details?: unknown;
 }
@@ -23,10 +35,11 @@ export function err<E = SafeError>(error: E): Result<never, E> {
   return { success: false, error };
 }
 
-export function makeSafeError(
-  code: OrderErrorCode,
+export function makeSafeError<TCode extends string = AppErrorCode>(
+  code: TCode,
   message: string,
   details?: unknown
-): SafeError {
+): SafeError<TCode> {
   return { code, message, details };
 }
+

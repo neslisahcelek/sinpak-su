@@ -34,6 +34,24 @@ Administrators can manage products and orders.
 12. Preserve loading, empty, success, and error states.
 13. Do not claim completion without running the required checks.
 
+## Implementation & working tree modification rules
+
+Whenever an agent (including the default agent) is asked to implement, fix, refactor, or add something, the default behavior must be:
+
+READ → MODIFY FILES → RUN RELEVANT VERIFICATION → REPORT RESULT
+
+not:
+
+READ → GENERATE CODE IN RESPONSE → CLAIM COMPLETION
+
+- **Direct working tree modification**: Implementation agents must actually create, modify, and delete files in the repository as needed. Do not merely describe code changes or output large code blocks in the chat/terminal unless explicitly requested.
+- **Verification on disk**: Before reporting an implementation as completed, verify that the changes physically exist on disk and run relevant verification (typecheck, lint, tests, build).
+- **Distinguish status**: Agents must clearly distinguish between:
+  - "I prepared/proposed this change"
+  and
+  - "I applied this change to the working tree."
+  Only the latter should be described as implemented or completed.
+
 ## Documentation
 
 Architecture: `docs/ARCHITECTURE.md`
@@ -46,6 +64,11 @@ Architecture decisions: `docs/DECISIONS.md`
 ## Agent coordination
 
 Agent execution procedures and role-specific responsibilities are defined in `.agents/rules/` and `.agents/agents/`.
+
+- **Implementation agents (backend, frontend, default)**: Read and WRITE permissions to repository files; execute terminal commands for implementation, verification, and migrations.
+- **QA agent**: Primarily read-only for production code; can create/modify test files; executes test/lint/typecheck/build commands to report actual test results from the working tree.
+- **Architect agent**: Primarily read-only for architecture, design decisions, module boundaries, and planning.
+- **Reviewer agent**: Strictly read-only; inspects actual files and diffs on disk; must approve changes before a commit is created.
 
 The reviewer must approve changes before a commit is created.
 
