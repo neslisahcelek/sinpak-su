@@ -1,4 +1,4 @@
-import { OrderStatus, PaymentMethod } from "@prisma/client";
+import { OrderStatus, PaymentMethod, ProductType } from "@prisma/client";
 
 export const ORDER_STATUS_LABELS: Record<OrderStatus, string> = {
   [OrderStatus.PENDING]: "Beklemede",
@@ -32,3 +32,16 @@ export const STATUS_ACTION_LABELS: Record<OrderStatus, string> = {
   [OrderStatus.DELIVERED]: "Teslim Edildi Olarak Tamamla",
   [OrderStatus.CANCELLED]: "Siparişi İptal Et",
 };
+
+export const PRODUCT_TYPE_LABELS: Record<ProductType, string> = {
+  [ProductType.DAMACANA_WATER]: "Damacana Su",
+  [ProductType.BOTTLED_WATER]: "Şişe Su",
+  [ProductType.BEVERAGE]: "Meşrubat",
+};
+
+export const PRODUCT_TYPE_BADGE_CLASSES: Record<ProductType, string> = {
+  [ProductType.DAMACANA_WATER]: "bg-sky-50 text-sky-700 border-sky-200",
+  [ProductType.BOTTLED_WATER]: "bg-teal-50 text-teal-700 border-teal-200",
+  [ProductType.BEVERAGE]: "bg-amber-50 text-amber-700 border-amber-200",
+};
+

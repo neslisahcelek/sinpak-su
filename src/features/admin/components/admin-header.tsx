@@ -21,12 +21,18 @@ export function AdminHeader({ username }: AdminHeaderProps) {
               </span>
             </Link>
 
-            <nav className="hidden sm:flex items-center gap-1">
+            <nav className="flex items-center gap-1">
               <Link
                 href="/admin/orders"
                 className="px-3 py-1.5 text-sm font-medium text-slate-200 hover:text-white hover:bg-slate-800 rounded-lg transition-colors"
               >
                 Siparişler
+              </Link>
+              <Link
+                href="/admin/products"
+                className="px-3 py-1.5 text-sm font-medium text-slate-200 hover:text-white hover:bg-slate-800 rounded-lg transition-colors"
+              >
+                Ürünler
               </Link>
             </nav>
           </div>

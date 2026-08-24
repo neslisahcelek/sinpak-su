@@ -1,10 +1,12 @@
 import { describe, it, expect } from "vitest";
-import { OrderStatus, PaymentMethod } from "@prisma/client";
+import { OrderStatus, PaymentMethod, ProductType } from "@prisma/client";
 import {
   ORDER_STATUS_LABELS,
   ORDER_STATUS_BADGE_CLASSES,
   PAYMENT_METHOD_LABELS,
   STATUS_ACTION_LABELS,
+  PRODUCT_TYPE_LABELS,
+  PRODUCT_TYPE_BADGE_CLASSES,
 } from "./constants";
 
 describe("Admin Constants & Mappings", () => {
@@ -37,4 +39,21 @@ describe("Admin Constants & Mappings", () => {
       expect(typeof STATUS_ACTION_LABELS[status]).toBe("string");
     }
   });
+
+  it("should have human-readable labels for all ProductType enum values", () => {
+    for (const type of Object.values(ProductType)) {
+      expect(PRODUCT_TYPE_LABELS[type]).toBeDefined();
+      expect(typeof PRODUCT_TYPE_LABELS[type]).toBe("string");
+      expect(PRODUCT_TYPE_LABELS[type].length).toBeGreaterThan(0);
+    }
+  });
+
+  it("should have badge CSS classes for all ProductType enum values", () => {
+    for (const type of Object.values(ProductType)) {
+      expect(PRODUCT_TYPE_BADGE_CLASSES[type]).toBeDefined();
+      expect(typeof PRODUCT_TYPE_BADGE_CLASSES[type]).toBe("string");
+      expect(PRODUCT_TYPE_BADGE_CLASSES[type].length).toBeGreaterThan(0);
+    }
+  });
 });
+

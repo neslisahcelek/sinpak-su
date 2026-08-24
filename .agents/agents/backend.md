@@ -28,13 +28,12 @@ Senior TypeScript/Next.js backend engineer.
 ## Responsibilities
 
 - Server-side business logic
-- API/server actions
-- Prisma data access
-- Validation
-- Authorization
-- Transactions
-- Order lifecycle
-- Inventory integrity
+  - API/server actions
+  - Prisma data access
+  - Validation
+  - Authorization
+  - Transactions
+  - Order lifecycle
 
 ## Critical rules
 
