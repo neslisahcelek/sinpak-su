@@ -184,4 +184,43 @@ describe("Order Creation Service", () => {
       expect(result.error.code).toBe("PRODUCT_UNAVAILABLE");
     }
   });
+
+  it("allows order creation outside operating hours when test environment bypass is active", async () => {
+    vi.stubEnv("NODE_ENV", "development");
+    vi.stubEnv("DISABLE_OPERATING_HOURS", "true");
+
+    try {
+      const result = await createOrder(validPayload, {
+        currentTime: closedTime,
+        db: mockDb as unknown as PrismaClient,
+      });
+
+      expect(result.success).toBe(true);
+      if (result.success) {
+        expect(result.data.publicId).toBe("ord_pub_12345");
+      }
+    } finally {
+      vi.unstubAllEnvs();
+    }
+  });
+
+  it("enforces operating hours outside operating hours in production even if bypass flag is set", async () => {
+    vi.stubEnv("NODE_ENV", "production");
+    vi.stubEnv("DISABLE_OPERATING_HOURS", "true");
+    vi.stubEnv("APP_ENV", "test");
+
+    try {
+      const result = await createOrder(validPayload, {
+        currentTime: closedTime,
+        db: mockDb as unknown as PrismaClient,
+      });
+
+      expect(result.success).toBe(false);
+      if (!result.success) {
+        expect(result.error.code).toBe("OUT_OF_OPERATING_HOURS");
+      }
+    } finally {
+      vi.unstubAllEnvs();
+    }
+  });
 });

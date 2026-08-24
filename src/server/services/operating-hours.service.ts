@@ -27,3 +27,25 @@ export function isWithinOperatingHours(date: Date = new Date()): boolean {
 
   return totalMinutes >= openingMinutes && totalMinutes < closingMinutes;
 }
+
+/**
+ * Determines whether operating hours restriction is bypassed for order creation.
+ * Safe by default: Never bypassed in production environment.
+ * Can only be bypassed in non-production test environments when explicitly configured
+ * (e.g., APP_ENV=test, NEXT_PUBLIC_APP_ENV=test, or DISABLE_OPERATING_HOURS=true).
+ */
+export function isOperatingHoursBypassed(): boolean {
+  if (typeof process === "undefined" || !process.env) {
+    return false;
+  }
+
+  if (process.env.NODE_ENV === "production") {
+    return false;
+  }
+
+  return (
+    process.env.APP_ENV === "test" ||
+    process.env.NEXT_PUBLIC_APP_ENV === "test" ||
+    process.env.DISABLE_OPERATING_HOURS === "true"
+  );
+}

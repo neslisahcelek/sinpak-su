@@ -1,5 +1,8 @@
-import { describe, it, expect } from "vitest";
-import { isWithinOperatingHours } from "./operating-hours.service";
+import { describe, it, expect, beforeEach, afterEach, vi } from "vitest";
+import {
+  isWithinOperatingHours,
+  isOperatingHoursBypassed,
+} from "./operating-hours.service";
 
 describe("Operating Hours Service", () => {
   // Istanbul is UTC+3 (no DST since 2016)
@@ -44,5 +47,50 @@ describe("Operating Hours Service", () => {
     // Midnight Istanbul = 21:00 UTC (prev day)
     const midnight = new Date("2026-08-18T21:00:00.000Z");
     expect(isWithinOperatingHours(midnight)).toBe(false);
+  });
+
+  describe("isOperatingHoursBypassed", () => {
+    beforeEach(() => {
+      vi.unstubAllEnvs();
+      delete process.env.DISABLE_OPERATING_HOURS;
+      delete process.env.APP_ENV;
+      delete process.env.NEXT_PUBLIC_APP_ENV;
+    });
+
+    afterEach(() => {
+      vi.unstubAllEnvs();
+    });
+
+    it("returns false by default (safe by default)", () => {
+      vi.stubEnv("NODE_ENV", "development");
+      expect(isOperatingHoursBypassed()).toBe(false);
+    });
+
+    it("strictly returns false in production even if bypass flags are set", () => {
+      vi.stubEnv("NODE_ENV", "production");
+      vi.stubEnv("DISABLE_OPERATING_HOURS", "true");
+      vi.stubEnv("APP_ENV", "test");
+      vi.stubEnv("NEXT_PUBLIC_APP_ENV", "test");
+
+      expect(isOperatingHoursBypassed()).toBe(false);
+    });
+
+    it("returns true in test environment when APP_ENV=test", () => {
+      vi.stubEnv("NODE_ENV", "development");
+      vi.stubEnv("APP_ENV", "test");
+      expect(isOperatingHoursBypassed()).toBe(true);
+    });
+
+    it("returns true in test environment when NEXT_PUBLIC_APP_ENV=test", () => {
+      vi.stubEnv("NODE_ENV", "development");
+      vi.stubEnv("NEXT_PUBLIC_APP_ENV", "test");
+      expect(isOperatingHoursBypassed()).toBe(true);
+    });
+
+    it("returns true in test environment when DISABLE_OPERATING_HOURS=true", () => {
+      vi.stubEnv("NODE_ENV", "development");
+      vi.stubEnv("DISABLE_OPERATING_HOURS", "true");
+      expect(isOperatingHoursBypassed()).toBe(true);
+    });
   });
 });

@@ -10,7 +10,10 @@ import {
   type CreateOrderInput,
   type ValidatedCreateOrderInput,
 } from "@/server/validation/order.schema";
-import { isWithinOperatingHours } from "@/server/services/operating-hours.service";
+import {
+  isWithinOperatingHours,
+  isOperatingHoursBypassed,
+} from "@/server/services/operating-hours.service";
 import { err, makeSafeError, ok, type Result } from "@/server/types/result";
 
 export interface ConsolidatedItem {
@@ -245,7 +248,7 @@ export async function createOrder(
 
   // 2. Operating Hours Enforcement (09:00 inclusive to 19:00 exclusive in Europe/Istanbul)
   const orderTime = options.currentTime ?? new Date();
-  if (!isWithinOperatingHours(orderTime)) {
+  if (!isOperatingHoursBypassed() && !isWithinOperatingHours(orderTime)) {
     return err(
       makeSafeError(
         "OUT_OF_OPERATING_HOURS",

@@ -91,15 +91,12 @@ test.describe("Customer Checkout Flow", () => {
     // Submit order
     await page.getByRole("button", { name: "Siparişi Ver" }).click();
 
-    // Either confirmation page or operating hours error depending on time of test run
-    const confirmationHeading = page.getByRole("heading", {
-      name: "Teşekkürler, Siparişiniz Alındı!",
-    });
-    const operatingHoursNotice = page.getByText(
-      "Siparişler yalnızca 09:00 - 19:00 saatleri arasında kabul edilmektedir."
-    );
-
-    await expect(confirmationHeading.or(operatingHoursNotice)).toBeVisible({
+    // Order confirmation heading should be visible
+    await expect(
+      page.getByRole("heading", {
+        name: "Teşekkürler, Siparişiniz Alındı!",
+      })
+    ).toBeVisible({
       timeout: 10000,
     });
   });
