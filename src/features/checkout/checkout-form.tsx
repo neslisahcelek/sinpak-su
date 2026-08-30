@@ -165,9 +165,11 @@ export function CheckoutForm() {
         return;
       }
 
-      // Order created successfully
-      clearCart();
+      // Order created successfully.
+      // Navigate FIRST — router.push schedules the transition. The cart is then
+      // cleared after so the empty-cart screen is never rendered during navigation.
       router.push(`/siparis-onay/${result.data.publicId}`);
+      clearCart();
     } catch {
       setIsSubmitting(false);
       setServerError(

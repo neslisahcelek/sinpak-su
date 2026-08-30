@@ -21,9 +21,7 @@ export default function AdminProductNotFound() {
         </svg>
       </div>
 
-      <h1 className="text-xl font-bold text-slate-900 mb-2">
-        Ürün Bulunamadı
-      </h1>
+      <h1 className="text-xl font-bold text-slate-900 mb-2">Ürün Bulunamadı</h1>
       <p className="text-sm text-slate-500 mb-6">
         Düzenlemek istediğiniz ürün kaydı sistemde bulunamadı.
       </p>

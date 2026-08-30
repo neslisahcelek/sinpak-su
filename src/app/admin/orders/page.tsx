@@ -40,7 +40,11 @@ export default async function AdminOrdersPage({ searchParams }: Props) {
             Sipariş Yönetimi
           </h1>
           <p className="text-xs sm:text-sm text-slate-500 mt-0.5">
-            Toplam <span className="font-semibold text-slate-800">{orders.length}</span> sipariş listeleniyor
+            Toplam{" "}
+            <span className="font-semibold text-slate-800">
+              {orders.length}
+            </span>{" "}
+            sipariş listeleniyor
           </p>
         </div>
       </div>

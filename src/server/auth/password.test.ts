@@ -24,27 +24,27 @@ describe("Admin Password & Credential Verification", () => {
     process.env.ADMIN_USERNAME = "sinpak_admin";
     process.env.ADMIN_PASSWORD = "SecretPassword!456";
 
-    expect(
-      verifyAdminCredentials("sinpak_admin", "SecretPassword!456")
-    ).toBe(true);
+    expect(verifyAdminCredentials("sinpak_admin", "SecretPassword!456")).toBe(
+      true
+    );
 
     // Case-insensitive username match
-    expect(
-      verifyAdminCredentials("SINPAK_ADMIN", "SecretPassword!456")
-    ).toBe(true);
+    expect(verifyAdminCredentials("SINPAK_ADMIN", "SecretPassword!456")).toBe(
+      true
+    );
   });
 
   it("should reject invalid username or password", () => {
     process.env.ADMIN_USERNAME = "sinpak_admin";
     process.env.ADMIN_PASSWORD = "SecretPassword!456";
 
-    expect(
-      verifyAdminCredentials("wrong_user", "SecretPassword!456")
-    ).toBe(false);
+    expect(verifyAdminCredentials("wrong_user", "SecretPassword!456")).toBe(
+      false
+    );
 
-    expect(
-      verifyAdminCredentials("sinpak_admin", "wrong_password")
-    ).toBe(false);
+    expect(verifyAdminCredentials("sinpak_admin", "wrong_password")).toBe(
+      false
+    );
   });
 
   it("should reject when no password is configured in production mode", () => {

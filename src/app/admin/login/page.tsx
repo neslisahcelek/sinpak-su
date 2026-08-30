@@ -40,15 +40,19 @@ export default async function AdminLoginPage() {
               />
             </svg>
           </div>
-          <h1 className="text-xl font-bold text-slate-900">
-            Yönetici Girişi
-          </h1>
+          <h1 className="text-xl font-bold text-slate-900">Yönetici Girişi</h1>
           <p className="text-xs text-slate-500">
             Lütfen yetkili kullanıcı adı ve şifrenizle giriş yapın.
           </p>
         </div>
 
-        <Suspense fallback={<div className="h-40 flex items-center justify-center text-sm text-slate-400">Yükleniyor...</div>}>
+        <Suspense
+          fallback={
+            <div className="h-40 flex items-center justify-center text-sm text-slate-400">
+              Yükleniyor...
+            </div>
+          }
+        >
           <AdminLoginForm />
         </Suspense>
       </div>

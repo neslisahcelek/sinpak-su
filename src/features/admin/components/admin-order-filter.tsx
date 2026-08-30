@@ -9,19 +9,31 @@ interface AdminOrderFilterProps {
 export function AdminOrderFilter({ currentStatus }: AdminOrderFilterProps) {
   const filterOptions: { label: string; value?: OrderStatus }[] = [
     { label: "Tümü", value: undefined },
-    { label: ORDER_STATUS_LABELS[OrderStatus.PENDING], value: OrderStatus.PENDING },
-    { label: ORDER_STATUS_LABELS[OrderStatus.CONFIRMED], value: OrderStatus.CONFIRMED },
-    { label: ORDER_STATUS_LABELS[OrderStatus.PREPARING], value: OrderStatus.PREPARING },
-    { label: ORDER_STATUS_LABELS[OrderStatus.OUT_FOR_DELIVERY], value: OrderStatus.OUT_FOR_DELIVERY },
-    { label: ORDER_STATUS_LABELS[OrderStatus.DELIVERED], value: OrderStatus.DELIVERED },
-    { label: ORDER_STATUS_LABELS[OrderStatus.CANCELLED], value: OrderStatus.CANCELLED },
+    {
+      label: ORDER_STATUS_LABELS[OrderStatus.PENDING],
+      value: OrderStatus.PENDING,
+    },
+    {
+      label: ORDER_STATUS_LABELS[OrderStatus.OUT_FOR_DELIVERY],
+      value: OrderStatus.OUT_FOR_DELIVERY,
+    },
+    {
+      label: ORDER_STATUS_LABELS[OrderStatus.DELIVERED],
+      value: OrderStatus.DELIVERED,
+    },
+    {
+      label: ORDER_STATUS_LABELS[OrderStatus.CANCELLED],
+      value: OrderStatus.CANCELLED,
+    },
   ];
 
   return (
     <div className="flex items-center gap-1.5 overflow-x-auto pb-2 scrollbar-thin">
       {filterOptions.map((opt) => {
         const isActive = currentStatus === opt.value;
-        const href = opt.value ? `/admin/orders?status=${opt.value}` : "/admin/orders";
+        const href = opt.value
+          ? `/admin/orders?status=${opt.value}`
+          : "/admin/orders";
 
         return (
           <Link

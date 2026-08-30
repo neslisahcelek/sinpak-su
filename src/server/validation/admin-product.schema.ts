@@ -10,7 +10,8 @@ export const productPriceSchema = z
   .union([z.string().trim(), z.number()])
   .transform((val) => (typeof val === "number" ? val.toString() : val))
   .refine((val) => priceRegex.test(val), {
-    message: "Fiyat geçerli bir sayı olmalı ve en fazla 2 ondalık basamak içermelidir.",
+    message:
+      "Fiyat geçerli bir sayı olmalı ve en fazla 2 ondalık basamak içermelidir.",
   })
   .refine(
     (val) => {
@@ -34,7 +35,8 @@ export const productDepositSchema = z
     return typeof val === "number" ? val.toString() : val;
   })
   .refine((val) => priceRegex.test(val), {
-    message: "Depozito tutarı geçerli bir sayı olmalı ve en fazla 2 ondalık basamak içermelidir.",
+    message:
+      "Depozito tutarı geçerli bir sayı olmalı ve en fazla 2 ondalık basamak içermelidir.",
   })
   .refine(
     (val) => {
@@ -42,7 +44,8 @@ export const productDepositSchema = z
       return !isNaN(num) && num >= 0 && num <= 100000;
     },
     {
-      message: "Depozito tutarı 0 veya daha büyük ve en fazla 100.000 TL olmalıdır.",
+      message:
+        "Depozito tutarı 0 veya daha büyük ve en fazla 100.000 TL olmalıdır.",
     }
   );
 
@@ -100,7 +103,8 @@ export const createProductSchema = z
         ctx.addIssue({
           code: z.ZodIssueCode.custom,
           path: ["depositAmount"],
-          message: "Damacana su için depozito tutarı 0 veya daha büyük olmalıdır.",
+          message:
+            "Damacana su için depozito tutarı 0 veya daha büyük olmalıdır.",
         });
       }
     } else {
@@ -149,7 +153,8 @@ export const updateProductSchema = z
         ctx.addIssue({
           code: z.ZodIssueCode.custom,
           path: ["depositAmount"],
-          message: "Damacana su için depozito tutarı 0 veya daha büyük olmalıdır.",
+          message:
+            "Damacana su için depozito tutarı 0 veya daha büyük olmalıdır.",
         });
       }
     } else {
@@ -175,4 +180,6 @@ export const toggleProductActiveSchema = z.object({
   isActive: z.boolean({ error: "Durum bilgisi gereklidir." }),
 });
 
-export type ToggleProductActiveInput = z.infer<typeof toggleProductActiveSchema>;
+export type ToggleProductActiveInput = z.infer<
+  typeof toggleProductActiveSchema
+>;

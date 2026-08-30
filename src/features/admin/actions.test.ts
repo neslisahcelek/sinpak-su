@@ -111,7 +111,7 @@ describe("Admin Authentication Server Actions", () => {
       // No login session established
       const result = await updateOrderStatusAction({
         publicId: "ord_pub_123",
-        nextStatus: OrderStatus.CONFIRMED,
+        nextStatus: OrderStatus.OUT_FOR_DELIVERY,
       });
 
       expect(result.success).toBe(false);
@@ -148,7 +148,7 @@ describe("Admin Authentication Server Actions", () => {
 
       const mockUpdatedResult = {
         publicId: "ord_pub_123",
-        status: OrderStatus.CONFIRMED,
+        status: OrderStatus.OUT_FOR_DELIVERY,
         deliveredAt: null,
         cancelledAt: null,
         updatedAt: new Date("2026-08-23T12:00:00.000Z"),
@@ -163,10 +163,13 @@ describe("Admin Authentication Server Actions", () => {
 
       const result = await updateOrderStatusAction({
         publicId: "ord_pub_123",
-        nextStatus: OrderStatus.CONFIRMED,
+        nextStatus: OrderStatus.OUT_FOR_DELIVERY,
       });
 
-      expect(updateSpy).toHaveBeenCalledWith("ord_pub_123", OrderStatus.CONFIRMED);
+      expect(updateSpy).toHaveBeenCalledWith(
+        "ord_pub_123",
+        OrderStatus.OUT_FOR_DELIVERY
+      );
       expect(revalidatePath).toHaveBeenCalledWith("/admin/orders");
       expect(result).toEqual({
         success: true,
@@ -192,10 +195,13 @@ describe("Admin Authentication Server Actions", () => {
 
       const result = await updateOrderStatusAction({
         publicId: "ord_pub_123",
-        nextStatus: OrderStatus.CONFIRMED,
+        nextStatus: OrderStatus.OUT_FOR_DELIVERY,
       });
 
-      expect(updateSpy).toHaveBeenCalledWith("ord_pub_123", OrderStatus.CONFIRMED);
+      expect(updateSpy).toHaveBeenCalledWith(
+        "ord_pub_123",
+        OrderStatus.OUT_FOR_DELIVERY
+      );
       expect(revalidatePath).not.toHaveBeenCalled();
       expect(result.success).toBe(false);
       if (!result.success) {
@@ -284,7 +290,9 @@ describe("Admin Authentication Server Actions", () => {
       expect(revalidatePath).toHaveBeenCalledWith("/admin/products");
       expect(revalidatePath).toHaveBeenCalledWith("/");
       expect(revalidatePath).toHaveBeenCalledWith("/checkout");
-      expect(revalidatePath).toHaveBeenCalledWith("/urunler/19l-dogal-damacana");
+      expect(revalidatePath).toHaveBeenCalledWith(
+        "/urunler/19l-dogal-damacana"
+      );
       expect(result).toEqual({
         success: true,
         data: mockCreatedProduct,
@@ -394,10 +402,14 @@ describe("Admin Authentication Server Actions", () => {
         })
       );
       expect(revalidatePath).toHaveBeenCalledWith("/admin/products");
-      expect(revalidatePath).toHaveBeenCalledWith("/admin/products/prod_new_1/edit");
+      expect(revalidatePath).toHaveBeenCalledWith(
+        "/admin/products/prod_new_1/edit"
+      );
       expect(revalidatePath).toHaveBeenCalledWith("/");
       expect(revalidatePath).toHaveBeenCalledWith("/checkout");
-      expect(revalidatePath).toHaveBeenCalledWith("/urunler/19l-dogal-damacana");
+      expect(revalidatePath).toHaveBeenCalledWith(
+        "/urunler/19l-dogal-damacana"
+      );
       expect(result).toEqual({
         success: true,
         data: mockUpdatedProduct,
@@ -493,10 +505,14 @@ describe("Admin Authentication Server Actions", () => {
 
       expect(toggleSpy).toHaveBeenCalledWith("prod_new_1", false);
       expect(revalidatePath).toHaveBeenCalledWith("/admin/products");
-      expect(revalidatePath).toHaveBeenCalledWith("/admin/products/prod_new_1/edit");
+      expect(revalidatePath).toHaveBeenCalledWith(
+        "/admin/products/prod_new_1/edit"
+      );
       expect(revalidatePath).toHaveBeenCalledWith("/");
       expect(revalidatePath).toHaveBeenCalledWith("/checkout");
-      expect(revalidatePath).toHaveBeenCalledWith("/urunler/19l-dogal-damacana");
+      expect(revalidatePath).toHaveBeenCalledWith(
+        "/urunler/19l-dogal-damacana"
+      );
       expect(result).toEqual({
         success: true,
         data: mockToggledProduct,
@@ -509,7 +525,10 @@ describe("Admin Authentication Server Actions", () => {
         password: "testpassword123",
       });
 
-      vi.spyOn(adminProductService, "toggleProductActive").mockResolvedValueOnce({
+      vi.spyOn(
+        adminProductService,
+        "toggleProductActive"
+      ).mockResolvedValueOnce({
         success: false,
         error: {
           code: "PRODUCT_NOT_FOUND",
@@ -527,5 +546,3 @@ describe("Admin Authentication Server Actions", () => {
     });
   });
 });
-
-

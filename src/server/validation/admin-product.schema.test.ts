@@ -78,7 +78,8 @@ describe("Admin Product Validation Schemas", () => {
         createProductSchema.safeParse({ ...validDamacana, price: "0" }).success
       ).toBe(false);
       expect(
-        createProductSchema.safeParse({ ...validDamacana, price: "-10.00" }).success
+        createProductSchema.safeParse({ ...validDamacana, price: "-10.00" })
+          .success
       ).toBe(false);
       expect(
         createProductSchema.safeParse({ ...validDamacana, price: 0 }).success
@@ -87,13 +88,15 @@ describe("Admin Product Validation Schemas", () => {
 
     it("rejects prices exceeding 100,000 TL", () => {
       expect(
-        createProductSchema.safeParse({ ...validDamacana, price: "100000.01" }).success
+        createProductSchema.safeParse({ ...validDamacana, price: "100000.01" })
+          .success
       ).toBe(false);
     });
 
     it("rejects prices with more than 2 decimal places", () => {
       expect(
-        createProductSchema.safeParse({ ...validDamacana, price: "50.123" }).success
+        createProductSchema.safeParse({ ...validDamacana, price: "50.123" })
+          .success
       ).toBe(false);
     });
 
@@ -102,13 +105,17 @@ describe("Admin Product Validation Schemas", () => {
         createProductSchema.safeParse({ ...validDamacana, name: "A" }).success
       ).toBe(false);
       expect(
-        createProductSchema.safeParse({ ...validDamacana, name: "A".repeat(101) }).success
+        createProductSchema.safeParse({
+          ...validDamacana,
+          name: "A".repeat(101),
+        }).success
       ).toBe(false);
     });
 
     it("rejects description shorter than 2 or longer than 1000 characters", () => {
       expect(
-        createProductSchema.safeParse({ ...validDamacana, description: "A" }).success
+        createProductSchema.safeParse({ ...validDamacana, description: "A" })
+          .success
       ).toBe(false);
       expect(
         createProductSchema.safeParse({
@@ -120,34 +127,44 @@ describe("Admin Product Validation Schemas", () => {
 
     it("handles image URLs properly (http, https, relative path, or null)", () => {
       expect(
-        createProductSchema.safeParse({ ...validDamacana, imageUrl: "http://example.com/img.jpg" })
-          .success
+        createProductSchema.safeParse({
+          ...validDamacana,
+          imageUrl: "http://example.com/img.jpg",
+        }).success
       ).toBe(true);
       expect(
-        createProductSchema.safeParse({ ...validDamacana, imageUrl: "https://example.com/img.jpg" })
-          .success
+        createProductSchema.safeParse({
+          ...validDamacana,
+          imageUrl: "https://example.com/img.jpg",
+        }).success
       ).toBe(true);
       expect(
-        createProductSchema.safeParse({ ...validDamacana, imageUrl: "/images/water.jpg" })
-          .success
+        createProductSchema.safeParse({
+          ...validDamacana,
+          imageUrl: "/images/water.jpg",
+        }).success
       ).toBe(true);
       expect(
-        createProductSchema.safeParse({ ...validDamacana, imageUrl: "" })
-          .data?.imageUrl
+        createProductSchema.safeParse({ ...validDamacana, imageUrl: "" }).data
+          ?.imageUrl
       ).toBeNull();
       expect(
-        createProductSchema.safeParse({ ...validDamacana, imageUrl: null })
-          .data?.imageUrl
+        createProductSchema.safeParse({ ...validDamacana, imageUrl: null }).data
+          ?.imageUrl
       ).toBeNull();
 
       // Invalid schemes
       expect(
-        createProductSchema.safeParse({ ...validDamacana, imageUrl: "ftp://example.com/img.jpg" })
-          .success
+        createProductSchema.safeParse({
+          ...validDamacana,
+          imageUrl: "ftp://example.com/img.jpg",
+        }).success
       ).toBe(false);
       expect(
-        createProductSchema.safeParse({ ...validDamacana, imageUrl: "javascript:alert(1)" })
-          .success
+        createProductSchema.safeParse({
+          ...validDamacana,
+          imageUrl: "javascript:alert(1)",
+        }).success
       ).toBe(false);
     });
   });
@@ -179,17 +196,19 @@ describe("Admin Product Validation Schemas", () => {
   describe("toggleProductActiveSchema", () => {
     it("validates id and boolean isActive", () => {
       expect(
-        toggleProductActiveSchema.safeParse({ id: "p1", isActive: false }).success
+        toggleProductActiveSchema.safeParse({ id: "p1", isActive: false })
+          .success
       ).toBe(true);
       expect(
-        toggleProductActiveSchema.safeParse({ id: "p1", isActive: true }).success
+        toggleProductActiveSchema.safeParse({ id: "p1", isActive: true })
+          .success
       ).toBe(true);
       expect(
         toggleProductActiveSchema.safeParse({ id: "", isActive: true }).success
       ).toBe(false);
-      expect(
-        toggleProductActiveSchema.safeParse({ id: "p1" }).success
-      ).toBe(false);
+      expect(toggleProductActiveSchema.safeParse({ id: "p1" }).success).toBe(
+        false
+      );
     });
   });
 });

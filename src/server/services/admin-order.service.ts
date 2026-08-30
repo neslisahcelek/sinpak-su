@@ -10,22 +10,18 @@ import {
 import { err, makeSafeError, ok, type Result } from "@/server/types/result";
 
 /**
- * Valid state transitions for the order lifecycle:
- * PENDING -> CONFIRMED -> PREPARING -> OUT_FOR_DELIVERY -> DELIVERED
+ * Valid state transitions for the simplified order lifecycle:
+ * PENDING -> OUT_FOR_DELIVERY -> DELIVERED
  * PENDING -> CANCELLED
- * CONFIRMED -> CANCELLED
- * PREPARING -> CANCELLED
  *
- * OUT_FOR_DELIVERY cannot be cancelled.
+ * OUT_FOR_DELIVERY cannot be cancelled (already dispatched).
  * DELIVERED and CANCELLED are terminal states.
  */
 export const VALID_STATUS_TRANSITIONS: Record<
   OrderStatus,
   readonly OrderStatus[]
 > = {
-  [OrderStatus.PENDING]: [OrderStatus.CONFIRMED, OrderStatus.CANCELLED],
-  [OrderStatus.CONFIRMED]: [OrderStatus.PREPARING, OrderStatus.CANCELLED],
-  [OrderStatus.PREPARING]: [OrderStatus.OUT_FOR_DELIVERY, OrderStatus.CANCELLED],
+  [OrderStatus.PENDING]: [OrderStatus.OUT_FOR_DELIVERY, OrderStatus.CANCELLED],
   [OrderStatus.OUT_FOR_DELIVERY]: [OrderStatus.DELIVERED],
   [OrderStatus.DELIVERED]: [],
   [OrderStatus.CANCELLED]: [],
@@ -44,6 +40,7 @@ export function isValidStatusTransition(
 
 export interface AdminOrderListItemDto {
   publicId: string;
+  orderNumber: string;
   status: OrderStatus;
   paymentMethod: PaymentMethod;
   customerName: string;
@@ -76,6 +73,7 @@ export interface AdminOrderItemDto {
 
 export interface AdminOrderDetailDto {
   publicId: string;
+  orderNumber: string;
   status: OrderStatus;
   paymentMethod: PaymentMethod;
   customerName: string;
@@ -141,6 +139,7 @@ export async function listOrders(
 
     return {
       publicId: order.publicId,
+      orderNumber: order.orderNumber,
       status: order.status,
       paymentMethod: order.paymentMethod,
       customerName: order.customerName,
@@ -183,6 +182,7 @@ export async function getOrderByPublicId(
 
   return {
     publicId: order.publicId,
+    orderNumber: order.orderNumber,
     status: order.status,
     paymentMethod: order.paymentMethod,
     customerName: order.customerName,
@@ -253,10 +253,7 @@ export async function updateOrderStatus(
 
   if (!existingOrder) {
     return err(
-      makeSafeError(
-        "ORDER_NOT_FOUND",
-        `Sipariş bulunamadı (${publicId}).`
-      )
+      makeSafeError("ORDER_NOT_FOUND", `Sipariş bulunamadı (${publicId}).`)
     );
   }
 
@@ -311,10 +308,7 @@ export async function updateOrderStatus(
 
     if (!updated) {
       return err(
-        makeSafeError(
-          "ORDER_NOT_FOUND",
-          `Sipariş bulunamadı (${publicId}).`
-        )
+        makeSafeError("ORDER_NOT_FOUND", `Sipariş bulunamadı (${publicId}).`)
       );
     }
 

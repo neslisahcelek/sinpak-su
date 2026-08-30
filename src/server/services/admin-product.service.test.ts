@@ -1,5 +1,10 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
-import { Prisma, ProductType, type PrismaClient, type Product } from "@prisma/client";
+import {
+  Prisma,
+  ProductType,
+  type PrismaClient,
+  type Product,
+} from "@prisma/client";
 import {
   listAllAdminProducts,
   getAdminProductById,
@@ -163,7 +168,9 @@ describe("Admin Product Domain Service", () => {
     });
 
     it("returns INTERNAL_ERROR when database throws an exception", async () => {
-      mockDb.product.findUnique.mockRejectedValue(new Error("Database connection lost"));
+      mockDb.product.findUnique.mockRejectedValue(
+        new Error("Database connection lost")
+      );
 
       const result = await getAdminProductById("prod_1", getDb());
 

@@ -16,6 +16,7 @@ export interface OrderConfirmationItemDto {
 
 export interface OrderConfirmationDto {
   publicId: string;
+  orderNumber: string;
   status: string;
   paymentMethod: string;
   createdAt: Date;
@@ -48,6 +49,7 @@ export async function getOrderConfirmation(
 
   return {
     publicId: order.publicId,
+    orderNumber: order.orderNumber,
     status: order.status,
     paymentMethod: order.paymentMethod,
     createdAt: order.createdAt,

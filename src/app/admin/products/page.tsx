@@ -30,7 +30,11 @@ export default async function AdminProductsPage() {
             Ürün Yönetimi
           </h1>
           <p className="text-xs sm:text-sm text-slate-500 mt-0.5">
-            Toplam <span className="font-semibold text-slate-800">{products.length}</span> ürün listeleniyor (Aktif ve Pasif)
+            Toplam{" "}
+            <span className="font-semibold text-slate-800">
+              {products.length}
+            </span>{" "}
+            ürün listeleniyor (Aktif ve Pasif)
           </p>
         </div>
 

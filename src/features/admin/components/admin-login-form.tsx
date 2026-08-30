@@ -24,7 +24,8 @@ export function AdminLoginForm() {
 
       if (!result.success) {
         setErrorMessage(
-          result.error.message || "Giriş yapılamadı. Lütfen bilgilerinizi kontrol edin."
+          result.error.message ||
+            "Giriş yapılamadı. Lütfen bilgilerinizi kontrol edin."
         );
         return;
       }

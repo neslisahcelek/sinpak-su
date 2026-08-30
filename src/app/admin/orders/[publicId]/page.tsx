@@ -65,13 +65,21 @@ export default async function AdminOrderDetailPage({ params }: Props) {
       <div className="bg-white rounded-xl border border-slate-200 p-5 sm:p-6 shadow-sm flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
           <div className="flex items-center gap-3">
-            <h1 className="text-xl sm:text-2xl font-bold font-mono text-slate-900">
-              {order.publicId}
-            </h1>
+            <div>
+              <h1 className="text-xl sm:text-2xl font-bold font-mono text-slate-900">
+                {order.orderNumber}
+              </h1>
+              <p className="text-xs text-slate-400 font-mono mt-0.5">
+                {order.publicId}
+              </p>
+            </div>
             <AdminOrderStatusBadge status={order.status} />
           </div>
           <p className="text-xs sm:text-sm text-slate-500 mt-1">
-            Sipariş Tarihi: <strong className="font-medium text-slate-700">{formatDate(order.createdAt)}</strong>
+            Sipariş Tarihi:{" "}
+            <strong className="font-medium text-slate-700">
+              {formatDate(order.createdAt)}
+            </strong>
             {order.updatedAt && (
               <span className="ml-2 text-slate-400">
                 (Son Güncelleme: {formatDate(order.updatedAt)})
@@ -130,7 +138,9 @@ export default async function AdminOrderDetailPage({ params }: Props) {
                         <td className="px-4 py-3.5 align-middle text-right text-slate-600">
                           {hasDeposit ? (
                             <div>
-                              <span>{formatPrice(parseFloat(item.depositTotal))}</span>
+                              <span>
+                                {formatPrice(parseFloat(item.depositTotal))}
+                              </span>
                               <span className="block text-[11px] text-amber-700">
                                 ({item.emptyBottleQuantity} boş eksik)
                               </span>
@@ -258,7 +268,8 @@ export default async function AdminOrderDetailPage({ params }: Props) {
                   Ödeme Yöntemi
                 </span>
                 <span className="font-medium text-slate-900">
-                  {PAYMENT_METHOD_LABELS[order.paymentMethod] ?? order.paymentMethod}
+                  {PAYMENT_METHOD_LABELS[order.paymentMethod] ??
+                    order.paymentMethod}
                 </span>
               </div>
             </div>

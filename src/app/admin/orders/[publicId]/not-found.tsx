@@ -25,7 +25,8 @@ export default function AdminOrderNotFound() {
         Sipariş Bulunamadı
       </h1>
       <p className="text-sm text-slate-500 mb-6">
-        İstediğiniz sipariş kaydı veritabanında bulunamadı veya silinmiş olabilir.
+        İstediğiniz sipariş kaydı veritabanında bulunamadı veya silinmiş
+        olabilir.
       </p>
 
       <Link

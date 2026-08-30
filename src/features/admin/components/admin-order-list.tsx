@@ -80,13 +80,16 @@ export function AdminOrderList({ orders }: AdminOrderListProps) {
             </thead>
             <tbody className="divide-y divide-slate-100 bg-white">
               {orders.map((order) => (
-                <tr key={order.publicId} className="hover:bg-slate-50/80 transition-colors">
+                <tr
+                  key={order.publicId}
+                  className="hover:bg-slate-50/80 transition-colors"
+                >
                   <td className="px-4 py-3.5 align-top whitespace-nowrap">
                     <Link
                       href={`/admin/orders/${order.publicId}`}
                       className="font-mono font-semibold text-sky-700 hover:text-sky-800 hover:underline block"
                     >
-                      {order.publicId}
+                      {order.orderNumber}
                     </Link>
                     <span className="text-xs text-slate-500 block mt-0.5">
                       {formatDate(order.createdAt)}
@@ -126,7 +129,8 @@ export function AdminOrderList({ orders }: AdminOrderListProps) {
                       {formatPrice(parseFloat(order.total))}
                     </span>
                     <span className="text-xs text-slate-500 block mt-0.5">
-                      {PAYMENT_METHOD_LABELS[order.paymentMethod] ?? order.paymentMethod}
+                      {PAYMENT_METHOD_LABELS[order.paymentMethod] ??
+                        order.paymentMethod}
                     </span>
                   </td>
                   <td className="px-4 py-3.5 align-top whitespace-nowrap">
@@ -160,7 +164,7 @@ export function AdminOrderList({ orders }: AdminOrderListProps) {
                   href={`/admin/orders/${order.publicId}`}
                   className="font-mono font-bold text-sky-700 hover:text-sky-800 text-sm block"
                 >
-                  {order.publicId}
+                  {order.orderNumber}
                 </Link>
                 <span className="text-xs text-slate-500">
                   {formatDate(order.createdAt)}
@@ -208,12 +212,17 @@ export function AdminOrderList({ orders }: AdminOrderListProps) {
 
             <div className="flex items-center justify-between pt-1 border-t border-slate-100">
               <div>
-                <span className="text-slate-400 text-xs block">Toplam Tutar</span>
+                <span className="text-slate-400 text-xs block">
+                  Toplam Tutar
+                </span>
                 <span className="font-bold text-slate-900 text-sm">
                   {formatPrice(parseFloat(order.total))}
                 </span>
                 <span className="text-[11px] text-slate-500 ml-1.5">
-                  ({PAYMENT_METHOD_LABELS[order.paymentMethod] ?? order.paymentMethod})
+                  (
+                  {PAYMENT_METHOD_LABELS[order.paymentMethod] ??
+                    order.paymentMethod}
+                  )
                 </span>
               </div>
               <Link

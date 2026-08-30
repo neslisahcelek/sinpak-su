@@ -20,11 +20,12 @@ describe("Admin Order Service & State Machine", () => {
   const sampleOrderDbRecord = {
     id: "ord_internal_1",
     publicId: "ord_pub_12345",
+    orderNumber: "SP-260823-1234",
     idempotencyKey: "idem_key_1",
     status: OrderStatus.PENDING,
     paymentMethod: PaymentMethod.CASH_ON_DELIVERY,
     customerName: "Mehmet Demir",
-    phone: "05551234567",
+    phone: "+905551234567",
     addressLine1: "İzmit Yahya Kaptan Mah. No: 12 D: 4",
     deliveryNotes: "Zili çalmayın lütfen",
     subtotal: new Prisma.Decimal(150),
@@ -78,16 +79,10 @@ describe("Admin Order Service & State Machine", () => {
   describe("State Machine Transition Rules (isValidStatusTransition)", () => {
     const allStatuses = Object.values(OrderStatus);
 
-    it("should allow valid progression transitions", () => {
-      expect(
-        isValidStatusTransition(OrderStatus.PENDING, OrderStatus.CONFIRMED)
-      ).toBe(true);
-      expect(
-        isValidStatusTransition(OrderStatus.CONFIRMED, OrderStatus.PREPARING)
-      ).toBe(true);
+    it("should allow valid progression transitions: PENDING -> OUT_FOR_DELIVERY -> DELIVERED", () => {
       expect(
         isValidStatusTransition(
-          OrderStatus.PREPARING,
+          OrderStatus.PENDING,
           OrderStatus.OUT_FOR_DELIVERY
         )
       ).toBe(true);
@@ -99,15 +94,9 @@ describe("Admin Order Service & State Machine", () => {
       ).toBe(true);
     });
 
-    it("should allow cancellation only from pre-dispatch states", () => {
+    it("should allow cancellation only from PENDING state", () => {
       expect(
         isValidStatusTransition(OrderStatus.PENDING, OrderStatus.CANCELLED)
-      ).toBe(true);
-      expect(
-        isValidStatusTransition(OrderStatus.CONFIRMED, OrderStatus.CANCELLED)
-      ).toBe(true);
-      expect(
-        isValidStatusTransition(OrderStatus.PREPARING, OrderStatus.CANCELLED)
       ).toBe(true);
     });
 
@@ -134,49 +123,13 @@ describe("Admin Order Service & State Machine", () => {
       }
     });
 
-    it("should reject skipped progression steps and reverse transitions", () => {
+    it("should reject skipped steps and reverse transitions", () => {
       // Skipped steps
-      expect(
-        isValidStatusTransition(OrderStatus.PENDING, OrderStatus.PREPARING)
-      ).toBe(false);
-      expect(
-        isValidStatusTransition(
-          OrderStatus.PENDING,
-          OrderStatus.OUT_FOR_DELIVERY
-        )
-      ).toBe(false);
       expect(
         isValidStatusTransition(OrderStatus.PENDING, OrderStatus.DELIVERED)
       ).toBe(false);
-      expect(
-        isValidStatusTransition(
-          OrderStatus.CONFIRMED,
-          OrderStatus.OUT_FOR_DELIVERY
-        )
-      ).toBe(false);
-      expect(
-        isValidStatusTransition(OrderStatus.CONFIRMED, OrderStatus.DELIVERED)
-      ).toBe(false);
-      expect(
-        isValidStatusTransition(OrderStatus.PREPARING, OrderStatus.DELIVERED)
-      ).toBe(false);
 
       // Reversals
-      expect(
-        isValidStatusTransition(OrderStatus.CONFIRMED, OrderStatus.PENDING)
-      ).toBe(false);
-      expect(
-        isValidStatusTransition(OrderStatus.PREPARING, OrderStatus.CONFIRMED)
-      ).toBe(false);
-      expect(
-        isValidStatusTransition(OrderStatus.PREPARING, OrderStatus.PENDING)
-      ).toBe(false);
-      expect(
-        isValidStatusTransition(
-          OrderStatus.OUT_FOR_DELIVERY,
-          OrderStatus.PREPARING
-        )
-      ).toBe(false);
       expect(
         isValidStatusTransition(
           OrderStatus.OUT_FOR_DELIVERY,
@@ -207,8 +160,9 @@ describe("Admin Order Service & State Machine", () => {
 
       expect(result.length).toBe(1);
       expect(result[0]?.publicId).toBe("ord_pub_12345");
+      expect(result[0]?.orderNumber).toBe("SP-260823-1234");
       expect(result[0]?.customerName).toBe("Mehmet Demir");
-      expect(result[0]?.phone).toBe("05551234567");
+      expect(result[0]?.phone).toBe("+905551234567");
       expect(result[0]?.total).toBe("150");
       expect(result[0]?.itemsSummary).toBe("2x 19L Damacana Su");
       expect(result[0]?.totalItemsCount).toBe(2);
@@ -245,8 +199,9 @@ describe("Admin Order Service & State Machine", () => {
 
       expect(result).not.toBeNull();
       expect(result?.publicId).toBe("ord_pub_12345");
+      expect(result?.orderNumber).toBe("SP-260823-1234");
       expect(result?.customerName).toBe("Mehmet Demir");
-      expect(result?.phone).toBe("05551234567");
+      expect(result?.phone).toBe("+905551234567");
       expect(result?.addressLine1).toBe("İzmit Yahya Kaptan Mah. No: 12 D: 4");
       expect(result?.deliveryNotes).toBe("Zili çalmayın lütfen");
       expect(result?.items.length).toBe(1);
@@ -257,14 +212,17 @@ describe("Admin Order Service & State Machine", () => {
     it("should return null if order is not found by publicId", async () => {
       mockDb.order.findUnique.mockResolvedValueOnce(null);
 
-      const result = await getOrderByPublicId("non_existent_public_id", getDb());
+      const result = await getOrderByPublicId(
+        "non_existent_public_id",
+        getDb()
+      );
 
       expect(result).toBeNull();
     });
   });
 
   describe("updateOrderStatus", () => {
-    it("should successfully update order status for valid transition and advance to CONFIRMED", async () => {
+    it("should successfully update order status for valid transition (PENDING -> OUT_FOR_DELIVERY)", async () => {
       mockDb.order.findUnique
         .mockResolvedValueOnce({
           status: OrderStatus.PENDING,
@@ -273,7 +231,8 @@ describe("Admin Order Service & State Machine", () => {
         })
         .mockResolvedValueOnce({
           publicId: "ord_pub_12345",
-          status: OrderStatus.CONFIRMED,
+          orderNumber: "SP-260823-1234",
+          status: OrderStatus.OUT_FOR_DELIVERY,
           deliveredAt: null,
           cancelledAt: null,
           updatedAt: mockNow,
@@ -283,7 +242,7 @@ describe("Admin Order Service & State Machine", () => {
 
       const result = await updateOrderStatus(
         "ord_pub_12345",
-        OrderStatus.CONFIRMED,
+        OrderStatus.OUT_FOR_DELIVERY,
         {
           currentTime: mockNow,
           db: getDb(),
@@ -292,7 +251,7 @@ describe("Admin Order Service & State Machine", () => {
 
       expect(result.success).toBe(true);
       if (result.success) {
-        expect(result.data.status).toBe(OrderStatus.CONFIRMED);
+        expect(result.data.status).toBe(OrderStatus.OUT_FOR_DELIVERY);
         expect(result.data.deliveredAt).toBeNull();
         expect(result.data.cancelledAt).toBeNull();
       }
@@ -302,7 +261,7 @@ describe("Admin Order Service & State Machine", () => {
           publicId: "ord_pub_12345",
           status: OrderStatus.PENDING,
         },
-        data: { status: OrderStatus.CONFIRMED },
+        data: { status: OrderStatus.OUT_FOR_DELIVERY },
       });
       expect(mockDb.order.findUnique).toHaveBeenCalledTimes(2);
     });
@@ -316,6 +275,7 @@ describe("Admin Order Service & State Machine", () => {
         })
         .mockResolvedValueOnce({
           publicId: "ord_pub_12345",
+          orderNumber: "SP-260823-1234",
           status: OrderStatus.DELIVERED,
           deliveredAt: mockNow,
           cancelledAt: null,
@@ -355,12 +315,13 @@ describe("Admin Order Service & State Machine", () => {
     it("should set cancelledAt timestamp when transitioning to CANCELLED", async () => {
       mockDb.order.findUnique
         .mockResolvedValueOnce({
-          status: OrderStatus.PREPARING,
+          status: OrderStatus.PENDING,
           deliveredAt: null,
           cancelledAt: null,
         })
         .mockResolvedValueOnce({
           publicId: "ord_pub_12345",
+          orderNumber: "SP-260823-1234",
           status: OrderStatus.CANCELLED,
           deliveredAt: null,
           cancelledAt: mockNow,
@@ -388,7 +349,7 @@ describe("Admin Order Service & State Machine", () => {
       expect(mockDb.order.updateMany).toHaveBeenCalledWith({
         where: {
           publicId: "ord_pub_12345",
-          status: OrderStatus.PREPARING,
+          status: OrderStatus.PENDING,
         },
         data: {
           status: OrderStatus.CANCELLED,
@@ -402,7 +363,7 @@ describe("Admin Order Service & State Machine", () => {
 
       const result = await updateOrderStatus(
         "missing_pub_id",
-        OrderStatus.CONFIRMED,
+        OrderStatus.OUT_FOR_DELIVERY,
         { db: getDb() }
       );
 
@@ -415,14 +376,14 @@ describe("Admin Order Service & State Machine", () => {
 
     it("should return INVALID_STATUS_TRANSITION when attempting transition to the same status", async () => {
       mockDb.order.findUnique.mockResolvedValueOnce({
-        status: OrderStatus.CONFIRMED,
+        status: OrderStatus.OUT_FOR_DELIVERY,
         deliveredAt: null,
         cancelledAt: null,
       });
 
       const result = await updateOrderStatus(
         "ord_pub_12345",
-        OrderStatus.CONFIRMED,
+        OrderStatus.OUT_FOR_DELIVERY,
         { db: getDb() }
       );
 
@@ -445,7 +406,7 @@ describe("Admin Order Service & State Machine", () => {
 
       const result = await updateOrderStatus(
         "ord_pub_12345",
-        OrderStatus.CONFIRMED,
+        OrderStatus.OUT_FOR_DELIVERY,
         {
           currentTime: mockNow,
           db: getDb(),
@@ -461,7 +422,7 @@ describe("Admin Order Service & State Machine", () => {
           publicId: "ord_pub_12345",
           status: OrderStatus.PENDING,
         },
-        data: { status: OrderStatus.CONFIRMED },
+        data: { status: OrderStatus.OUT_FOR_DELIVERY },
       });
     });
 
@@ -514,7 +475,7 @@ describe("Admin Order Service & State Machine", () => {
 
       const result = await updateOrderStatus(
         "ord_pub_12345",
-        OrderStatus.CONFIRMED,
+        OrderStatus.OUT_FOR_DELIVERY,
         { db: getDb() }
       );
 

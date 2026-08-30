@@ -48,9 +48,9 @@ READ → GENERATE CODE IN RESPONSE → CLAIM COMPLETION
 - **Verification on disk**: Before reporting an implementation as completed, verify that the changes physically exist on disk and run relevant verification (typecheck, lint, tests, build).
 - **Distinguish status**: Agents must clearly distinguish between:
   - "I prepared/proposed this change"
-  and
+    and
   - "I applied this change to the working tree."
-  Only the latter should be described as implemented or completed.
+    Only the latter should be described as implemented or completed.
 
 ## Documentation
 

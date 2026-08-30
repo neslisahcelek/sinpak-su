@@ -35,7 +35,8 @@ export default async function NewAdminProductPage() {
           Yeni Ürün Ekle
         </h1>
         <p className="text-xs sm:text-sm text-slate-500 mt-1">
-          Kataloğa yeni su veya meşrubat ürünü ekleyin. Kalıcı bağlantı (slug) ürün adından otomatik üretilecektir.
+          Kataloğa yeni su veya meşrubat ürünü ekleyin. Kalıcı bağlantı (slug)
+          ürün adından otomatik üretilecektir.
         </p>
       </div>
 

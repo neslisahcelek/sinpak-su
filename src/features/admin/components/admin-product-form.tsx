@@ -23,7 +23,9 @@ export function AdminProductForm({ mode, initialData }: AdminProductFormProps) {
 
   // Form fields
   const [name, setName] = useState(initialData?.name ?? "");
-  const [description, setDescription] = useState(initialData?.description ?? "");
+  const [description, setDescription] = useState(
+    initialData?.description ?? ""
+  );
   const [type, setType] = useState<ProductType>(
     initialData?.type ?? ProductType.DAMACANA_WATER
   );
@@ -70,7 +72,10 @@ export function AdminProductForm({ mode, initialData }: AdminProductFormProps) {
         const result = await createProductAction(payload);
 
         if (!result.success) {
-          if (result.error.code === "VALIDATION_ERROR" && result.error.details) {
+          if (
+            result.error.code === "VALIDATION_ERROR" &&
+            result.error.details
+          ) {
             const details = result.error.details as {
               fieldErrors?: Record<string, string[]>;
             };
@@ -84,7 +89,9 @@ export function AdminProductForm({ mode, initialData }: AdminProductFormProps) {
               setFieldErrors(flatErrors);
             }
           }
-          setRootError(result.error.message || "Ürün oluşturulurken bir hata oluştu.");
+          setRootError(
+            result.error.message || "Ürün oluşturulurken bir hata oluştu."
+          );
           return;
         }
 
@@ -110,7 +117,10 @@ export function AdminProductForm({ mode, initialData }: AdminProductFormProps) {
         const result = await updateProductAction(payload);
 
         if (!result.success) {
-          if (result.error.code === "VALIDATION_ERROR" && result.error.details) {
+          if (
+            result.error.code === "VALIDATION_ERROR" &&
+            result.error.details
+          ) {
             const details = result.error.details as {
               fieldErrors?: Record<string, string[]>;
             };
@@ -124,7 +134,9 @@ export function AdminProductForm({ mode, initialData }: AdminProductFormProps) {
               setFieldErrors(flatErrors);
             }
           }
-          setRootError(result.error.message || "Ürün güncellenirken bir hata oluştu.");
+          setRootError(
+            result.error.message || "Ürün güncellenirken bir hata oluştu."
+          );
           return;
         }
 
@@ -156,7 +168,9 @@ export function AdminProductForm({ mode, initialData }: AdminProductFormProps) {
       {mode === "edit" && initialData && (
         <div className="p-4 rounded-lg bg-slate-50 border border-slate-200 text-xs text-slate-600 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
           <div>
-            <span className="font-semibold text-slate-700 block">Kalıcı Bağlantı (Slug):</span>
+            <span className="font-semibold text-slate-700 block">
+              Kalıcı Bağlantı (Slug):
+            </span>
             <span className="font-mono text-slate-900 mt-0.5 block">
               /urunler/{initialData.slug}
             </span>
@@ -187,7 +201,9 @@ export function AdminProductForm({ mode, initialData }: AdminProductFormProps) {
             disabled={isPending}
             placeholder="Örn: 19L Doğal Kaynak Damacana Su"
             className={`w-full px-3.5 py-2 text-sm rounded-lg border bg-white text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-sky-500 transition-colors ${
-              fieldErrors.name ? "border-red-400 focus:ring-red-500" : "border-slate-300"
+              fieldErrors.name
+                ? "border-red-400 focus:ring-red-500"
+                : "border-slate-300"
             }`}
           />
           {fieldErrors.name && (
@@ -269,7 +285,9 @@ export function AdminProductForm({ mode, initialData }: AdminProductFormProps) {
             disabled={isPending}
             placeholder="180.00"
             className={`w-full px-3.5 py-2 text-sm rounded-lg border bg-white text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-sky-500 transition-colors ${
-              fieldErrors.price ? "border-red-400 focus:ring-red-500" : "border-slate-300"
+              fieldErrors.price
+                ? "border-red-400 focus:ring-red-500"
+                : "border-slate-300"
             }`}
           />
           {fieldErrors.price && (
@@ -341,7 +359,9 @@ export function AdminProductForm({ mode, initialData }: AdminProductFormProps) {
               }`}
             />
             {fieldErrors.imageUrl && (
-              <p className="text-xs text-red-600 mt-1">{fieldErrors.imageUrl}</p>
+              <p className="text-xs text-red-600 mt-1">
+                {fieldErrors.imageUrl}
+              </p>
             )}
             <p className="text-xs text-slate-400 mt-1">
               HTTP/HTTPS veya yerel statik yol (/images/...) desteklenir.
@@ -383,7 +403,8 @@ export function AdminProductForm({ mode, initialData }: AdminProductFormProps) {
               Ürün Satışa Açık (Aktif)
             </span>
             <span className="text-xs text-slate-500 block">
-              Pasife alınan ürünler müşterilere gösterilmez ve sipariş verilemez.
+              Pasife alınan ürünler müşterilere gösterilmez ve sipariş
+              verilemez.
             </span>
           </div>
         </label>
@@ -407,8 +428,8 @@ export function AdminProductForm({ mode, initialData }: AdminProductFormProps) {
               ? "Ekleniyor..."
               : "Kaydediliyor..."
             : mode === "create"
-            ? "Ürünü Oluştur"
-            : "Değişiklikleri Kaydet"}
+              ? "Ürünü Oluştur"
+              : "Değişiklikleri Kaydet"}
         </button>
       </div>
     </form>

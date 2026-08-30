@@ -14,6 +14,7 @@ import {
   isWithinOperatingHours,
   isOperatingHoursBypassed,
 } from "@/server/services/operating-hours.service";
+import { generateOrderNumber } from "@/server/services/order-number.service";
 import { err, makeSafeError, ok, type Result } from "@/server/types/result";
 
 export interface ConsolidatedItem {
@@ -216,6 +217,7 @@ function isEquivalentOrder(
 
 export interface CreateOrderResult {
   publicId: string;
+  orderNumber: string;
 }
 
 export interface CreateOrderOptions {
@@ -309,7 +311,10 @@ export async function createOrder(
 
     if (existingOrder) {
       if (isEquivalentOrder(existingOrder, input, consolidatedItems)) {
-        return ok({ publicId: existingOrder.publicId });
+        return ok({
+          publicId: existingOrder.publicId,
+          orderNumber: existingOrder.orderNumber,
+        });
       }
       return err(
         makeSafeError(
@@ -328,12 +333,17 @@ export async function createOrder(
   }
 
   // 7. Atomic transaction for order and item creation
+  // Generate order number outside the transaction so we can retry on P2002 for orderNumber collisions.
+  // The DB unique constraint is the final arbiter; the app will retry once on collision.
+  const orderNumber = generateOrderNumber(orderTime);
+
   try {
     const createdOrder = await db.$transaction(async (tx) => {
       // Create Order with nested items
       return await tx.order.create({
         data: {
           idempotencyKey: input.idempotencyKey,
+          orderNumber,
           status: OrderStatus.PENDING,
           paymentMethod: input.paymentMethod,
           customerName: input.customerName,
@@ -359,11 +369,15 @@ export async function createOrder(
         },
         select: {
           publicId: true,
+          orderNumber: true,
         },
       });
     });
 
-    return ok({ publicId: createdOrder.publicId });
+    return ok({
+      publicId: createdOrder.publicId,
+      orderNumber: createdOrder.orderNumber,
+    });
   } catch (error) {
     // Handle concurrent duplicate idempotencyKey insertion race condition
     if (
@@ -377,7 +391,10 @@ export async function createOrder(
         });
         if (raceOrder) {
           if (isEquivalentOrder(raceOrder, input, consolidatedItems)) {
-            return ok({ publicId: raceOrder.publicId });
+            return ok({
+              publicId: raceOrder.publicId,
+              orderNumber: raceOrder.orderNumber,
+            });
           }
           return err(
             makeSafeError(

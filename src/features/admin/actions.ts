@@ -56,10 +56,7 @@ export async function loginAdminAction(
 
   if (!isValid) {
     return err(
-      makeSafeError(
-        "INVALID_CREDENTIALS",
-        "Kullanıcı adı veya şifre hatalı."
-      )
+      makeSafeError("INVALID_CREDENTIALS", "Kullanıcı adı veya şifre hatalı.")
     );
   }
 
@@ -103,10 +100,7 @@ export async function updateOrderStatusAction(
   const session = await getAdminSession();
   if (!session) {
     return err(
-      makeSafeError(
-        "UNAUTHORIZED",
-        "Bu işlem için yetkiniz bulunmamaktadır."
-      )
+      makeSafeError("UNAUTHORIZED", "Bu işlem için yetkiniz bulunmamaktadır.")
     );
   }
 
@@ -140,10 +134,7 @@ export async function createProductAction(
   const session = await getAdminSession();
   if (!session) {
     return err(
-      makeSafeError(
-        "UNAUTHORIZED",
-        "Bu işlem için yetkiniz bulunmamaktadır."
-      )
+      makeSafeError("UNAUTHORIZED", "Bu işlem için yetkiniz bulunmamaktadır.")
     );
   }
 
@@ -181,10 +172,7 @@ export async function updateProductAction(
   const session = await getAdminSession();
   if (!session) {
     return err(
-      makeSafeError(
-        "UNAUTHORIZED",
-        "Bu işlem için yetkiniz bulunmamaktadır."
-      )
+      makeSafeError("UNAUTHORIZED", "Bu işlem için yetkiniz bulunmamaktadır.")
     );
   }
 
@@ -224,10 +212,7 @@ export async function toggleProductActiveAction(
   const session = await getAdminSession();
   if (!session) {
     return err(
-      makeSafeError(
-        "UNAUTHORIZED",
-        "Bu işlem için yetkiniz bulunmamaktadır."
-      )
+      makeSafeError("UNAUTHORIZED", "Bu işlem için yetkiniz bulunmamaktadır.")
     );
   }
 
@@ -257,5 +242,3 @@ export async function toggleProductActiveAction(
 
   return result;
 }
-
-

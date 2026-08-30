@@ -17,19 +17,17 @@ describe("createOrderAction", () => {
       items: [{ productId: "p1", quantity: 2, emptyBottleQuantity: 1 }],
     };
 
-    const spy = vi
-      .spyOn(orderService, "createOrder")
-      .mockResolvedValueOnce({
-        success: true,
-        data: { publicId: "ord_pub_abc" },
-      });
+    const spy = vi.spyOn(orderService, "createOrder").mockResolvedValueOnce({
+      success: true,
+      data: { publicId: "ord_pub_abc", orderNumber: "SP-260830-1234" },
+    });
 
     const result = await createOrderAction(mockInput);
 
     expect(spy).toHaveBeenCalledWith(mockInput);
     expect(result).toEqual({
       success: true,
-      data: { publicId: "ord_pub_abc" },
+      data: { publicId: "ord_pub_abc", orderNumber: "SP-260830-1234" },
     });
   });
 

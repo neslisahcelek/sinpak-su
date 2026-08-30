@@ -134,7 +134,9 @@ export async function requireAdminSession(): Promise<AdminSession> {
 /**
  * Writes the admin session cookie.
  */
-export async function setAdminSessionCookie(session: AdminSession): Promise<void> {
+export async function setAdminSessionCookie(
+  session: AdminSession
+): Promise<void> {
   const secret = getAuthSecret();
   const token = signSessionToken(session, secret);
   const cookieStore = await cookies();

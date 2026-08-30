@@ -44,4 +44,3 @@ export function makeSafeError<TCode extends string = AppErrorCode>(
 ): SafeError<TCode> {
   return { code, message, details };
 }
-

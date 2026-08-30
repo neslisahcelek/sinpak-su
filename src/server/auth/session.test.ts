@@ -44,7 +44,8 @@ describe("Admin Session Signing and Verification", () => {
     const token = signSessionToken(session, testSecret);
 
     const [payloadB64] = token.split(".");
-    const fakeSignature = Buffer.from("invalid-signature").toString("base64url");
+    const fakeSignature =
+      Buffer.from("invalid-signature").toString("base64url");
     const tamperedToken = `${payloadB64}.${fakeSignature}`;
 
     const verified = verifySessionToken(tamperedToken, testSecret, now + 1000);
@@ -64,7 +65,11 @@ describe("Admin Session Signing and Verification", () => {
     const token = signSessionToken(session, testSecret);
 
     // Check at time beyond expiresAt
-    const verified = verifySessionToken(token, testSecret, session.expiresAt + 1);
+    const verified = verifySessionToken(
+      token,
+      testSecret,
+      session.expiresAt + 1
+    );
     expect(verified).toBeNull();
   });
 

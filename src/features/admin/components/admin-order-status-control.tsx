@@ -27,7 +27,9 @@ export function AdminOrderStatusControl({
   const [isPending, startTransition] = useTransition();
 
   const allowedTransitions = VALID_STATUS_TRANSITIONS[currentStatus] || [];
-  const isTerminal = currentStatus === OrderStatus.DELIVERED || currentStatus === OrderStatus.CANCELLED;
+  const isTerminal =
+    currentStatus === OrderStatus.DELIVERED ||
+    currentStatus === OrderStatus.CANCELLED;
 
   const handleStatusChange = (nextStatus: OrderStatus) => {
     setErrorMessage(null);
@@ -53,10 +55,6 @@ export function AdminOrderStatusControl({
 
   const getActionButtonStyle = (status: OrderStatus) => {
     switch (status) {
-      case OrderStatus.CONFIRMED:
-        return "bg-blue-600 hover:bg-blue-700 text-white focus-visible:outline-blue-600";
-      case OrderStatus.PREPARING:
-        return "bg-purple-600 hover:bg-purple-700 text-white focus-visible:outline-purple-600";
       case OrderStatus.OUT_FOR_DELIVERY:
         return "bg-indigo-600 hover:bg-indigo-700 text-white focus-visible:outline-indigo-600";
       case OrderStatus.DELIVERED:
@@ -87,18 +85,23 @@ export function AdminOrderStatusControl({
             Siparişin geçerli durumunu yönetin
           </p>
         </div>
-        <AdminOrderStatusBadge status={currentStatus} className="text-sm px-3 py-1" />
+        <AdminOrderStatusBadge
+          status={currentStatus}
+          className="text-sm px-3 py-1"
+        />
       </div>
 
       {deliveredAt && (
         <div className="text-xs text-emerald-800 bg-emerald-50 border border-emerald-200 rounded-lg p-2.5">
-          Teslim Edilme Zamanı: <strong className="font-semibold">{formatDate(deliveredAt)}</strong>
+          Teslim Edilme Zamanı:{" "}
+          <strong className="font-semibold">{formatDate(deliveredAt)}</strong>
         </div>
       )}
 
       {cancelledAt && (
         <div className="text-xs text-rose-800 bg-rose-50 border border-rose-200 rounded-lg p-2.5">
-          İptal Edilme Zamanı: <strong className="font-semibold">{formatDate(cancelledAt)}</strong>
+          İptal Edilme Zamanı:{" "}
+          <strong className="font-semibold">{formatDate(cancelledAt)}</strong>
         </div>
       )}
 
@@ -162,7 +165,8 @@ export function AdminOrderStatusControl({
 
         {isTerminal ? (
           <p className="text-xs text-slate-500 italic bg-slate-50 border border-slate-200 rounded-lg p-3">
-            Bu sipariş nihai durumdadır ({currentStatus}). Başka bir duruma geçirilemez.
+            Bu sipariş nihai durumdadır ({currentStatus}). Başka bir duruma
+            geçirilemez.
           </p>
         ) : allowedTransitions.length === 0 ? (
           <p className="text-xs text-slate-500 italic">

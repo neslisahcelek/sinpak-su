@@ -58,11 +58,7 @@ export function AdminProductStatusToggle({
           aria-hidden="true"
         />
         <span>
-          {isPending
-            ? "Güncelleniyor..."
-            : currentIsActive
-            ? "Aktif"
-            : "Pasif"}
+          {isPending ? "Güncelleniyor..." : currentIsActive ? "Aktif" : "Pasif"}
         </span>
       </button>
 

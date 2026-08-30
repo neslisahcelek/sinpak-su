@@ -23,7 +23,9 @@ export function getAuthSecret(): string {
   const secret = process.env.AUTH_SECRET;
   if (!secret) {
     if (process.env.NODE_ENV === "production") {
-      throw new Error("AUTH_SECRET environment variable is missing in production.");
+      throw new Error(
+        "AUTH_SECRET environment variable is missing in production."
+      );
     }
     return "dev-insecure-auth-secret-do-not-use-in-production-1234567890";
   }
@@ -33,7 +35,10 @@ export function getAuthSecret(): string {
 /**
  * Verifies admin credentials against environment-configured values using constant-time comparison.
  */
-export function verifyAdminCredentials(username: string, password: string): boolean {
+export function verifyAdminCredentials(
+  username: string,
+  password: string
+): boolean {
   const expectedUsername = process.env.ADMIN_USERNAME || "admin";
   const expectedPassword =
     process.env.ADMIN_PASSWORD ||

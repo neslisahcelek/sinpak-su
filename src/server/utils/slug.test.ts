@@ -11,7 +11,9 @@ describe("Turkish-aware Slug Generation (slugifyTurkish)", () => {
     // ç -> c, ğ -> g, ı -> i, ö -> o, ş -> s, ü -> u, İ -> i
     expect(slugifyTurkish("Çiçek Suyu")).toBe("cicek-suyu");
     expect(slugifyTurkish("Ilık Su")).toBe("ilik-su");
-    expect(slugifyTurkish("İstanbul Doğal Kaynak")).toBe("istanbul-dogal-kaynak");
+    expect(slugifyTurkish("İstanbul Doğal Kaynak")).toBe(
+      "istanbul-dogal-kaynak"
+    );
     expect(slugifyTurkish("Özlem Şişe")).toBe("ozlem-sise");
     expect(slugifyTurkish("Üzüm & Şalgam Suyu")).toBe("uzum-salgam-suyu");
     expect(slugifyTurkish("Ağrı Dağı Suyu")).toBe("agri-dagi-suyu");

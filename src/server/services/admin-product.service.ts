@@ -81,9 +81,7 @@ export async function getAdminProductById(
   db: Pick<PrismaClient, "product"> = prisma
 ): Promise<Result<AdminProductDto>> {
   if (!id || typeof id !== "string" || id.trim() === "") {
-    return err(
-      makeSafeError("VALIDATION_ERROR", "Geçersiz ürün kimliği.")
-    );
+    return err(makeSafeError("VALIDATION_ERROR", "Geçersiz ürün kimliği."));
   }
 
   try {
@@ -245,10 +243,7 @@ export async function updateProduct(
     }
 
     return err(
-      makeSafeError(
-        "INTERNAL_ERROR",
-        "Ürün güncellenirken bir hata oluştu."
-      )
+      makeSafeError("INTERNAL_ERROR", "Ürün güncellenirken bir hata oluştu.")
     );
   }
 }

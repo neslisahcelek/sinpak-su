@@ -254,13 +254,17 @@ export function AdminProductList({ products }: AdminProductListProps) {
               {/* Price & Deposit Details */}
               <div className="grid grid-cols-2 gap-2 text-xs bg-slate-50 rounded-lg p-2.5 border border-slate-100">
                 <div>
-                  <span className="text-slate-500 block text-[11px]">Birim Fiyat</span>
+                  <span className="text-slate-500 block text-[11px]">
+                    Birim Fiyat
+                  </span>
                   <span className="font-bold text-slate-900 text-sm">
                     {formatPrice(parseFloat(product.price))}
                   </span>
                 </div>
                 <div>
-                  <span className="text-slate-500 block text-[11px]">Depozito</span>
+                  <span className="text-slate-500 block text-[11px]">
+                    Depozito
+                  </span>
                   <span className="font-medium text-slate-800 text-sm">
                     {parseFloat(product.depositAmount) > 0
                       ? formatPrice(parseFloat(product.depositAmount))

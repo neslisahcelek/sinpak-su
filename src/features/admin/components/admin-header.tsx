@@ -40,7 +40,10 @@ export function AdminHeader({ username }: AdminHeaderProps) {
           <div className="flex items-center gap-3">
             {username && (
               <span className="hidden md:inline-block text-xs text-slate-400">
-                Giriş yapan: <strong className="text-slate-200 font-semibold">{username}</strong>
+                Giriş yapan:{" "}
+                <strong className="text-slate-200 font-semibold">
+                  {username}
+                </strong>
               </span>
             )}
             <AdminLogoutButton />
