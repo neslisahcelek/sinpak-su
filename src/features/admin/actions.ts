@@ -32,6 +32,7 @@ import {
   toggleProductActive,
   type AdminProductDto,
 } from "@/server/services/admin-product.service";
+import { uploadProductImage } from "@/server/storage/supabase-storage";
 import { err, makeSafeError, ok, type Result } from "@/server/types/result";
 
 /**
@@ -52,7 +53,7 @@ export async function loginAdminAction(
   }
 
   const { username, password } = validationResult.data;
-  const isValid = verifyAdminCredentials(username, password);
+  const isValid = await verifyAdminCredentials(username, password);
 
   if (!isValid) {
     return err(
@@ -242,3 +243,63 @@ export async function toggleProductActiveAction(
 
   return result;
 }
+
+/**
+ * Server action to securely upload a compressed product image to Supabase Storage.
+ */
+export async function uploadProductImageAction(
+  formData: FormData
+): Promise<Result<{ url: string; path: string }>> {
+  const session = await getAdminSession();
+  if (!session) {
+    return err(
+      makeSafeError("UNAUTHORIZED", "Bu işlem için yetkiniz bulunmamaktadır.")
+    );
+  }
+
+  const file = formData.get("file");
+  if (!file || !(file instanceof File)) {
+    return err(
+      makeSafeError("VALIDATION_ERROR", "Geçerli bir dosya yüklenmedi.")
+    );
+  }
+
+  if (file.size > 5 * 1024 * 1024) {
+    return err(
+      makeSafeError(
+        "VALIDATION_ERROR",
+        "Görsel boyutu maksimum 5MB olabilir."
+      )
+    );
+  }
+
+  try {
+    const arrayBuffer = await file.arrayBuffer();
+    const buffer = Buffer.from(arrayBuffer);
+    const result = await uploadProductImage(buffer, file.type, file.name);
+
+    return ok({
+      url: result.url,
+      path: result.path,
+    });
+  } catch (error) {
+    const message =
+      error instanceof Error ? error.message : "Görsel yüklenemedi.";
+
+    if (
+      message.includes("Desteklenmeyen dosya türü") ||
+      message.includes("dosya imzası")
+    ) {
+      return err(makeSafeError("VALIDATION_ERROR", message));
+    }
+
+    console.error("Product image upload failed:", error);
+    return err(
+      makeSafeError(
+        "INTERNAL_ERROR",
+        "Görsel depolamaya yüklenirken beklenmeyen bir hata oluştu. Lütfen tekrar deneyin."
+      )
+    );
+  }
+}
+

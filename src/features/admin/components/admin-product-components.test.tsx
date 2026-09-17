@@ -13,6 +13,7 @@ vi.mock("next/navigation", () => ({
     push: vi.fn(),
     refresh: vi.fn(),
   }),
+  usePathname: () => "/admin/orders",
 }));
 
 describe("Admin Product UI Components", () => {
@@ -54,6 +55,14 @@ describe("Admin Product UI Components", () => {
       expect(html).toContain("Ürünler");
       expect(html).toContain("/admin/products");
       expect(html).toContain("admin");
+    });
+
+    it("renders mobile navigation bar with accessible touch-friendly tabs", () => {
+      const html = renderToString(<AdminHeader username="admin" />);
+
+      expect(html).toContain("Yönetim Mobil Menüsü");
+      expect(html).toContain("min-h-[44px]");
+      expect(html).toContain("aria-current=\"page\"");
     });
   });
 

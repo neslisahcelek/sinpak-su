@@ -1,6 +1,15 @@
+import crypto from "node:crypto";
+import { promisify } from "node:util";
 import { PrismaClient, ProductType } from "@prisma/client";
 
 const prisma = new PrismaClient();
+const scryptAsync = promisify(crypto.scrypt);
+
+async function hashSeedPassword(password: string): Promise<string> {
+  const salt = crypto.randomBytes(16).toString("hex");
+  const derivedKey = (await scryptAsync(password, salt, 64)) as Buffer;
+  return `${salt}:${derivedKey.toString("hex")}`;
+}
 
 const MVP_PRODUCTS = [
   {
@@ -67,6 +76,74 @@ export async function seed() {
     });
 
     console.log(`- Upserted: ${upserted.name} (${upserted.slug})`);
+  }
+
+  console.log("Seeding Admin users from environment variables...");
+  const primaryUsername = (process.env.ADMIN_USERNAME || "admin").trim().toLowerCase();
+  const primaryPassword = process.env.ADMIN_PASSWORD;
+
+  const adminUsers: Array<{
+    username: string;
+    password?: string;
+    name: string;
+    isActive: boolean;
+  }> = [];
+
+  if (primaryPassword) {
+    adminUsers.push({
+      username: primaryUsername,
+      password: primaryPassword,
+      name: "Ana Yönetici",
+      isActive: true,
+    });
+  } else if (process.env.NODE_ENV !== "production") {
+    adminUsers.push({
+      username: primaryUsername,
+      password: "dev-password-change-me",
+      name: "Geliştirici Admin",
+      isActive: true,
+    });
+  }
+
+  // Parse optional additional admins from ADMIN_USERS env variable (JSON array format)
+  if (process.env.ADMIN_USERS) {
+    try {
+      const extraUsers = JSON.parse(process.env.ADMIN_USERS);
+      if (Array.isArray(extraUsers)) {
+        for (const u of extraUsers) {
+          if (u.username && u.password) {
+            adminUsers.push({
+              username: String(u.username).trim().toLowerCase(),
+              password: String(u.password),
+              name: u.name ? String(u.name) : "Yönetici",
+              isActive: u.isActive ?? true,
+            });
+          }
+        }
+      }
+    } catch {
+      console.warn("ADMIN_USERS ortam değişkeni JSON formatında ayrıştırılamadı.");
+    }
+  }
+
+  for (const admin of adminUsers) {
+    if (!admin.password) continue;
+    const passwordHash = await hashSeedPassword(admin.password);
+    const upserted = await prisma.adminUser.upsert({
+      where: { username: admin.username },
+      update: {
+        passwordHash,
+        name: admin.name,
+        isActive: admin.isActive,
+      },
+      create: {
+        username: admin.username,
+        passwordHash,
+        name: admin.name,
+        isActive: admin.isActive,
+      },
+    });
+    console.log(`- Upserted Admin: ${upserted.username} (${upserted.name})`);
   }
 
   console.log("Seeding completed successfully.");

@@ -1,13 +1,32 @@
-import { describe, it, expect } from "vitest";
+import { describe, it, expect, vi, beforeEach } from "vitest";
 import {
   signSessionToken,
   verifySessionToken,
   createAdminSessionPayload,
+  getAdminSession,
+  ADMIN_COOKIE_NAME,
 } from "./session";
+import { getAuthSecret } from "./password";
+import type { PrismaClient } from "@prisma/client";
+
+// Mock next/headers
+let mockCookieValue: string | undefined = undefined;
+vi.mock("next/headers", () => ({
+  cookies: async () => ({
+    get: (name: string) =>
+      name === ADMIN_COOKIE_NAME && mockCookieValue
+        ? { value: mockCookieValue }
+        : undefined,
+  }),
+}));
 
 describe("Admin Session Signing and Verification", () => {
-  const testSecret = "super-secret-test-key-1234567890";
+  const testSecret = "dev-insecure-auth-secret-do-not-use-in-production-1234567890";
   const now = 1700000000000;
+
+  beforeEach(() => {
+    mockCookieValue = undefined;
+  });
 
   it("should successfully sign and verify a valid admin session", () => {
     const session = createAdminSessionPayload("admin_staff", now);
@@ -54,7 +73,7 @@ describe("Admin Session Signing and Verification", () => {
 
   it("should reject token signed with a different secret", () => {
     const session = createAdminSessionPayload("admin_staff", now);
-    const token = signSessionToken(session, "different-secret-key");
+    const token = signSessionToken(session, "different-secret-key-1234567890");
 
     const verified = verifySessionToken(token, testSecret, now + 1000);
     expect(verified).toBeNull();
@@ -79,5 +98,42 @@ describe("Admin Session Signing and Verification", () => {
     expect(verifySessionToken("a.b.c", testSecret, now)).toBeNull();
     expect(verifySessionToken(null, testSecret, now)).toBeNull();
     expect(verifySessionToken(undefined, testSecret, now)).toBeNull();
+  });
+
+  it("should reject session if user is deactivated in database", async () => {
+    const session = createAdminSessionPayload("operator_user", Date.now());
+    mockCookieValue = signSessionToken(session, getAuthSecret());
+
+    const mockInactiveDb = {
+      adminUser: {
+        findUnique: vi.fn().mockResolvedValue({
+          id: "usr_inactive",
+          username: "operator_user",
+          isActive: false,
+        }),
+      },
+    } as unknown as Pick<PrismaClient, "adminUser">;
+
+    const result = await getAdminSession({ db: mockInactiveDb });
+    expect(result).toBeNull();
+  });
+
+  it("should accept session if user is active in database", async () => {
+    const session = createAdminSessionPayload("operator_user", Date.now());
+    mockCookieValue = signSessionToken(session, getAuthSecret());
+
+    const mockActiveDb = {
+      adminUser: {
+        findUnique: vi.fn().mockResolvedValue({
+          id: "usr_active",
+          username: "operator_user",
+          isActive: true,
+        }),
+      },
+    } as unknown as Pick<PrismaClient, "adminUser">;
+
+    const result = await getAdminSession({ db: mockActiveDb });
+    expect(result).not.toBeNull();
+    expect(result?.username).toBe("operator_user");
   });
 });

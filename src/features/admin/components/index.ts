@@ -8,3 +8,4 @@ export * from "./admin-order-status-control";
 export * from "./admin-product-list";
 export * from "./admin-product-status-toggle";
 export * from "./admin-product-form";
+export * from "./admin-image-upload";

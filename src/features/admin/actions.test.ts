@@ -3,6 +3,7 @@ import { OrderStatus, ProductType } from "@prisma/client";
 import { revalidatePath } from "next/cache";
 import * as adminOrderService from "@/server/services/admin-order.service";
 import * as adminProductService from "@/server/services/admin-product.service";
+import * as supabaseStorage from "@/server/storage/supabase-storage";
 import {
   loginAdminAction,
   logoutAdminAction,
@@ -11,6 +12,7 @@ import {
   createProductAction,
   updateProductAction,
   toggleProductActiveAction,
+  uploadProductImageAction,
 } from "./actions";
 
 // Mock next/headers cookies
@@ -545,4 +547,93 @@ describe("Admin Authentication Server Actions", () => {
       expect(revalidatePath).not.toHaveBeenCalled();
     });
   });
+
+  describe("uploadProductImageAction", () => {
+    it("should reject unauthenticated upload requests", async () => {
+      const formData = new FormData();
+      formData.append(
+        "file",
+        new File(["dummy"], "product.webp", { type: "image/webp" })
+      );
+
+      const result = await uploadProductImageAction(formData);
+
+      expect(result.success).toBe(false);
+      if (!result.success) {
+        expect(result.error.code).toBe("UNAUTHORIZED");
+      }
+    });
+
+    it("should reject requests without a valid file", async () => {
+      await loginAdminAction({
+        username: "admin",
+        password: "testpassword123",
+      });
+
+      const formData = new FormData();
+      // No file attached
+
+      const result = await uploadProductImageAction(formData);
+
+      expect(result.success).toBe(false);
+      if (!result.success) {
+        expect(result.error.code).toBe("VALIDATION_ERROR");
+      }
+    });
+
+    it("should reject files exceeding 5MB size limit", async () => {
+      await loginAdminAction({
+        username: "admin",
+        password: "testpassword123",
+      });
+
+      const largeContent = new Uint8Array(6 * 1024 * 1024);
+      const largeFile = new File([largeContent], "large.webp", {
+        type: "image/webp",
+      });
+
+      const formData = new FormData();
+      formData.append("file", largeFile);
+
+      const result = await uploadProductImageAction(formData);
+
+      expect(result.success).toBe(false);
+      if (!result.success) {
+        expect(result.error.code).toBe("VALIDATION_ERROR");
+        expect(result.error.message).toContain("5MB");
+      }
+    });
+
+    it("should successfully upload valid file and return URL", async () => {
+      await loginAdminAction({
+        username: "admin",
+        password: "testpassword123",
+      });
+
+      const uploadSpy = vi
+        .spyOn(supabaseStorage, "uploadProductImage")
+        .mockResolvedValueOnce({
+          url: "https://test.supabase.co/storage/v1/object/public/product-images/products/test.webp",
+          path: "products/test.webp",
+          size: 1024,
+        });
+
+      const testFile = new File(["valid-webp-content"], "damacana.webp", {
+        type: "image/webp",
+      });
+
+      const formData = new FormData();
+      formData.append("file", testFile);
+
+      const result = await uploadProductImageAction(formData);
+
+      expect(uploadSpy).toHaveBeenCalled();
+      expect(result.success).toBe(true);
+      if (result.success) {
+        expect(result.data.url).toContain("https://test.supabase.co");
+        expect(result.data.path).toBe("products/test.webp");
+      }
+    });
+  });
 });
+

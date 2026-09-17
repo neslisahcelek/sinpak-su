@@ -1,4 +1,4 @@
-import { describe, it, expect, vi, beforeEach } from "vitest";
+import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 import {
   Prisma,
   OrderStatus,
@@ -56,6 +56,7 @@ describe("Order Creation Service", () => {
   let mockDb: MockDb;
 
   beforeEach(() => {
+    vi.stubEnv("DISABLE_OPERATING_HOURS", "");
     mockDb = {
       product: {
         findMany: vi.fn().mockResolvedValue([activeDamacana]),
@@ -72,6 +73,10 @@ describe("Order Creation Service", () => {
         return await callback(tx);
       }),
     };
+  });
+
+  afterEach(() => {
+    vi.unstubAllEnvs();
   });
 
   it("creates order successfully during operating hours and returns publicId", async () => {

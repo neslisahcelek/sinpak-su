@@ -3,7 +3,6 @@
 import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import Image from "next/image";
 import { ProductType } from "@prisma/client";
 import { type AdminProductDto } from "@/server/services/admin-product.service";
 import {
@@ -11,6 +10,7 @@ import {
   updateProductAction,
 } from "@/features/admin/actions";
 import { PRODUCT_TYPE_LABELS } from "@/features/admin/constants";
+import { AdminImageUpload } from "./admin-image-upload";
 
 interface AdminProductFormProps {
   mode: "create" | "edit";
@@ -39,9 +39,6 @@ export function AdminProductForm({ mode, initialData }: AdminProductFormProps) {
   // Errors
   const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
   const [rootError, setRootError] = useState<string | null>(null);
-
-  // Preview state for imageUrl
-  const [previewError, setPreviewError] = useState(false);
 
   const isDamacana = type === ProductType.DAMACANA_WATER;
 
@@ -145,13 +142,6 @@ export function AdminProductForm({ mode, initialData }: AdminProductFormProps) {
       }
     });
   };
-
-  const hasValidPreview =
-    imageUrl.trim().length > 0 &&
-    (imageUrl.startsWith("http://") ||
-      imageUrl.startsWith("https://") ||
-      imageUrl.startsWith("/")) &&
-    !previewError;
 
   return (
     <form
@@ -332,61 +322,13 @@ export function AdminProductForm({ mode, initialData }: AdminProductFormProps) {
         </div>
       </div>
 
-      {/* Image URL & Live Preview */}
-      <div>
-        <label
-          htmlFor="product-image-url"
-          className="block text-sm font-semibold text-slate-900 mb-1.5"
-        >
-          Görsel URL (İsteğe Bağlı)
-        </label>
-        <div className="flex flex-col sm:flex-row gap-4 items-start">
-          <div className="flex-1 w-full">
-            <input
-              id="product-image-url"
-              type="text"
-              value={imageUrl}
-              onChange={(e) => {
-                setImageUrl(e.target.value);
-                setPreviewError(false);
-              }}
-              disabled={isPending}
-              placeholder="https://... veya /images/urun.png"
-              className={`w-full px-3.5 py-2 text-sm rounded-lg border bg-white text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-sky-500 transition-colors ${
-                fieldErrors.imageUrl
-                  ? "border-red-400 focus:ring-red-500"
-                  : "border-slate-300"
-              }`}
-            />
-            {fieldErrors.imageUrl && (
-              <p className="text-xs text-red-600 mt-1">
-                {fieldErrors.imageUrl}
-              </p>
-            )}
-            <p className="text-xs text-slate-400 mt-1">
-              HTTP/HTTPS veya yerel statik yol (/images/...) desteklenir.
-            </p>
-          </div>
-
-          {/* Preview Box */}
-          <div className="w-20 h-20 rounded-lg bg-slate-100 border border-slate-200 overflow-hidden relative flex-shrink-0 flex items-center justify-center">
-            {hasValidPreview ? (
-              <Image
-                src={imageUrl}
-                alt="Önizleme"
-                fill
-                className="object-cover"
-                sizes="80px"
-                onError={() => setPreviewError(true)}
-              />
-            ) : (
-              <span className="text-[11px] text-slate-400 text-center px-1">
-                {imageUrl ? "Geçersiz Görsel" : "Görsel Yok"}
-              </span>
-            )}
-          </div>
-        </div>
-      </div>
+      {/* Product Image Upload (Drag & Drop + WebP compression) */}
+      <AdminImageUpload
+        value={imageUrl}
+        onChange={setImageUrl}
+        disabled={isPending}
+        error={fieldErrors.imageUrl}
+      />
 
       {/* Active Checkbox */}
       <div className="pt-2">

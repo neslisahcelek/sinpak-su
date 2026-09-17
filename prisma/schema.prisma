@@ -86,3 +86,16 @@ model OrderItem {
 
   @@unique([orderId, productId])
 }
+
+model AdminUser {
+  id           String   @id @default(cuid())
+  username     String   @unique
+  passwordHash String
+  name         String?
+  isActive     Boolean  @default(true)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  @@index([isActive, username])
+}
+
