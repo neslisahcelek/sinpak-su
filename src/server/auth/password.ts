@@ -66,6 +66,19 @@ export function getAuthSecret(): string {
     }
     return "dev-insecure-auth-secret-do-not-use-in-production-1234567890";
   }
+
+  if (process.env.NODE_ENV === "production") {
+    if (
+      secret.length < 32 ||
+      secret.includes("replace-with") ||
+      secret.includes("dev-insecure")
+    ) {
+      throw new Error(
+        "AUTH_SECRET environment variable must be at least 32 characters and cannot be a default placeholder in production."
+      );
+    }
+  }
+
   return secret;
 }
 
@@ -112,6 +125,15 @@ export async function verifyAdminCredentials(
     (process.env.NODE_ENV === "production" ? "" : "admin123");
 
   if (!expectedPassword) {
+    return false;
+  }
+
+  // In production, reject insecure default passwords
+  if (
+    process.env.NODE_ENV === "production" &&
+    (expectedPassword === "admin123" ||
+      expectedPassword.includes("replace-with"))
+  ) {
     return false;
   }
 

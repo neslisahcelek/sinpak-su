@@ -6,6 +6,7 @@ import {
   hashPassword,
   verifyPassword,
   verifyAdminCredentials,
+  getAuthSecret,
 } from "./password";
 
 type MockAdminDb = Pick<PrismaClient, "adminUser">;
@@ -147,6 +148,50 @@ describe("Admin Password & Credential Verification", () => {
     } as unknown as MockAdminDb;
 
     expect(await verifyAdminCredentials("admin", "admin123", mockDb)).toBe(false);
+    vi.unstubAllEnvs();
+  });
+
+  it("should reject default or short AUTH_SECRET in production mode", () => {
+    vi.stubEnv("NODE_ENV", "production");
+
+    process.env.AUTH_SECRET = "replace-with-a-secure-random-32-character-secret";
+    expect(() => getAuthSecret()).toThrow("placeholder in production");
+
+    process.env.AUTH_SECRET = "short-secret";
+    expect(() => getAuthSecret()).toThrow("at least 32 characters");
+
+    process.env.AUTH_SECRET = "a-very-secure-random-production-secret-value-123456789";
+    expect(getAuthSecret()).toBe(
+      "a-very-secure-random-production-secret-value-123456789"
+    );
+
+    vi.unstubAllEnvs();
+  });
+
+  it("should reject default admin password fallback in production mode", async () => {
+    vi.stubEnv("NODE_ENV", "production");
+    process.env.ADMIN_USERNAME = "admin";
+    process.env.ADMIN_PASSWORD = "replace-with-secure-admin-password";
+
+    const mockDb = {
+      adminUser: {
+        findUnique: vi.fn().mockResolvedValue(null),
+      },
+    } as unknown as MockAdminDb;
+
+    expect(
+      await verifyAdminCredentials(
+        "admin",
+        "replace-with-secure-admin-password",
+        mockDb
+      )
+    ).toBe(false);
+
+    process.env.ADMIN_PASSWORD = "admin123";
+    expect(await verifyAdminCredentials("admin", "admin123", mockDb)).toBe(
+      false
+    );
+
     vi.unstubAllEnvs();
   });
 });

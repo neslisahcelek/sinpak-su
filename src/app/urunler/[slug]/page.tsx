@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import Image from "next/image";
 import { notFound } from "next/navigation";
 import { getActiveProductBySlug } from "@/server/services/product.service";
@@ -6,6 +7,32 @@ import { AddToCartButton } from "@/features/products/add-to-cart-button";
 
 interface Props {
   params: Promise<{ slug: string }>;
+}
+
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { slug } = await params;
+  const product = await getActiveProductBySlug(slug);
+
+  if (!product) {
+    return {
+      title: "Ürün Bulunamadı | Sinpak Su",
+      description: "Aradığınız ürün bulunamadı veya satıştan kaldırılmış olabilir.",
+    };
+  }
+
+  const description =
+    product.description ||
+    `${product.name} siparişi verin. Sinpak Su ile İzmit içi kapınıza hızlı ve güvenilir teslimat.`;
+
+  return {
+    title: `${product.name} | Sinpak Su`,
+    description,
+    openGraph: {
+      title: `${product.name} | Sinpak Su`,
+      description,
+      images: product.imageUrl ? [{ url: product.imageUrl }] : [],
+    },
+  };
 }
 
 export default async function ProductDetailPage({ params }: Props) {
