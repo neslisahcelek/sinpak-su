@@ -14,7 +14,7 @@ describe("StorefrontLayout", () => {
     mockPathname = "/";
   });
 
-  it("renders Header, CartDrawer, and CartProvider on customer routes (/)", () => {
+  it("renders Header, Footer, CartDrawer, and CartProvider on customer routes (/)", () => {
     mockPathname = "/";
     const html = renderToString(
       <StorefrontLayout products={[]}>
@@ -24,6 +24,9 @@ describe("StorefrontLayout", () => {
 
     expect(html).toContain("Sinpak Su");
     expect(html).toContain("Sepeti aç");
+    expect(html).toContain("Sinpak Tedarik");
+    expect(html).toContain("0545 454 34 77");
+    expect(html).toContain("Yenişehir");
     expect(html).toContain("child-content");
     expect(html).toContain("Customer Page");
   });
@@ -38,6 +41,7 @@ describe("StorefrontLayout", () => {
 
     expect(html).toContain("Sinpak Su");
     expect(html).toContain("Sepeti aç");
+    expect(html).toContain("Sinpak Tedarik");
     expect(html).toContain("checkout-content");
   });
 
@@ -50,6 +54,7 @@ describe("StorefrontLayout", () => {
     );
 
     expect(html).not.toContain("Sepeti aç");
+    expect(html).not.toContain("Sinpak Tedarik");
     expect(html).toContain("admin-content");
     expect(html).toContain("Admin Dashboard");
   });
@@ -63,6 +68,7 @@ describe("StorefrontLayout", () => {
     );
 
     expect(html).not.toContain("Sepeti aç");
+    expect(html).not.toContain("Sinpak Tedarik");
     expect(html).toContain("admin-orders");
   });
 

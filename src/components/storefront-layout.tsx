@@ -4,6 +4,7 @@ import { usePathname } from "next/navigation";
 import type { ProductDto } from "@/server/services/product.service";
 import { CartProvider } from "@/features/cart/cart-provider";
 import { Header } from "@/components/header";
+import { Footer } from "@/components/footer";
 import { CartDrawer } from "@/features/cart/cart-drawer";
 
 interface StorefrontLayoutProps {
@@ -13,7 +14,7 @@ interface StorefrontLayoutProps {
 
 /**
  * Shell component for customer-facing pages.
- * Isolates CartProvider, customer Header, and CartDrawer so they are
+ * Isolates CartProvider, customer Header, Footer, and CartDrawer so they are
  * never mounted on /admin/* routes, ensuring admin views are clean and
  * customer cart state in localStorage is untouched during admin operations.
  */
@@ -31,8 +32,11 @@ export function StorefrontLayout({
 
   return (
     <CartProvider products={products}>
-      <Header />
-      {children}
+      <div className="min-h-screen flex flex-col">
+        <Header />
+        <div className="flex-1">{children}</div>
+        <Footer />
+      </div>
       <CartDrawer />
     </CartProvider>
   );

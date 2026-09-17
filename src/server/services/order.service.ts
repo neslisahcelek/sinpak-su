@@ -16,6 +16,7 @@ import {
 } from "@/server/services/operating-hours.service";
 import { generateOrderNumber } from "@/server/services/order-number.service";
 import { err, makeSafeError, ok, type Result } from "@/server/types/result";
+import { sendWhatsAppOrderNotification } from "@/server/services/notification/whatsapp-meta.service";
 
 export interface ConsolidatedItem {
   productId: string;
@@ -372,6 +373,24 @@ export async function createOrder(
           orderNumber: true,
         },
       });
+    });
+
+    // Dispatch WhatsApp notification asynchronously (fail-safe, non-blocking)
+    void sendWhatsAppOrderNotification({
+      orderNumber: createdOrder.orderNumber,
+      customerName: input.customerName,
+      phone: input.phone,
+      addressLine1: input.addressLine1,
+      deliveryNotes: input.deliveryNotes,
+      paymentMethod: input.paymentMethod,
+      total: calculated.total.toString(),
+      items: calculated.items.map((item) => ({
+        productName: item.productName,
+        quantity: item.quantity,
+        emptyBottleQuantity: item.emptyBottleQuantity,
+      })),
+    }).catch((err) => {
+      console.error("[OrderService] WhatsApp notification dispatch error:", err);
     });
 
     return ok({

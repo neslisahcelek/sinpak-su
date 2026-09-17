@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { siteConfig } from "@/lib/site-config";
 import { useCart } from "@/features/cart/cart-context";
 
 export function Header() {
@@ -17,6 +18,27 @@ export function Header() {
         </Link>
 
         <nav className="flex items-center gap-2">
+          <a
+            href={siteConfig.phoneHref}
+            className="hidden sm:inline-flex items-center gap-1.5 text-xs sm:text-sm font-semibold text-sky-800 bg-sky-50 hover:bg-sky-100 border border-sky-200 px-3 py-1.5 rounded-full transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sky-700"
+            aria-label={`Telefonla Sipariş: ${siteConfig.phoneFormatted}`}
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="w-3.5 h-3.5 text-sky-600"
+              viewBox="0 0 24 24"
+              fill="currentColor"
+              aria-hidden="true"
+            >
+              <path
+                fillRule="evenodd"
+                d="M1.5 4.5a3 3 0 0 1 3-3h1.372c.86 0 1.61.586 1.819 1.42l1.105 4.423a1.875 1.875 0 0 1-.694 1.955l-1.293.97c-.135.101-.164.249-.126.352a11.285 11.285 0 0 0 6.697 6.697c.103.038.25.009.352-.126l.97-1.293a1.875 1.875 0 0 1 1.955-.694l4.423 1.105c.834.209 1.42.959 1.42 1.82V19.5a3 3 0 0 1-3 3h-2.25C8.552 22.5 1.5 15.448 1.5 6.75V4.5Z"
+                clipRule="evenodd"
+              />
+            </svg>
+            <span>{siteConfig.phoneFormatted}</span>
+          </a>
+
           <Link
             href="/siparis-takip"
             className="text-sm font-medium text-slate-600 hover:text-sky-700 transition-colors px-2 py-1 rounded focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sky-700"

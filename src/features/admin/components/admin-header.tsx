@@ -24,7 +24,7 @@ export function AdminHeader({ username }: AdminHeaderProps) {
               href="/admin/orders"
               className="flex items-center gap-2 font-bold text-base sm:text-lg text-white hover:text-sky-400 transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-sky-400 rounded shrink-0"
             >
-              <span>Sinpak Su</span>
+              <span>SinpakSU</span>
               <span className="hidden sm:inline-flex text-xs px-2 py-0.5 rounded bg-sky-950 text-sky-400 border border-sky-800">
                 Yönetim Paneli
               </span>
