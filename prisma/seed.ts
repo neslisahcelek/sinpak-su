@@ -19,6 +19,7 @@ const MVP_PRODUCTS = [
     type: ProductType.DAMACANA_WATER,
     price: "180.00",
     depositAmount: "180.00",
+    displayOrder: 1,
     isActive: true,
   },
   {
@@ -28,6 +29,7 @@ const MVP_PRODUCTS = [
     type: ProductType.BEVERAGE,
     price: "60.00",
     depositAmount: "0.00",
+    displayOrder: 2,
     isActive: true,
   },
   {
@@ -37,6 +39,7 @@ const MVP_PRODUCTS = [
     type: ProductType.BEVERAGE,
     price: "60.00",
     depositAmount: "0.00",
+    displayOrder: 3,
     isActive: true,
   },
   {
@@ -46,6 +49,7 @@ const MVP_PRODUCTS = [
     type: ProductType.BEVERAGE,
     price: "60.00",
     depositAmount: "0.00",
+    displayOrder: 4,
     isActive: true,
   },
 ] as const;
@@ -62,6 +66,7 @@ export async function seed() {
         type: product.type,
         price: product.price,
         depositAmount: product.depositAmount,
+        displayOrder: product.displayOrder,
         isActive: product.isActive,
       },
       create: {
@@ -71,6 +76,7 @@ export async function seed() {
         type: product.type,
         price: product.price,
         depositAmount: product.depositAmount,
+        displayOrder: product.displayOrder,
         isActive: product.isActive,
       },
     });

@@ -16,6 +16,7 @@ describe("Order Creation Service", () => {
     description: "Doğal kaynak suyu",
     price: new Prisma.Decimal(50),
     depositAmount: new Prisma.Decimal(50),
+    displayOrder: 0,
     isActive: true,
     imageUrl: null,
     createdAt: new Date(),

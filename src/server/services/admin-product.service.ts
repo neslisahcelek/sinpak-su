@@ -23,6 +23,7 @@ export type AdminProductDto = {
   description: string;
   price: string;
   depositAmount: string;
+  displayOrder: number;
   isActive: boolean;
   imageUrl: string | null;
   createdAt: Date;
@@ -41,6 +42,7 @@ export function mapProductToAdminDto(product: Product): AdminProductDto {
     description: product.description,
     price: product.price.toString(),
     depositAmount: product.depositAmount.toString(),
+    displayOrder: product.displayOrder ?? 0,
     isActive: product.isActive,
     imageUrl: product.imageUrl,
     createdAt: product.createdAt,
@@ -60,13 +62,17 @@ function isPrismaRecordNotFoundError(error: unknown): boolean {
 
 /**
  * Lists all products (both active and inactive) with deterministic ordering:
- * Active products first (isActive desc), then ordered by name ascending.
+ * Active products first (isActive desc), then ordered by displayOrder asc, then name asc.
  */
 export async function listAllAdminProducts(
   db: Pick<PrismaClient, "product"> = prisma
 ): Promise<AdminProductDto[]> {
   const products = await db.product.findMany({
-    orderBy: [{ isActive: "desc" }, { name: "asc" }],
+    orderBy: [
+      { isActive: "desc" },
+      { displayOrder: "asc" },
+      { name: "asc" },
+    ],
   });
 
   return products.map(mapProductToAdminDto);
@@ -147,6 +153,7 @@ export async function createProduct(
           type: parsed.data.type,
           price: new Prisma.Decimal(parsed.data.price),
           depositAmount: new Prisma.Decimal(parsed.data.depositAmount),
+          displayOrder: parsed.data.displayOrder ?? 0,
           imageUrl: parsed.data.imageUrl ?? null,
           isActive: parsed.data.isActive ?? true,
         },
@@ -223,6 +230,10 @@ export async function updateProduct(
     depositAmount: new Prisma.Decimal(parsed.data.depositAmount),
     imageUrl: parsed.data.imageUrl ?? null,
   };
+
+  if (typeof parsed.data.displayOrder === "number") {
+    updateData.displayOrder = parsed.data.displayOrder;
+  }
 
   if (typeof parsed.data.isActive === "boolean") {
     updateData.isActive = parsed.data.isActive;

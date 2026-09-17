@@ -35,13 +35,14 @@ model Product {
   description   String
   price         Decimal     @db.Decimal(12, 2)
   depositAmount Decimal     @default(0) @db.Decimal(12, 2)
+  displayOrder  Int         @default(0)
   isActive      Boolean     @default(true)
   imageUrl      String?
   createdAt     DateTime    @default(now())
   updatedAt     DateTime    @updatedAt
   orderItems    OrderItem[]
 
-  @@index([isActive, name])
+  @@index([isActive, displayOrder, name])
 }
 
 model Order {

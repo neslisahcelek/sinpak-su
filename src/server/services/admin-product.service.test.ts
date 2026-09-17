@@ -23,6 +23,7 @@ describe("Admin Product Domain Service", () => {
     description: "19 Litre doğal kaynak damacana su.",
     price: new Prisma.Decimal("180.00"),
     depositAmount: new Prisma.Decimal("180.00"),
+    displayOrder: 0,
     isActive: true,
     imageUrl: "/images/damacana.png",
     createdAt: new Date("2026-08-01T10:00:00.000Z"),
@@ -37,6 +38,7 @@ describe("Admin Product Domain Service", () => {
     description: "1.5 Litre Portakallı Gazoz",
     price: new Prisma.Decimal("60.00"),
     depositAmount: new Prisma.Decimal("0.00"),
+    displayOrder: 0,
     isActive: false,
     imageUrl: null,
     createdAt: new Date("2026-08-02T10:00:00.000Z"),
@@ -51,6 +53,7 @@ describe("Admin Product Domain Service", () => {
     description: "0.5 Litre doğal kaynak suyu",
     price: new Prisma.Decimal("15.00"),
     depositAmount: new Prisma.Decimal("0.00"),
+    displayOrder: 0,
     isActive: true,
     imageUrl: "/images/pet-05.png",
     createdAt: new Date("2026-08-03T10:00:00.000Z"),
@@ -91,6 +94,7 @@ describe("Admin Product Domain Service", () => {
         description: "19 Litre doğal kaynak damacana su.",
         price: "180",
         depositAmount: "180",
+        displayOrder: 0,
         isActive: true,
         imageUrl: "/images/damacana.png",
         createdAt: sampleActiveDamacana.createdAt,
@@ -110,7 +114,11 @@ describe("Admin Product Domain Service", () => {
       const result = await listAllAdminProducts(getDb());
 
       expect(mockDb.product.findMany).toHaveBeenCalledWith({
-        orderBy: [{ isActive: "desc" }, { name: "asc" }],
+        orderBy: [
+          { isActive: "desc" },
+          { displayOrder: "asc" },
+          { name: "asc" },
+        ],
       });
       expect(result).toHaveLength(3);
       expect(result[0].name).toBe("0.5L Pet Su");
@@ -205,6 +213,7 @@ describe("Admin Product Domain Service", () => {
           type: ProductType.DAMACANA_WATER,
           price: expect.any(Prisma.Decimal),
           depositAmount: expect.any(Prisma.Decimal),
+          displayOrder: 0,
           imageUrl: "/images/damacana.png",
           isActive: true,
         },

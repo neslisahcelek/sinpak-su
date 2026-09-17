@@ -9,6 +9,7 @@ export type ProductDto = {
   description: string;
   price: string;
   depositAmount: string;
+  displayOrder: number;
   isActive: boolean;
   imageUrl: string | null;
   createdAt: Date;
@@ -24,6 +25,7 @@ export function mapProductToDto(product: Product): ProductDto {
     description: product.description,
     price: product.price.toString(),
     depositAmount: product.depositAmount.toString(),
+    displayOrder: product.displayOrder ?? 0,
     isActive: product.isActive,
     imageUrl: product.imageUrl,
     createdAt: product.createdAt,
@@ -32,14 +34,17 @@ export function mapProductToDto(product: Product): ProductDto {
 }
 
 /**
- * Lists all active products ordered by name ascending.
+ * Lists all active products ordered by displayOrder ascending, then name ascending.
  */
 export async function listActiveProducts(
   db: Pick<PrismaClient, "product"> = prisma
 ): Promise<ProductDto[]> {
   const products = await db.product.findMany({
     where: { isActive: true },
-    orderBy: { name: "asc" },
+    orderBy: [
+      { displayOrder: "asc" },
+      { name: "asc" },
+    ],
   });
 
   return products.map(mapProductToDto);

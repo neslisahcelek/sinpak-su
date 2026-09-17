@@ -33,6 +33,11 @@ export function AdminProductForm({ mode, initialData }: AdminProductFormProps) {
   const [depositAmount, setDepositAmount] = useState(
     initialData?.depositAmount ?? "0.00"
   );
+  const [displayOrder, setDisplayOrder] = useState(
+    initialData?.displayOrder !== undefined
+      ? String(initialData.displayOrder)
+      : "0"
+  );
   const [imageUrl, setImageUrl] = useState(initialData?.imageUrl ?? "");
   const [isActive, setIsActive] = useState(initialData?.isActive ?? true);
 
@@ -55,6 +60,9 @@ export function AdminProductForm({ mode, initialData }: AdminProductFormProps) {
     setRootError(null);
 
     startTransition(async () => {
+      const parsedOrder = parseInt(displayOrder, 10);
+      const safeOrder = isNaN(parsedOrder) || parsedOrder < 0 ? 0 : parsedOrder;
+
       if (mode === "create") {
         const payload = {
           name: name.trim(),
@@ -62,6 +70,7 @@ export function AdminProductForm({ mode, initialData }: AdminProductFormProps) {
           type,
           price: price.trim(),
           depositAmount: isDamacana ? depositAmount.trim() : "0.00",
+          displayOrder: safeOrder,
           imageUrl: imageUrl.trim() || null,
           isActive,
         };
@@ -107,6 +116,7 @@ export function AdminProductForm({ mode, initialData }: AdminProductFormProps) {
           type,
           price: price.trim(),
           depositAmount: isDamacana ? depositAmount.trim() : "0.00",
+          displayOrder: safeOrder,
           imageUrl: imageUrl.trim() || null,
           isActive,
         };
@@ -329,6 +339,37 @@ export function AdminProductForm({ mode, initialData }: AdminProductFormProps) {
         disabled={isPending}
         error={fieldErrors.imageUrl}
       />
+
+      {/* Display Order */}
+      <div className="max-w-xs">
+        <label
+          htmlFor="product-order"
+          className="block text-sm font-semibold text-slate-900 mb-1.5"
+        >
+          Sıralama (Sıra No)
+        </label>
+        <input
+          id="product-order"
+          type="number"
+          min={0}
+          step={1}
+          value={displayOrder}
+          onChange={(e) => setDisplayOrder(e.target.value)}
+          disabled={isPending}
+          placeholder="0"
+          className={`w-full px-3.5 py-2 text-sm rounded-lg border bg-white text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-sky-500 transition-colors ${
+            fieldErrors.displayOrder
+              ? "border-red-400 focus:ring-red-500"
+              : "border-slate-300"
+          }`}
+        />
+        {fieldErrors.displayOrder && (
+          <p className="text-xs text-red-600 mt-1">{fieldErrors.displayOrder}</p>
+        )}
+        <p className="text-xs text-slate-400 mt-1">
+          Küçük sayılar vitrinde daha önce listelenir (örn: 1 ilk sırada çıkar).
+        </p>
+      </div>
 
       {/* Active Checkbox */}
       <div className="pt-2">

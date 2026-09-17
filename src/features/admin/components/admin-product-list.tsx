@@ -57,6 +57,9 @@ export function AdminProductList({ products }: AdminProductListProps) {
           <table className="min-w-full divide-y divide-slate-200 text-left text-sm">
             <thead className="bg-slate-50 text-slate-600 font-semibold text-xs uppercase tracking-wider">
               <tr>
+                <th scope="col" className="px-3 py-3.5 w-14 text-center">
+                  Sıra
+                </th>
                 <th scope="col" className="px-4 py-3.5 w-16">
                   Görsel
                 </th>
@@ -92,6 +95,13 @@ export function AdminProductList({ products }: AdminProductListProps) {
                         : "hover:bg-slate-50/80"
                     }`}
                   >
+                    {/* Display Order */}
+                    <td className="px-3 py-3.5 align-middle text-center">
+                      <span className="inline-flex items-center justify-center min-w-[24px] h-6 px-1.5 rounded bg-slate-100 text-slate-700 font-bold text-xs border border-slate-200">
+                        {product.displayOrder ?? 0}
+                      </span>
+                    </td>
+
                     {/* Thumbnail */}
                     <td className="px-4 py-3.5 align-middle">
                       <div className="w-12 h-12 rounded-lg bg-slate-100 border border-slate-200 overflow-hidden relative flex-shrink-0 flex items-center justify-center">
@@ -233,9 +243,14 @@ export function AdminProductList({ products }: AdminProductListProps) {
                 {/* Info */}
                 <div className="flex-1 min-w-0">
                   <div className="flex items-start justify-between gap-1">
-                    <h3 className="font-semibold text-slate-900 text-sm truncate">
-                      {product.name}
-                    </h3>
+                    <div className="flex items-center gap-1.5 min-w-0">
+                      <span className="inline-flex items-center justify-center min-w-[20px] h-5 px-1 rounded bg-slate-100 text-slate-700 font-bold text-[11px] border border-slate-200 flex-shrink-0">
+                        #{product.displayOrder ?? 0}
+                      </span>
+                      <h3 className="font-semibold text-slate-900 text-sm truncate">
+                        {product.name}
+                      </h3>
+                    </div>
                     <span
                       className={`inline-flex px-2 py-0.5 text-[11px] font-medium rounded-full border flex-shrink-0 ${
                         PRODUCT_TYPE_BADGE_CLASSES[product.type] ??

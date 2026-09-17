@@ -93,6 +93,11 @@ export const createProductSchema = z
     }),
     price: productPriceSchema,
     depositAmount: productDepositSchema,
+    displayOrder: z.coerce
+      .number({ error: "Sıra numarası geçerli bir sayı olmalıdır." })
+      .int("Sıra numarası bir tam sayı olmalıdır.")
+      .min(0, "Sıra numarası 0 veya daha büyük olmalıdır.")
+      .default(0),
     imageUrl: productImageUrlSchema,
     isActive: z.boolean().default(true),
   })
@@ -143,6 +148,11 @@ export const updateProductSchema = z
     }),
     price: productPriceSchema,
     depositAmount: productDepositSchema,
+    displayOrder: z.coerce
+      .number({ error: "Sıra numarası geçerli bir sayı olmalıdır." })
+      .int("Sıra numarası bir tam sayı olmalıdır.")
+      .min(0, "Sıra numarası 0 veya daha büyük olmalıdır.")
+      .optional(),
     imageUrl: productImageUrlSchema,
     isActive: z.boolean().optional(),
   })
