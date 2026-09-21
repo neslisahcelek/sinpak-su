@@ -4,16 +4,16 @@ import {
   listActiveProducts,
   type ProductDto,
 } from "@/server/services/product.service";
-import { ProductGrid } from "@/features/products/product-grid";
+import { ProductCatalogSection } from "@/features/products/product-catalog-section";
 
 export const metadata: Metadata = {
-  title: "Sinpak Su | İzmit Su ve İçecek Siparişi",
+  title: "Sinpak Su | Abant Su Yetkili Bayisi - İzmit Su Siparişi",
   description:
-    "Doğal ve taze damacana su, pet şişe su ve soğuk içecek siparişlerinizi İzmit adresinize kapıda ödeme kolaylığıyla en kısa sürede ulaştırıyoruz.",
+    "Abant Su Yetkili Bayisi Sinpak Su. Doğal damacana su, pet şişe su ve soğuk içecek siparişlerinizi İzmit adresinize kapıda ödeme kolaylığıyla en kısa sürede ulaştırıyoruz.",
   openGraph: {
-    title: "Sinpak Su | İzmit Su ve İçecek Siparişi",
+    title: "Sinpak Su | Abant Su Yetkili Bayisi - İzmit Su Siparişi",
     description:
-      "Doğal damacana su, şişe su ve içecek siparişleriniz kapınızda.",
+      "Abant Su Yetkili Bayisi Sinpak Su ile doğal damacana su, şişe su ve içecek siparişleriniz kapınızda.",
   },
 };
 
@@ -32,22 +32,26 @@ export default async function HomePage() {
       {/* Hero Banner */}
       <section className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-sky-600 via-sky-700 to-sky-900 text-white p-6 sm:p-8 lg:p-10 shadow-lg shadow-sky-900/10">
         <div className="relative z-10 max-w-2xl space-y-5">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/15 backdrop-blur-xs text-sky-100 text-xs sm:text-sm font-medium border border-white/20">
+          <div className="inline-flex flex-wrap items-center gap-2 px-3 py-1 rounded-full bg-white/15 backdrop-blur-xs text-sky-100 text-xs sm:text-sm font-medium border border-white/20">
             <span className="relative flex h-2 w-2">
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-sky-300 opacity-75"></span>
               <span className="relative inline-flex rounded-full h-2 w-2 bg-white"></span>
             </span>
-            İzmit İçi Hızlı & Ücretsiz Teslimat
+            <span>İzmit İçi Hızlı & Ücretsiz Teslimat</span>
+            <span className="text-white/40">•</span>
+            <span className="font-semibold text-white">
+              {siteConfig.authorizedDealer}
+            </span>
           </div>
 
           <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold tracking-tight text-white leading-tight">
-            Doğal Kaynak Suyu ve İçecekler Kapınızda
+            Abant Su Yetkili Bayisi Sinpak Su Kapınızda
           </h2>
 
           <p className="text-sm sm:text-base text-sky-100 leading-relaxed max-w-xl">
             Siparişlerinizi mesai saatleri (09:00 - 19:00) içerisinde oluşturun,
-            ekibimiz en kısa sürede kapınıza teslim etsin. Kapıda nakit veya kartla
-            (POS) güvenle ödeyin.
+            Abant Su güvencesiyle en kısa sürede kapınıza teslim edelim. Kapıda
+            nakit veya kartla (POS) güvenle ödeyin.
           </p>
 
           {/* Direct Phone Order CTA button */}
@@ -90,7 +94,29 @@ export default async function HomePage() {
                 strokeWidth={2.5}
                 aria-hidden="true"
               >
-                <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M5 13l4 4L19 7"
+                />
+              </svg>
+              <span>{siteConfig.authorizedDealer} Güvencesi</span>
+            </div>
+            <div className="flex items-center gap-1.5">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="w-4 h-4 text-sky-300"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                strokeWidth={2.5}
+                aria-hidden="true"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M5 13l4 4L19 7"
+                />
               </svg>
               <span>Boş Damacana Değişimi</span>
             </div>
@@ -104,23 +130,13 @@ export default async function HomePage() {
                 strokeWidth={2.5}
                 aria-hidden="true"
               >
-                <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M5 13l4 4L19 7"
+                />
               </svg>
               <span>Kapıda Ödeme Kolaylığı</span>
-            </div>
-            <div className="flex items-center gap-1.5">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="w-4 h-4 text-sky-300"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-                strokeWidth={2.5}
-                aria-hidden="true"
-              >
-                <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
-              </svg>
-              <span>09:00 - 19:00 Çalışma Saatleri</span>
             </div>
           </div>
         </div>
@@ -143,8 +159,10 @@ export default async function HomePage() {
               Ürünlerimiz
             </h1>
             <p className="text-sm text-slate-500 mt-1">
-              İhtiyacınız olan ürünleri seçip sepetinize ekleyin
+              İhtiyacınız olan ürünleri inceleyip doğrudan telefonla arayarak
+              sipariş verebilirsiniz
             </p>
+            {/* [ORİJİNAL METİN - SEPET MODU İÇİN]: <p className="text-sm text-slate-500 mt-1">İhtiyacınız olan ürünleri seçip sepetinize ekleyin</p> */}
           </div>
         </div>
 
@@ -155,7 +173,7 @@ export default async function HomePage() {
             </p>
           </div>
         ) : (
-          <ProductGrid products={products} />
+          <ProductCatalogSection products={products} />
         )}
       </section>
 
@@ -166,9 +184,14 @@ export default async function HomePage() {
       >
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 pb-6 border-b border-slate-100">
           <div>
-            <span className="text-xs font-semibold uppercase tracking-wider text-sky-700">
-              Resmi Firma ve Dağıtım Merkezi
-            </span>
+            <div className="flex items-center gap-2">
+              <span className="text-xs font-semibold uppercase tracking-wider text-sky-700">
+                Resmi Dağıtım Merkezi
+              </span>
+              <span className="text-[11px] font-bold text-sky-800 bg-sky-100 border border-sky-200 px-2 py-0.5 rounded-full">
+                {siteConfig.authorizedDealer}
+              </span>
+            </div>
             <h2
               id="contact-info-heading"
               className="text-lg sm:text-xl font-bold text-slate-900 mt-1"
@@ -176,7 +199,8 @@ export default async function HomePage() {
               {siteConfig.companyName}
             </h2>
             <p className="text-xs sm:text-sm text-slate-500 mt-0.5">
-              İzmit genelinde damacana su, pet su ve soğuk içecek tedariği
+              İzmit genelinde Abant Su yetkili bayisi olarak doğal damacana su,
+              pet su ve soğuk içecek tedariği
             </p>
           </div>
 
@@ -298,4 +322,3 @@ export default async function HomePage() {
     </main>
   );
 }
-

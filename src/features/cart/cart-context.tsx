@@ -24,7 +24,11 @@ export type CartContextType = {
    * Used for display (name, price) without persisting prices to localStorage.
    */
   products: ProductDto[];
-  addToCart: (productId: string, qty?: number) => void;
+  addToCart: (
+    productId: string,
+    qty?: number,
+    emptyBottleQuantity?: number
+  ) => void;
   updateQuantity: (productId: string, qty: number) => void;
   updateEmptyBottles: (productId: string, qty: number) => void;
   removeFromCart: (productId: string) => void;

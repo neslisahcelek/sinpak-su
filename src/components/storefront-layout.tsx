@@ -6,6 +6,7 @@ import { CartProvider } from "@/features/cart/cart-provider";
 import { Header } from "@/components/header";
 import { Footer } from "@/components/footer";
 import { CartDrawer } from "@/features/cart/cart-drawer";
+import { FloatingContactButtons } from "@/components/floating-contact-buttons";
 
 interface StorefrontLayoutProps {
   children: React.ReactNode;
@@ -38,6 +39,7 @@ export function StorefrontLayout({
         <Footer />
       </div>
       <CartDrawer />
+      <FloatingContactButtons />
     </CartProvider>
   );
 }

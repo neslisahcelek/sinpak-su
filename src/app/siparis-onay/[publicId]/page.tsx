@@ -160,13 +160,9 @@ export default async function OrderConfirmationPage({ params }: Props) {
                   {item.productType === "DAMACANA_WATER" && (
                     <span className="text-xs text-slate-600">
                       İade Boş Damacana: {item.emptyBottleQuantity} adet
-                      {parseFloat(item.depositTotal) > 0 ? (
+                      {parseFloat(item.depositTotal) > 0 && (
                         <span className="text-amber-600 ml-1">
                           (+{formatPrice(item.depositTotal)} depozito)
-                        </span>
-                      ) : (
-                        <span className="text-green-600 ml-1">
-                          (Depozitosuz)
                         </span>
                       )}
                     </span>

@@ -2,8 +2,7 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import { notFound } from "next/navigation";
 import { getActiveProductBySlug } from "@/server/services/product.service";
-import { formatPrice } from "@/features/products/format-price";
-import { AddToCartButton } from "@/features/products/add-to-cart-button";
+import { ProductDetailOrderBox } from "@/features/products/product-detail-order-box";
 
 interface Props {
   params: Promise<{ slug: string }>;
@@ -16,7 +15,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   if (!product) {
     return {
       title: "Ürün Bulunamadı | Sinpak Su",
-      description: "Aradığınız ürün bulunamadı veya satıştan kaldırılmış olabilir.",
+      description:
+        "Aradığınız ürün bulunamadı veya satıştan kaldırılmış olabilir.",
     };
   }
 
@@ -43,8 +43,6 @@ export default async function ProductDetailPage({ params }: Props) {
     notFound();
   }
 
-  const isDamacana = product.type === "DAMACANA_WATER";
-
   return (
     <>
       {/* Extra bottom padding on mobile so sticky bar doesn't cover content */}
@@ -58,7 +56,7 @@ export default async function ProductDetailPage({ params }: Props) {
                   src={product.imageUrl}
                   alt={product.name}
                   fill
-                  className="object-cover"
+                  className="object-contain p-4"
                   sizes="(min-width: 1024px) 60vw, 100vw"
                   priority
                 />
@@ -91,41 +89,17 @@ export default async function ProductDetailPage({ params }: Props) {
               {product.name}
             </h1>
 
-            <div className="text-3xl font-bold text-slate-950">
-              {formatPrice(product.price)}
-            </div>
-
-            {isDamacana && (
-              <div className="flex flex-col gap-2">
-                <span className="inline-flex text-xs font-medium text-amber-600 bg-amber-50 px-3 py-1.5 rounded-full self-start">
-                  + {formatPrice(product.depositAmount)} depozito*
-                </span>
-                <p className="text-sm text-slate-600 leading-relaxed">
-                  * Damacana depositi yalnızca boş damacana iade etmediğiniz
-                  birimler için uygulanır. Sipariş sırasında kaç adet boş
-                  damacanayı iade edeceğinizi belirtebilirsiniz.
-                </p>
-              </div>
-            )}
-
             {product.description && (
               <p className="text-base text-slate-600 leading-relaxed">
                 {product.description}
               </p>
             )}
 
-            {/* Desktop Add to Cart (hidden on mobile — sticky bar is used) */}
-            <div className="hidden lg:block mt-4">
-              <AddToCartButton product={product} />
-            </div>
+            {/* Interactive Order Box (Price + Empty bottle selector + CTA) */}
+            <ProductDetailOrderBox product={product} />
           </div>
         </div>
       </main>
-
-      {/* Mobile sticky Add to Cart bar */}
-      <div className="fixed bottom-0 left-0 right-0 z-40 bg-white border-t border-slate-200 p-4 lg:hidden">
-        <AddToCartButton product={product} />
-      </div>
     </>
   );
 }

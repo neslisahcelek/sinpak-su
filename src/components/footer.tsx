@@ -8,11 +8,14 @@ export function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 lg:gap-12">
           {/* Company identity */}
           <div className="space-y-3">
-            <div className="flex items-center gap-2">
+            <div className="flex flex-wrap items-center gap-2">
               <span className="text-xl font-bold text-white tracking-tight">
                 {siteConfig.name}
               </span>
-              <span className="text-xs bg-sky-900/60 text-sky-300 font-medium px-2 py-0.5 rounded border border-sky-700/50">
+              <span className="text-xs bg-sky-900/60 text-sky-300 font-semibold px-2 py-0.5 rounded border border-sky-700/50">
+                {siteConfig.authorizedDealer}
+              </span>
+              <span className="text-xs bg-slate-800 text-slate-300 font-medium px-2 py-0.5 rounded border border-slate-700">
                 İzmit
               </span>
             </div>
@@ -20,8 +23,9 @@ export function Footer() {
               {siteConfig.companyName}
             </p>
             <p className="text-xs text-slate-400 leading-relaxed">
-              İzmit geneline doğal kaynak suyu ve içecek teslimatı. Kapıda nakit
-              veya temassız POS cihazı ile güvenle ödeme yapabilirsiniz.
+              Abant Su yetkili bayisi olarak İzmit geneline doğal kaynak suyu ve
+              içecek teslimatı. Kapıda nakit veya temassız POS cihazı ile
+              güvenle ödeme yapabilirsiniz.
             </p>
           </div>
 
@@ -71,7 +75,12 @@ export function Footer() {
                     d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
                   />
                 </svg>
-                <span>Yetkili: <strong className="text-white font-medium">{siteConfig.contactPerson}</strong></span>
+                <span>
+                  Yetkili:{" "}
+                  <strong className="text-white font-medium">
+                    {siteConfig.contactPerson}
+                  </strong>
+                </span>
               </li>
 
               <li className="flex items-center gap-2.5">
@@ -106,7 +115,8 @@ export function Footer() {
               Hızlı Sipariş & Bilgi
             </h3>
             <p className="text-xs text-slate-300">
-              Çalışma Saatleri: <strong className="text-white">{siteConfig.workingHours}</strong>
+              Çalışma Saatleri:{" "}
+              <strong className="text-white">{siteConfig.workingHours}</strong>
             </p>
             <div className="pt-1">
               <a
@@ -150,8 +160,15 @@ export function Footer() {
 
         {/* Sub-footer copyright */}
         <div className="mt-10 pt-6 border-t border-slate-800 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-400">
-          <p>© {new Date().getFullYear()} {siteConfig.companyName}. Tüm hakları saklıdır.</p>
-          <div className="flex items-center gap-3 text-slate-400">
+          <p>
+            © {new Date().getFullYear()} {siteConfig.companyName}. Tüm hakları
+            saklıdır.
+          </p>
+          <div className="flex flex-wrap items-center justify-center gap-3 text-slate-400">
+            <span className="text-sky-300 font-medium">
+              {siteConfig.authorizedDealer}
+            </span>
+            <span>•</span>
             <span>Kapıda Nakit / POS</span>
             <span>•</span>
             <span>Hızlı Teslimat</span>

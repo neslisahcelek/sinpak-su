@@ -30,11 +30,11 @@ test.describe("Customer Checkout Flow", () => {
     // With 1 damacana and 0 empty returned, deposit notice is shown
     await expect(page.getByText("depozito")).toBeVisible();
 
-    // Select 1 empty bottle returned (depozitosuz)
+    // Select 1 empty bottle returned
     const select = page.getByLabel("İade Boş Damacana:");
     await select.selectOption("1");
     await expect(
-      page.getByText("Depozitosuz (Tüm boş damacanalar iade edilecek)")
+      page.getByText("Tüm boş damacanalar iade edilecek")
     ).toBeVisible();
 
     // Click Siparişi Tamamla

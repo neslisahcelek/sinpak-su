@@ -69,15 +69,47 @@ export function CartProvider({ children, products }: CartProviderProps) {
 
   const totalItems = items.reduce((sum, i) => sum + i.quantity, 0);
 
-  const addToCart = (productId: string, qty = 1) => {
+  const addToCart = (
+    productId: string,
+    qty = 1,
+    emptyBottleQuantity?: number
+  ) => {
     setItems((prev) => {
+      const product = products.find((p) => p.id === productId);
+      const isDamacana = product?.type === "DAMACANA_WATER";
+      // If product is damacana and emptyBottleQuantity is specified, clamp it.
+      // If not specified, default to qty (customer returns bottle).
+      const resolvedEmptyQty = isDamacana
+        ? emptyBottleQuantity !== undefined
+          ? Math.max(0, Math.min(emptyBottleQuantity, qty))
+          : qty
+        : 0;
+
       const existing = prev.find((i) => i.productId === productId);
       if (existing) {
+        const nextQty = existing.quantity + qty;
+        const nextEmpty = Math.min(
+          nextQty,
+          existing.emptyBottleQuantity + resolvedEmptyQty
+        );
         return prev.map((i) =>
-          i.productId === productId ? { ...i, quantity: i.quantity + qty } : i
+          i.productId === productId
+            ? {
+                ...i,
+                quantity: nextQty,
+                emptyBottleQuantity: nextEmpty,
+              }
+            : i
         );
       }
-      return [...prev, { productId, quantity: qty, emptyBottleQuantity: 0 }];
+      return [
+        ...prev,
+        {
+          productId,
+          quantity: qty,
+          emptyBottleQuantity: resolvedEmptyQty,
+        },
+      ];
     });
   };
 

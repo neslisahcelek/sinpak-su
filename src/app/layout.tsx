@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { siteConfig } from "@/lib/site-config";
 import { listActiveProducts } from "@/server/services/product.service";
 import { StorefrontLayout } from "@/components/storefront-layout";
+import { NavigationProgressBar } from "@/components/navigation-progress-bar";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -23,6 +24,7 @@ export default async function RootLayout({
   return (
     <html lang="tr">
       <body className="bg-slate-50 min-h-screen">
+        <NavigationProgressBar />
         <StorefrontLayout products={products}>{children}</StorefrontLayout>
       </body>
     </html>

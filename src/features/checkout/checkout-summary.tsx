@@ -103,7 +103,7 @@ export function CheckoutSummary() {
                       >
                         {Array.from({ length: di.quantity + 1 }, (_, i) => (
                           <option key={i} value={i}>
-                            {i} adet {i === di.quantity ? "(Depozitosuz)" : ""}
+                            {i} adet
                           </option>
                         ))}
                       </select>
@@ -116,7 +116,7 @@ export function CheckoutSummary() {
                       </div>
                     ) : (
                       <div className="text-xs text-green-700 bg-green-50 px-2 py-0.5 rounded">
-                        Depozitosuz (Tüm boş damacanalar iade edilecek)
+                        Tüm boş damacanalar iade edilecek
                       </div>
                     )}
                   </div>
@@ -146,7 +146,7 @@ export function CheckoutSummary() {
 
         <div className="flex justify-between">
           <span>Teslimat Ücreti</span>
-          <span className="font-medium text-green-600">Ücretsiz (İzmit)</span>
+          <span className="font-medium text-green-600">Ücretsiz</span>
         </div>
 
         <div className="border-t border-slate-200 pt-2 mt-1 flex justify-between text-base font-bold text-slate-950">

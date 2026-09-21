@@ -23,9 +23,10 @@ describe("StorefrontLayout", () => {
     );
 
     expect(html).toContain("Sinpak Su");
-    expect(html).toContain("Sepeti aç");
+    // [ORİJİNAL SEPET MODU BEKLENTİSİ]: expect(html).toContain("Sepeti aç");
+    expect(html).toContain("Sipariş Takip");
     expect(html).toContain("Sinpak Tedarik");
-    expect(html).toContain("0545 454 34 77");
+    expect(html).toContain("0 551 363 41 41");
     expect(html).toContain("Yenişehir");
     expect(html).toContain("child-content");
     expect(html).toContain("Customer Page");
@@ -40,7 +41,8 @@ describe("StorefrontLayout", () => {
     );
 
     expect(html).toContain("Sinpak Su");
-    expect(html).toContain("Sepeti aç");
+    // [ORİJİNAL SEPET MODU BEKLENTİSİ]: expect(html).toContain("Sepeti aç");
+    expect(html).toContain("Sipariş Takip");
     expect(html).toContain("Sinpak Tedarik");
     expect(html).toContain("checkout-content");
   });
@@ -53,7 +55,7 @@ describe("StorefrontLayout", () => {
       </StorefrontLayout>
     );
 
-    expect(html).not.toContain("Sepeti aç");
+    expect(html).not.toContain("Sipariş Takip");
     expect(html).not.toContain("Sinpak Tedarik");
     expect(html).toContain("admin-content");
     expect(html).toContain("Admin Dashboard");
@@ -67,7 +69,7 @@ describe("StorefrontLayout", () => {
       </StorefrontLayout>
     );
 
-    expect(html).not.toContain("Sepeti aç");
+    expect(html).not.toContain("Sipariş Takip");
     expect(html).not.toContain("Sinpak Tedarik");
     expect(html).toContain("admin-orders");
   });
@@ -80,7 +82,7 @@ describe("StorefrontLayout", () => {
       </StorefrontLayout>
     );
 
-    expect(html).not.toContain("Sepeti aç");
+    expect(html).not.toContain("Sipariş Takip");
     expect(html).toContain("admin-login");
   });
 
@@ -92,7 +94,7 @@ describe("StorefrontLayout", () => {
       </StorefrontLayout>
     );
 
-    expect(html).toContain("Sepeti aç");
+    expect(html).toContain("Sipariş Takip");
     expect(html).toContain("special-content");
   });
 });

@@ -1,26 +1,31 @@
 "use client";
 
 import Link from "next/link";
+// import { useCart } from "@/features/cart/cart-context";
 import { siteConfig } from "@/lib/site-config";
-import { useCart } from "@/features/cart/cart-context";
 
 export function Header() {
-  const { totalItems, setIsCartOpen } = useCart();
+  // const { totalItems, setIsCartOpen } = useCart();
 
   return (
     <header className="sticky top-0 z-50 h-14 bg-white border-b border-slate-200">
       <div className="max-w-5xl mx-auto px-4 lg:px-6 h-full flex items-center justify-between">
-        <Link
-          href="/"
-          className="text-sky-700 font-bold text-lg focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sky-700 rounded"
-        >
-          Sinpak Su
-        </Link>
+        <div className="flex items-center gap-2">
+          <Link
+            href="/"
+            className="text-sky-700 font-bold text-lg focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sky-700 rounded shrink-0"
+          >
+            Sinpak Su
+          </Link>
+          <span className="hidden xs:inline-flex items-center text-[11px] font-semibold text-sky-800 bg-sky-50 border border-sky-200 px-2 py-0.5 rounded-full">
+            {siteConfig.authorizedDealer}
+          </span>
+        </div>
 
         <nav className="flex items-center gap-2">
           <a
             href={siteConfig.phoneHref}
-            className="hidden sm:inline-flex items-center gap-1.5 text-xs sm:text-sm font-semibold text-sky-800 bg-sky-50 hover:bg-sky-100 border border-sky-200 px-3 py-1.5 rounded-full transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sky-700"
+            className="inline-flex items-center gap-1.5 text-xs sm:text-sm font-semibold text-sky-800 bg-sky-50 hover:bg-sky-100 border border-sky-200 px-3 py-1.5 rounded-full transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sky-700"
             aria-label={`Telefonla Sipariş: ${siteConfig.phoneFormatted}`}
           >
             <svg
@@ -36,7 +41,10 @@ export function Header() {
                 clipRule="evenodd"
               />
             </svg>
-            <span>{siteConfig.phoneFormatted}</span>
+            <span className="hidden xs:inline">
+              {siteConfig.phoneFormatted}
+            </span>
+            <span className="xs:hidden">Ara</span>
           </a>
 
           <Link
@@ -46,6 +54,12 @@ export function Header() {
             Sipariş Takip
           </Link>
 
+          {/* 
+            [GEÇİCİ OLARAK GİZLENDİ - YALNIZCA TELEFONLA SİPARİŞ MODU]
+            Sepet Çekmecesi Açma Butonu geçici olarak yorum satırına alınmıştır.
+            Geri getirmek için bu yorum bloğunu kaldırmanız yeterlidir.
+          */}
+          {/*
           <button
             onClick={() => setIsCartOpen(true)}
             aria-label="Sepeti aç"
@@ -78,6 +92,7 @@ export function Header() {
               </span>
             )}
           </button>
+          */}
         </nav>
       </div>
     </header>
