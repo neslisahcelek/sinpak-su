@@ -1,57 +1,110 @@
 "use client";
 
 import Link from "next/link";
+import { Chip } from "@heroui/react";
+import { Droplets, Building2, PhoneCall, Clock } from "lucide-react";
 // import { useCart } from "@/features/cart/cart-context";
-import { siteConfig } from "@/lib/site-config";
+import { brandConfig, type BrandKey } from "@/lib/site-config";
 
-export function Header() {
+interface HeaderProps {
+  brand?: BrandKey;
+}
+
+export function Header({ brand = "su" }: HeaderProps) {
+  const config = brandConfig[brand];
   // const { totalItems, setIsCartOpen } = useCart();
 
+  const isSu = brand === "su";
+
   return (
-    <header className="sticky top-0 z-50 h-14 bg-white border-b border-slate-200">
+    <header className="sticky top-0 z-50 h-16 bg-white/85 backdrop-blur-md border-b border-slate-200/80 shadow-xs transition-all">
       <div className="max-w-5xl mx-auto px-4 lg:px-6 h-full flex items-center justify-between">
-        <div className="flex items-center gap-2">
+        {/* Brand & Subtitle */}
+        <div className="flex items-center gap-2.5">
           <Link
-            href="/"
-            className="text-sky-700 font-bold text-lg focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sky-700 rounded shrink-0"
+            href={isSu ? "/" : "/kurumsal-tedarik"}
+            className={`flex items-center gap-2 font-extrabold text-xl tracking-tight transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 rounded-lg shrink-0 ${
+              isSu
+                ? "text-sky-700 hover:text-sky-800 focus-visible:outline-sky-700"
+                : "text-slate-800 hover:text-slate-900 focus-visible:outline-slate-700"
+            }`}
           >
-            Sinpak Su
+            {/* Brand Icon */}
+            <span
+              className={`w-8 h-8 rounded-xl flex items-center justify-center text-white shadow-xs ${
+                isSu
+                  ? "bg-linear-to-tr from-sky-600 to-sky-400"
+                  : "bg-linear-to-tr from-slate-700 to-slate-500"
+              }`}
+            >
+              {isSu ? (
+                <Droplets className="w-5 h-5 text-white" />
+              ) : (
+                <Building2 className="w-5 h-5 text-white" />
+              )}
+            </span>
+            <span>{config.name}</span>
           </Link>
-          <span className="hidden xs:inline-flex items-center text-[11px] font-semibold text-sky-800 bg-sky-50 border border-sky-200 px-2 py-0.5 rounded-full">
-            {siteConfig.authorizedDealer}
-          </span>
+
+          <div className="hidden xs:block">
+            <Chip
+              size="sm"
+              variant="soft"
+              color="accent"
+              className={`font-semibold text-xs border ${
+                isSu
+                  ? "bg-sky-50 text-sky-800 border-sky-200/80"
+                  : "bg-slate-100 text-slate-700 border-slate-200/80"
+              }`}
+            >
+              {config.authorizedDealer}
+            </Chip>
+          </div>
         </div>
 
-        <nav className="flex items-center gap-2">
+        {/* Action Buttons */}
+        <nav className="flex items-center gap-2.5">
           <a
-            href={siteConfig.phoneHref}
-            className="inline-flex items-center gap-1.5 text-xs sm:text-sm font-semibold text-sky-800 bg-sky-50 hover:bg-sky-100 border border-sky-200 px-3 py-1.5 rounded-full transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sky-700"
-            aria-label={`Telefonla Sipariş: ${siteConfig.phoneFormatted}`}
+            href={config.phoneHref}
+            className={`inline-flex items-center gap-2 text-xs sm:text-sm font-bold text-white active:scale-98 px-3.5 sm:px-4 py-2 rounded-full transition-all shadow-xs hover:shadow-md focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 ${
+              isSu
+                ? "bg-sky-700 hover:bg-sky-800 focus-visible:outline-sky-700"
+                : "bg-slate-700 hover:bg-slate-800 focus-visible:outline-slate-700"
+            }`}
+            aria-label={`Telefonla Sipariş: ${config.phoneFormatted}`}
           >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="w-3.5 h-3.5 text-sky-600"
-              viewBox="0 0 24 24"
-              fill="currentColor"
-              aria-hidden="true"
-            >
-              <path
-                fillRule="evenodd"
-                d="M1.5 4.5a3 3 0 0 1 3-3h1.372c.86 0 1.61.586 1.819 1.42l1.105 4.423a1.875 1.875 0 0 1-.694 1.955l-1.293.97c-.135.101-.164.249-.126.352a11.285 11.285 0 0 0 6.697 6.697c.103.038.25.009.352-.126l.97-1.293a1.875 1.875 0 0 1 1.955-.694l4.423 1.105c.834.209 1.42.959 1.42 1.82V19.5a3 3 0 0 1-3 3h-2.25C8.552 22.5 1.5 15.448 1.5 6.75V4.5Z"
-                clipRule="evenodd"
+            <span className="relative flex h-2 w-2">
+              <span
+                className={`animate-ping absolute inline-flex h-full w-full rounded-full opacity-75 ${
+                  isSu ? "bg-sky-300" : "bg-slate-400"
+                }`}
               />
-            </svg>
-            <span className="hidden xs:inline">
-              {siteConfig.phoneFormatted}
+              <span className="relative inline-flex rounded-full h-2 w-2 bg-white" />
             </span>
-            <span className="xs:hidden">Ara</span>
+            <PhoneCall className="w-4 h-4 text-white/70" />
+            <span className="hidden xs:inline">
+              {config.phoneFormatted}
+            </span>
+            <span className="xs:hidden">Hemen Ara</span>
           </a>
 
+          {/* Su-specific nav */}
+          {isSu && (
+            <Link
+              href="/siparis-takip"
+              className="inline-flex items-center gap-1.5 text-xs sm:text-sm font-medium text-slate-700 hover:text-sky-700 hover:bg-slate-100/70 transition-all px-3 py-2 rounded-xl focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sky-700"
+            >
+              <Clock className="w-4 h-4 text-slate-400" />
+              <span>Sipariş Takip</span>
+            </Link>
+          )}
+
+          {/* Cross-link to the other brand */}
           <Link
-            href="/siparis-takip"
-            className="text-sm font-medium text-slate-600 hover:text-sky-700 transition-colors px-2 py-1 rounded focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sky-700"
+            href={isSu ? "/kurumsal-tedarik" : "/"}
+            className="hidden sm:inline-flex items-center gap-1.5 text-xs sm:text-sm font-medium text-slate-700 hover:text-sky-700 hover:bg-slate-100/70 transition-all px-3 py-2 rounded-xl focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sky-700"
           >
-            Sipariş Takip
+            <span>{isSu ? "Kurumsal" : "Su Siparişi"}</span>
           </Link>
 
           {/* 

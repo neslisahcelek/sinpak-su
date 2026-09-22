@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useMemo } from "react";
+import { Chip } from "@heroui/react";
 import type { ProductDto } from "@/server/services/product.service";
 import { ProductCard } from "./product-card";
 
@@ -49,11 +50,11 @@ export function ProductCatalogSection({ products }: Props) {
 
   return (
     <div className="space-y-6">
-      {/* Category Filter Tabs (Matching Reference Design) */}
+      {/* Category Filter Tabs (Modern Segmented Bar with HeroUI Chip) */}
       <div className="w-full overflow-hidden">
         <nav
           aria-label="Ürün Kategorileri"
-          className="flex items-stretch overflow-x-auto no-scrollbar gap-1 border-b border-slate-200 bg-white rounded-xl p-1 shadow-xs"
+          className="flex items-center overflow-x-auto no-scrollbar gap-1.5 bg-slate-100/90 p-1.5 rounded-2xl border border-slate-200/80 shadow-xs"
         >
           {CATEGORIES.map((cat) => {
             const isActive = activeCategory === cat.key;
@@ -64,30 +65,25 @@ export function ProductCatalogSection({ products }: Props) {
                 key={cat.key}
                 type="button"
                 onClick={() => setActiveCategory(cat.key)}
-                className={`relative flex items-center justify-center gap-1.5 px-4 sm:px-6 py-3 text-sm font-semibold whitespace-nowrap transition-all duration-150 min-h-[44px] rounded-lg ${
+                className={`flex items-center justify-center gap-2 px-4 sm:px-5 py-2.5 text-sm whitespace-nowrap transition-all duration-200 min-h-[44px] rounded-xl select-none ${
                   isActive
-                    ? "text-slate-950 bg-slate-50 shadow-xs"
-                    : "text-slate-600 hover:text-slate-900 hover:bg-slate-50/50"
+                    ? "bg-white text-sky-950 font-bold shadow-sm shadow-slate-200/50 scale-[1.02]"
+                    : "text-slate-600 hover:text-slate-950 hover:bg-white/60 font-medium"
                 }`}
               >
                 <span>{cat.label}</span>
-                <span
-                  className={`text-xs px-1.5 py-0.5 rounded-full ${
+                <Chip
+                  size="sm"
+                  variant="soft"
+                  color={isActive ? "accent" : "default"}
+                  className={`text-xs font-bold px-2 py-0.5 border-none transition-colors ${
                     isActive
-                      ? "bg-red-100 text-red-700 font-bold"
-                      : "bg-slate-100 text-slate-500"
+                      ? "bg-sky-100 text-sky-900"
+                      : "bg-slate-200/80 text-slate-600"
                   }`}
                 >
                   {count}
-                </span>
-
-                {/* Active Red Highlight Bar (as in reference screenshot) */}
-                {isActive && (
-                  <span
-                    className="absolute bottom-0 inset-x-2 h-0.5 bg-red-600 rounded-full"
-                    aria-hidden="true"
-                  />
-                )}
+                </Chip>
               </button>
             );
           })}
