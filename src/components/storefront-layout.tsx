@@ -37,6 +37,8 @@ export function StorefrontLayout({
     return <>{children}</>;
   }
 
+  const isProductDetail = Boolean(pathname?.startsWith("/urunler/"));
+
   return (
     <CartProvider products={products}>
       <div className="min-h-screen flex flex-col">
@@ -45,7 +47,7 @@ export function StorefrontLayout({
         <Footer brand={brand} />
       </div>
       <CartDrawer />
-      <FloatingContactButtons brand={brand} />
+      <FloatingContactButtons brand={brand} hasBottomBar={isProductDetail} />
     </CartProvider>
   );
 }

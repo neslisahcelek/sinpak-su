@@ -82,7 +82,7 @@ describe("ProductCard", () => {
 
     expect(html).toContain("19L Damacana Su");
     expect(html).toContain("180,00");
-    expect(html).toContain("Telefonla Sipariş");
+    expect(html).toContain("Hemen Ara");
     expect(html).toContain("tel:05513634141");
     // [ORİJİNAL SEPET MODU BEKLENTİSİ]: expect(html).toContain("Sepete Ekle");
     expect(html).not.toContain("depozito");
@@ -93,7 +93,7 @@ describe("ProductCard", () => {
 
     expect(html).toContain("0.5L Pet Su (12li)");
     expect(html).toContain("75,00");
-    expect(html).toContain("Telefonla Sipariş");
+    expect(html).toContain("Hemen Ara");
     expect(html).toContain("tel:05513634141");
     // [ORİJİNAL SEPET MODU BEKLENTİSİ]: expect(html).toContain("Sepete Ekle");
     expect(html).not.toContain("depozito");

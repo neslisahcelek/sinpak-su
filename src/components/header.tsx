@@ -2,9 +2,10 @@
 
 import Link from "next/link";
 import { Chip } from "@heroui/react";
-import { Droplets, Building2, PhoneCall, Clock } from "lucide-react";
+import { Droplets, PhoneCall, Clock } from "lucide-react";
 // import { useCart } from "@/features/cart/cart-context";
 import { brandConfig, type BrandKey } from "@/lib/site-config";
+import { SinpakTedarikLogo } from "@/components/sinpak-tedarik-logo";
 
 interface HeaderProps {
   brand?: BrandKey;
@@ -23,27 +24,18 @@ export function Header({ brand = "su" }: HeaderProps) {
         <div className="flex items-center gap-2.5">
           <Link
             href={isSu ? "/" : "/kurumsal-tedarik"}
-            className={`flex items-center gap-2 font-extrabold text-xl tracking-tight transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 rounded-lg shrink-0 ${
-              isSu
-                ? "text-sky-700 hover:text-sky-800 focus-visible:outline-sky-700"
-                : "text-slate-800 hover:text-slate-900 focus-visible:outline-slate-700"
-            }`}
+            className="group flex items-center gap-2 transition-transform active:scale-98 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 rounded-lg shrink-0"
           >
-            {/* Brand Icon */}
-            <span
-              className={`w-8 h-8 rounded-xl flex items-center justify-center text-white shadow-xs ${
-                isSu
-                  ? "bg-linear-to-tr from-sky-600 to-sky-400"
-                  : "bg-linear-to-tr from-slate-700 to-slate-500"
-              }`}
-            >
-              {isSu ? (
-                <Droplets className="w-5 h-5 text-white" />
-              ) : (
-                <Building2 className="w-5 h-5 text-white" />
-              )}
-            </span>
-            <span>{config.name}</span>
+            {isSu ? (
+              <div className="flex items-center gap-2 font-extrabold text-xl tracking-tight text-sky-700 hover:text-sky-800 transition-colors">
+                <span className="w-8 h-8 rounded-xl flex items-center justify-center text-white shadow-xs bg-linear-to-tr from-sky-600 to-sky-400">
+                  <Droplets className="w-5 h-5 text-white" />
+                </span>
+                <span>{config.name}</span>
+              </div>
+            ) : (
+              <SinpakTedarikLogo size="sm" showTagline={false} />
+            )}
           </Link>
 
           <div className="hidden xs:block">

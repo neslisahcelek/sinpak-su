@@ -97,4 +97,15 @@ describe("StorefrontLayout", () => {
     expect(html).toContain("Sipariş Takip");
     expect(html).toContain("special-content");
   });
+
+  it("offsets FloatingContactButtons above sticky order bar on product detail (/urunler/damacana-19l)", () => {
+    mockPathname = "/urunler/damacana-19l";
+    const html = renderToString(
+      <StorefrontLayout products={[]}>
+        <div id="product-detail">Product Detail Page</div>
+      </StorefrontLayout>
+    );
+
+    expect(html).toContain("bottom-24 lg:bottom-6");
+  });
 });

@@ -1,6 +1,14 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { PhoneCall, Building2, Factory, GraduationCap, Coffee, CheckCircle2, ArrowRight } from "lucide-react";
+import {
+  PhoneCall,
+  Building2,
+  Factory,
+  GraduationCap,
+  Coffee,
+  CheckCircle2,
+  ArrowRight,
+} from "lucide-react";
 import { brandConfig, siteConfig } from "@/lib/site-config";
 
 const config = brandConfig.tedarik;
@@ -13,7 +21,7 @@ export const metadata: Metadata = {
     "kurumsal temizlik tedariki İzmit",
     "ofis sarf malzeme Kocaeli",
     "fabrika temizlik ürünleri İzmit",
-    "toptan rulo havlu İzmit",
+    "toptan havlu kağıt İzmit",
     "toptan damacana su İzmit",
     "işletme temizlik tedarikçisi",
     "kurumsal su siparişi Kocaeli",
@@ -55,9 +63,9 @@ const kurumsalSchema = {
   description:
     "İzmit ve Kocaeli genelinde ofis, fabrika, okul, kafe ve otellere periyodik temizlik kimyasalı, kağıt ürünü ve sarf malzeme tedariki.",
   serviceType: [
-    "Rulo Havlu & Peçete Tedariki",
-    "Temizlik Kimyasalı Tedariki",
-    "Ambalaj & Çöp Torbası Tedariki",
+    "Kağıt Grubu Tedariği",
+    "Temizlik Kimyasalları Tedariği",
+    "Ambalaj & Çöp Torbası Tedariği",
   ],
 };
 
@@ -65,7 +73,7 @@ const CUSTOMER_TYPES = [
   {
     icon: Building2,
     title: "Ofisler",
-    desc: "Şirket ve kurum ofislerine düzenli rulo havlu, sıvı sabun ve temizlik ürünleri.",
+    desc: "Şirket ve kurum ofislerine düzenli kağıt grubu, köpük sabun ve temizlik ürünleri.",
     color: "sky",
   },
   {
@@ -91,11 +99,11 @@ const CUSTOMER_TYPES = [
 const PRODUCTS = [
   {
     category: "Kağıt & Hijyen",
-    items: ["Rulo Havlu (Çarşaf / Masura)", "Z Katlama Peçete", "Tuvalet Kağıdı", "Dispenser Sistemleri"],
+    items: ["Kağıt Havlu", "Z Katlama Peçete", "Tuvalet Kağıdı", "Dispenser Sistemleri"],
   },
   {
     category: "Temizlik Kimyasalları",
-    items: ["Sıvı El Sabunu", "Yüzey & Genel Temizleyici", "Çamaşır Suyu & Dezenfektan", "Bulaşık Deterjanı"],
+    items: ["Köpük Sabun", "Yüzey & Genel Temizleyici", "Çamaşır Suyu & Dezenfektan", "Bulaşık Deterjanı"],
   },
   {
     category: "Ambalaj & Çöp",
@@ -120,35 +128,52 @@ export default function KurumsalTedarikPage() {
           <span className="text-slate-800 font-medium">Kurumsal Tedarik</span>
         </nav>
 
-        {/* Hero */}
-        <section className="rounded-3xl bg-linear-to-br from-slate-900 via-sky-950 to-slate-900 text-white p-6 sm:p-10 relative overflow-hidden">
+        {/* Modern Corporate Split Hero */}
+        <section className="relative overflow-hidden rounded-3xl bg-linear-to-b from-emerald-50/80 via-white to-slate-50 border border-emerald-100 p-6 sm:p-8 lg:p-10 shadow-sm">
+          {/* Ambient Glows */}
           <div
-            className="absolute -right-20 -top-20 w-80 h-80 bg-sky-500/10 rounded-full blur-3xl pointer-events-none"
+            className="absolute -right-16 -top-16 w-80 h-80 bg-emerald-200/40 rounded-full blur-3xl pointer-events-none"
             aria-hidden="true"
           />
-          <div className="relative z-10 max-w-2xl space-y-4">
-            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/10 border border-white/15 text-xs font-semibold text-sky-200">
-              <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-              İzmit & Kocaeli Geneli
-            </span>
-            <h1 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold tracking-tight leading-tight">
-              Kurumsal & Toptan Sarf Malzeme Tedariki
+          <div
+            className="absolute -left-16 -bottom-16 w-72 h-72 bg-teal-100/30 rounded-full blur-3xl pointer-events-none"
+            aria-hidden="true"
+          />
+
+          <div className="relative z-10 max-w-3xl space-y-5">
+
+
+            <h1 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold tracking-tight text-slate-950 leading-tight">
+              İşletmenizin Tüm Sarf & Temizlik İhtiyaçları{" "}
+              <span className="text-transparent bg-clip-text bg-linear-to-r from-emerald-700 via-teal-600 to-emerald-800">
+                Tek Tedarikçide
+              </span>
             </h1>
-            <p className="text-sky-100 text-sm sm:text-base leading-relaxed">
-              Ofisiniz, fabrikanız, okulunuz veya işletmeniz için rulo havlu,
-              temizlik kimyasalı ve tüm sarf malzemelerinizi
-              periyodik olarak kapınıza getiriyoruz. Tek tedarikçi, tam
-              güvenilirlik.
+
+            <p className="text-sm sm:text-base text-slate-600 leading-relaxed max-w-2xl">
+              Ofisiniz, fabrikanız, okulunuz veya işletmeniz için kağıt grubu,
+              endüstriyel temizlik kimyasalı, çöp torbası ve sarf malzemelerini
+              toptan koli fiyatlarıyla ve periyodik olarak kapınıza teslim ediyoruz.
             </p>
-            <div className="pt-2 flex flex-wrap gap-3">
+
+            {/* Action Buttons */}
+            <div className="pt-2 flex flex-wrap items-center gap-3">
               <a
                 href={config.phoneHref}
-                className="inline-flex items-center gap-2.5 px-6 py-3 rounded-xl bg-sky-500 hover:bg-sky-400 text-white font-bold text-sm shadow-lg transition-colors"
+                className="inline-flex items-center gap-2.5 px-6 py-3.5 rounded-2xl bg-emerald-700 hover:bg-emerald-800 active:scale-98 text-white font-bold text-sm sm:text-base shadow-md hover:shadow-lg transition-all focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-700"
               >
-                <PhoneCall className="w-4 h-4" />
-                Teklif İçin Hemen Arayın: {config.phoneFormatted}
+                <PhoneCall className="w-5 h-5 text-emerald-200" />
+                <span>Teklif Alın: {config.phoneFormatted}</span>
+              </a>
+              <a
+                href="#urun-gruplari-heading"
+                className="inline-flex items-center justify-center px-5 py-3.5 rounded-2xl bg-white hover:bg-slate-50 text-slate-700 font-semibold text-sm sm:text-base border border-slate-200/90 shadow-2xs hover:shadow-xs transition-all"
+              >
+                Ürün Grupları ↓
               </a>
             </div>
+
+
           </div>
         </section>
 
@@ -164,26 +189,24 @@ export default function KurumsalTedarikPage() {
             {CUSTOMER_TYPES.map(({ icon: Icon, title, desc, color }) => (
               <div
                 key={title}
-                className={`rounded-2xl border p-5 bg-white shadow-xs hover:shadow-md transition-shadow ${
-                  color === "sky"
-                    ? "border-sky-100"
-                    : color === "violet"
-                      ? "border-violet-100"
-                      : color === "emerald"
-                        ? "border-emerald-100"
-                        : "border-amber-100"
-                }`}
+                className={`rounded-2xl border p-5 bg-white shadow-xs hover:shadow-md transition-shadow ${color === "sky"
+                  ? "border-sky-100"
+                  : color === "violet"
+                    ? "border-violet-100"
+                    : color === "emerald"
+                      ? "border-emerald-100"
+                      : "border-amber-100"
+                  }`}
               >
                 <div
-                  className={`w-11 h-11 rounded-xl flex items-center justify-center mb-3 ${
-                    color === "sky"
-                      ? "bg-sky-50 text-sky-600"
-                      : color === "violet"
-                        ? "bg-violet-50 text-violet-600"
-                        : color === "emerald"
-                          ? "bg-emerald-50 text-emerald-600"
-                          : "bg-amber-50 text-amber-600"
-                  }`}
+                  className={`w-11 h-11 rounded-xl flex items-center justify-center mb-3 ${color === "sky"
+                    ? "bg-sky-50 text-sky-600"
+                    : color === "violet"
+                      ? "bg-violet-50 text-violet-600"
+                      : color === "emerald"
+                        ? "bg-emerald-50 text-emerald-600"
+                        : "bg-amber-50 text-amber-600"
+                    }`}
                 >
                   <Icon className="w-5 h-5" />
                 </div>

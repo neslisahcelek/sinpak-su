@@ -122,7 +122,7 @@ export function ProductDetailOrderBox({ product }: Props) {
                   clipRule="evenodd"
                 />
               </svg>
-              <span>Telefonla Sipariş: {siteConfig.phoneFormatted}</span>
+              <span>Hemen Ara: {siteConfig.phoneFormatted}</span>
             </a>
           )}
         </div>
@@ -155,7 +155,7 @@ export function ProductDetailOrderBox({ product }: Props) {
                   clipRule="evenodd"
                 />
               </svg>
-              <span>Hemen Ara & Sipariş Ver</span>
+              <span>Hemen Ara</span>
             </a>
           </div>
         </div>

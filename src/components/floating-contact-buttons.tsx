@@ -5,10 +5,12 @@ import { brandConfig, type BrandKey } from "@/lib/site-config";
 
 interface FloatingContactButtonsProps {
   brand?: BrandKey;
+  hasBottomBar?: boolean;
 }
 
 export function FloatingContactButtons({
   brand = "su",
+  hasBottomBar = false,
 }: FloatingContactButtonsProps) {
   const config = brandConfig[brand];
   const isSu = brand === "su";
@@ -24,7 +26,9 @@ export function FloatingContactButtons({
   return (
     <aside
       aria-label="Hızlı İletişim ve Arama"
-      className="fixed right-4 bottom-6 z-40 flex flex-col items-end gap-3 pointer-events-auto"
+      className={`fixed right-4 z-40 flex flex-col items-end gap-3 pointer-events-auto transition-all ${
+        hasBottomBar ? "bottom-24 lg:bottom-6" : "bottom-6"
+      }`}
     >
       {/* 
         [GEÇİCİ OLARAK GİZLENDİ - YALNIZCA TELEFONLA SİPARİŞ MODU]

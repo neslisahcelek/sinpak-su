@@ -8,7 +8,7 @@
 const shared = {
   companyName:
     "Sinpak Tedarik Temizlik Kırtasiye ve Gıda Sanayi Ticaret Limited Şirketi",
-  url: "https://sinpaktedarik.com",
+  url: process.env.NEXT_PUBLIC_APP_URL || "https://sinpaktedarik.com",
   contactPerson: "Osman Çelek",
   address: {
     full: "Yenişehir mah. Asilkent sk. No: 6/A İzmit / Kocaeli",

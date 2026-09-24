@@ -90,7 +90,7 @@ export function ProductCard({ product }: { product: ProductDto }) {
             className="bg-sky-700 hover:bg-sky-800 active:bg-sky-900 text-white font-semibold text-sm rounded-xl px-4 py-2.5 min-h-[44px] w-full transition-all duration-150 flex items-center justify-center gap-2 shadow-xs hover:shadow-md hover:scale-[1.01] active:scale-[0.99] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sky-700"
           >
             <PhoneCall className="w-4 h-4 text-sky-200" />
-            <span>Telefonla Sipariş</span>
+            <span>Hemen Ara</span>
           </a>
         )}
       </Card.Footer>
