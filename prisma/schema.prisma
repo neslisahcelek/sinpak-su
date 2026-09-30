@@ -100,3 +100,36 @@ model AdminUser {
   @@index([isActive, username])
 }
 
+model SupplyCategory {
+  id           String          @id @default(cuid())
+  slug         String          @unique
+  name         String
+  description  String?
+  displayOrder Int             @default(0)
+  isActive     Boolean         @default(true)
+  createdAt    DateTime        @default(now())
+  updatedAt    DateTime        @updatedAt
+  products     SupplyProduct[]
+
+  @@index([isActive, displayOrder, name])
+}
+
+model SupplyProduct {
+  id           String         @id @default(cuid())
+  slug         String         @unique
+  categoryId   String
+  category     SupplyCategory @relation(fields: [categoryId], references: [id], onDelete: Restrict)
+  name         String
+  description  String?
+  unit         String?
+  price        Decimal?       @db.Decimal(12, 2)
+  displayOrder Int            @default(0)
+  isActive     Boolean        @default(true)
+  imageUrl     String?
+  createdAt    DateTime       @default(now())
+  updatedAt    DateTime       @updatedAt
+
+  @@index([categoryId, isActive, displayOrder])
+}
+
+

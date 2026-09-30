@@ -56,15 +56,13 @@ export function CheckoutSummary() {
           return (
             <div key={di.productId} className="pt-3 first:pt-0 flex gap-3">
               <div className="w-16 h-16 bg-slate-100 rounded-lg flex-shrink-0 overflow-hidden relative">
-                {di.product.imageUrl ? (
-                  <Image
-                    src={di.product.imageUrl}
-                    alt={di.product.name}
-                    fill
-                    className="object-cover"
-                    sizes="64px"
-                  />
-                ) : null}
+                <Image
+                  src={di.product.imageUrl || "/images/sinpak-pamukkale-logo.jpg"}
+                  alt={di.product.name}
+                  fill
+                  className={di.product.imageUrl ? "object-cover" : "object-contain p-1 opacity-80"}
+                  sizes="64px"
+                />
               </div>
 
               <div className="flex-1 min-w-0 flex flex-col gap-1">

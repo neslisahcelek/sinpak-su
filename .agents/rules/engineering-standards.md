@@ -20,6 +20,8 @@
 - Prefer small, composable, and focused changes.
 - Reuse existing components, utilities, and abstractions.
 - Adhere strictly to the global security, validation, pricing, and client/server boundaries specified in `AGENTS.md`.
+- **SEO & Sitemap Registration**: When adding or altering any public App Router route, always define metadata (title, description, canonical) and add the route to `src/app/sitemap.ts`. Never leave public pages orphaned from the sitemap.
+- **Commit Conventions**: All commit messages must be written in English using Conventional Commits (`feat:`, `fix:`, `refactor:`, `test:`, `docs:`, `chore:`).
 
 ## Implementation & Execution Workflow
 

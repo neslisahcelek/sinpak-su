@@ -4,7 +4,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { Card, Chip } from "@heroui/react";
-import { PhoneCall, ImageOff } from "lucide-react";
+import { PhoneCall } from "lucide-react";
 import { siteConfig } from "@/lib/site-config";
 import type { ProductDto } from "@/server/services/product.service";
 import { formatPrice } from "./format-price";
@@ -43,19 +43,13 @@ export function ProductCard({ product }: { product: ProductDto }) {
         className="block focus-visible:outline-2 focus-visible:outline-sky-700 focus-visible:outline-offset-2"
       >
         <div className="aspect-square w-full bg-linear-to-b from-sky-50/50 via-slate-50/30 to-white relative p-4 flex items-center justify-center">
-          {product.imageUrl ? (
-            <Image
-              src={product.imageUrl}
-              alt={product.name}
-              fill
-              className="object-contain p-3 transition-transform duration-300 group-hover:scale-105"
-              sizes="(min-width: 1024px) 25vw, (min-width: 768px) 33vw, 50vw"
-            />
-          ) : (
-            <div className="w-full h-full flex items-center justify-center text-slate-300">
-              <ImageOff className="w-10 h-10 stroke-[1.25]" />
-            </div>
-          )}
+          <Image
+            src={product.imageUrl || "/images/sinpak-pamukkale-logo.jpg"}
+            alt={product.name}
+            fill
+            className="object-contain p-3 transition-transform duration-300 group-hover:scale-105"
+            sizes="(min-width: 1024px) 25vw, (min-width: 768px) 33vw, 50vw"
+          />
         </div>
       </Link>
 

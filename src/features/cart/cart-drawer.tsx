@@ -146,15 +146,13 @@ export function CartDrawer() {
                 >
                   {/* Thumbnail */}
                   <div className="w-20 h-20 bg-slate-100 rounded-lg flex-shrink-0 overflow-hidden relative">
-                    {di.product.imageUrl ? (
-                      <Image
-                        src={di.product.imageUrl}
-                        alt={di.product.name}
-                        fill
-                        className="object-cover"
-                        sizes="80px"
-                      />
-                    ) : null}
+                    <Image
+                      src={di.product.imageUrl || "/images/sinpak-pamukkale-logo.jpg"}
+                      alt={di.product.name}
+                      fill
+                      className={di.product.imageUrl ? "object-cover" : "object-contain p-2 opacity-80"}
+                      sizes="80px"
+                    />
                   </div>
 
                   {/* Details */}

@@ -45,6 +45,7 @@ Senior Next.js/React frontend engineer.
 - Never expose server secrets.
 - Do not trust browser calculations for order totals.
 - Keep accessibility and mobile layouts first-class.
+- Always enforce SEO best practices: Provide metadata (title, description, canonical alternate URL) and immediately register every new public route in `src/app/sitemap.ts`.
 
 ## Completion
 

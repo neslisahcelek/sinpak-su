@@ -11,6 +11,9 @@ import {
 } from "lucide-react";
 import { brandConfig, siteConfig } from "@/lib/site-config";
 
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
+
 const config = brandConfig.tedarik;
 
 export const metadata: Metadata = {
@@ -98,7 +101,11 @@ const CUSTOMER_TYPES = [
   },
 ];
 
-const PRODUCTS = [
+import Image from "next/image";
+import { listActiveSupplyCategories } from "@/server/services/admin-supply-category.service";
+import { listActiveSupplyProducts } from "@/server/services/admin-supply-product.service";
+
+const FALLBACK_PRODUCTS = [
   {
     category: "Kağıt & Hijyen",
     items: ["Kağıt Havlu", "Z Katlama Peçete", "Tuvalet Kağıdı", "Dispenser Sistemleri"],
@@ -113,7 +120,14 @@ const PRODUCTS = [
   },
 ];
 
-export default function KurumsalTedarikPage() {
+export default async function KurumsalTedarikPage() {
+  const [categories, products] = await Promise.all([
+    listActiveSupplyCategories(),
+    listActiveSupplyProducts(),
+  ]);
+
+  const hasDynamicProducts = categories.length > 0 && products.length > 0;
+
   return (
     <>
       <script
@@ -146,7 +160,7 @@ export default function KurumsalTedarikPage() {
 
 
             <h1 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold tracking-tight text-slate-950 leading-tight">
-              İşletmenizin Tüm Sarf & Temizlik İhtiyaçları{" "}
+              İşletmenizin Tüm Temizlik İhtiyaçları{" "}
               <span className="text-transparent bg-clip-text bg-linear-to-r from-emerald-700 via-teal-600 to-emerald-800">
                 Tek Tedarikçide
               </span>
@@ -167,12 +181,12 @@ export default function KurumsalTedarikPage() {
                 <PhoneCall className="w-5 h-5 text-emerald-200" />
                 <span>Teklif Alın: {config.phoneFormatted}</span>
               </a>
-              <a
-                href="#urun-gruplari-heading"
+              <Link
+                href="/kurumsal-tedarik/urunler"
                 className="inline-flex items-center justify-center px-5 py-3.5 rounded-2xl bg-white hover:bg-slate-50 text-slate-700 font-semibold text-sm sm:text-base border border-slate-200/90 shadow-2xs hover:shadow-xs transition-all"
               >
-                Ürün Grupları ↓
-              </a>
+                Tüm Ürünler Kataloğu →
+              </Link>
             </div>
 
 
@@ -220,34 +234,164 @@ export default function KurumsalTedarikPage() {
         </section>
 
         {/* Product Grid */}
-        <section aria-labelledby="urun-gruplari-heading">
-          <h2
-            id="urun-gruplari-heading"
-            className="text-xl sm:text-2xl font-bold text-slate-900 mb-5"
-          >
-            Tedarik Ettiğimiz Ürün Grupları
-          </h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            {PRODUCTS.map(({ category, items }) => (
-              <div
-                key={category}
-                className="rounded-2xl border border-slate-200 bg-white p-5 shadow-xs"
-              >
-                <p className="font-bold text-sky-700 text-sm uppercase tracking-wide mb-3">
-                  {category}
-                </p>
-                <ul className="space-y-2">
-                  {items.map((item) => (
-                    <li key={item} className="flex items-center gap-2 text-sm text-slate-700">
-                      <CheckCircle2 className="w-4 h-4 text-emerald-500 shrink-0" />
-                      {item}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            ))}
+        <section aria-labelledby="urun-gruplari-heading" className="space-y-6">
+          <div>
+            <h2
+              id="urun-gruplari-heading"
+              className="text-xl sm:text-2xl font-bold text-slate-900"
+            >
+              Tedarik Ettiğimiz Ürün Grupları
+            </h2>
+            <p className="text-xs sm:text-sm text-slate-500 mt-1">
+              Toplu alımlar ve periyodik işletme tedariki için öne çıkan ürünlerimiz
+            </p>
           </div>
+
+          {hasDynamicProducts ? (
+            <div className="space-y-10">
+              {categories.map((cat) => {
+                const catProducts = products.filter(
+                  (p) => p.categoryId === cat.id
+                );
+                if (catProducts.length === 0) return null;
+                const previewProducts = catProducts.slice(0, 3);
+
+                return (
+                  <div key={cat.id} className="space-y-4">
+                    <div className="flex items-center justify-between border-b border-slate-200/80 pb-3">
+                      <div>
+                        <h3 className="text-base sm:text-lg font-bold text-slate-900">
+                          {cat.name}
+                        </h3>
+                        {cat.description && (
+                          <p className="text-xs text-slate-500 mt-0.5">
+                            {cat.description}
+                          </p>
+                        )}
+                      </div>
+
+                      <Link
+                        href={`/kurumsal-tedarik/urunler?kategori=${cat.slug}`}
+                        className="inline-flex items-center gap-1 text-xs sm:text-sm font-semibold text-emerald-700 hover:text-emerald-800 hover:underline transition-colors shrink-0"
+                      >
+                        <span>Tümünü Gör ({catProducts.length})</span>
+                        <ArrowRight className="w-3.5 h-3.5" />
+                      </Link>
+                    </div>
+
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                      {previewProducts.map((prod) => {
+                        const whatsappHref = `https://wa.me/90${config.phone.replace(
+                          /^0/,
+                          ""
+                        )}?text=${encodeURIComponent(
+                          `Merhaba Sinpak Tedarik, "${prod.name}"${prod.unit ? ` (${prod.unit})` : ""} için kurumsal fiyat teklifi almak istiyorum.`
+                        )}`;
+
+                        return (
+                          <div
+                            key={prod.id}
+                            className="rounded-2xl border border-slate-200 bg-white p-4 shadow-xs hover:shadow-md transition-shadow flex flex-col justify-between"
+                          >
+                            <div className="space-y-3">
+                                <div className="w-full h-40 rounded-xl bg-slate-50 relative overflow-hidden border border-slate-100 mb-3">
+                                  <Image
+                                    src={prod.imageUrl || "/images/sinpak-pamukkale-logo.jpg"}
+                                    alt={prod.name}
+                                    fill
+                                    sizes="(max-width: 768px) 100vw, 33vw"
+                                    className="object-contain p-2"
+                                  />
+                                </div>
+                              <div>
+                                <h4 className="font-bold text-slate-900 text-sm sm:text-base">
+                                  {prod.name}
+                                </h4>
+                                {prod.unit && (
+                                  <p className="text-xs font-semibold text-emerald-700 mt-0.5">
+                                    {prod.unit}
+                                  </p>
+                                )}
+                                {prod.description && (
+                                  <p className="text-xs text-slate-500 mt-1.5 leading-relaxed line-clamp-2">
+                                    {prod.description}
+                                  </p>
+                                )}
+                              </div>
+                            </div>
+
+                            <div className="pt-4 mt-3 border-t border-slate-100 flex items-center justify-between gap-2">
+                              {prod.price ? (
+                                <div>
+                                  <span className="text-[10px] text-slate-400 block font-medium">
+                                    Fiyat
+                                  </span>
+                                  <span className="font-bold text-slate-900 text-sm sm:text-base font-mono">
+                                    ₺{Number(prod.price).toFixed(2)}
+                                  </span>
+                                </div>
+                              ) : (
+                                <span className="inline-block px-2.5 py-1 rounded-full text-xs font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200">
+                                  Teklif Alınız
+                                </span>
+                              )}
+
+                              <a
+                                href={whatsappHref}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-emerald-700 hover:bg-emerald-800 text-white font-semibold text-xs transition-colors shadow-2xs"
+                              >
+                                <span>Teklif İste</span>
+                                <ArrowRight className="w-3.5 h-3.5" />
+                              </a>
+                            </div>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </div>
+                );
+              })}
+
+              {/* View All Products CTA Button */}
+              <div className="pt-4 text-center">
+                <Link
+                  href="/kurumsal-tedarik/urunler"
+                  className="inline-flex items-center gap-2.5 px-7 py-3.5 rounded-2xl bg-emerald-700 hover:bg-emerald-800 active:scale-98 text-white font-bold text-sm sm:text-base shadow-md hover:shadow-lg transition-all"
+                >
+                  <span>Tüm Kurumsal Ürün Kataloğunu İncele ({products.length} Ürün)</span>
+                  <ArrowRight className="w-4 h-4" />
+                </Link>
+              </div>
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              {FALLBACK_PRODUCTS.map(({ category, items }) => (
+                <div
+                  key={category}
+                  className="rounded-2xl border border-slate-200 bg-white p-5 shadow-xs"
+                >
+                  <p className="font-bold text-sky-700 text-sm uppercase tracking-wide mb-3">
+                    {category}
+                  </p>
+                  <ul className="space-y-2">
+                    {items.map((item) => (
+                      <li
+                        key={item}
+                        className="flex items-center gap-2 text-sm text-slate-700"
+                      >
+                        <CheckCircle2 className="w-4 h-4 text-emerald-500 shrink-0" />
+                        {item}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              ))}
+            </div>
+          )}
         </section>
+
 
         {/* Why Us */}
         <section

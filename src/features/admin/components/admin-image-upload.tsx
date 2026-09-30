@@ -2,7 +2,7 @@
 
 import { useState, useRef, useTransition } from "react";
 import Image from "next/image";
-import { compressImage, formatFileSize } from "@/lib/image-compressor";
+import { compressImage } from "@/lib/image-compressor";
 import { uploadProductImageAction } from "@/features/admin/actions";
 
 interface AdminImageUploadProps {
@@ -22,7 +22,6 @@ export function AdminImageUpload({
   const [isCompressing, setIsCompressing] = useState(false);
   const [isDragOver, setIsDragOver] = useState(false);
   const [statusMessage, setStatusMessage] = useState<string | null>(null);
-  const [savingsMessage, setSavingsMessage] = useState<string | null>(null);
   const [uploadError, setUploadError] = useState<string | null>(null);
   const [mode, setMode] = useState<"upload" | "url">("upload");
   const [previewError, setPreviewError] = useState(false);
@@ -43,30 +42,17 @@ export function AdminImageUpload({
     }
 
     setUploadError(null);
-    setSavingsMessage(null);
-    setStatusMessage("Görsel optimize ediliyor...");
+    setStatusMessage("Görsel yükleniyor...");
     setIsCompressing(true);
 
     try {
       // 1. Client-side compression to WebP (keeps file sizes ~50-120KB)
-      const { file: compressedFile, originalSize, compressedSize } =
-        await compressImage(file, {
-          maxWidth: 1000,
-          maxHeight: 1000,
-          quality: 0.82,
-          targetMimeType: "image/webp",
-        });
-
-      const savingsPercent = Math.round(
-        (1 - compressedSize / originalSize) * 100
-      );
-      if (savingsPercent > 0) {
-        setSavingsMessage(
-          `${formatFileSize(originalSize)} ➔ ${formatFileSize(compressedSize)} (%${savingsPercent} tasarruf)`
-        );
-      }
-
-      setStatusMessage("Supabase Storage'a yükleniyor...");
+      const { file: compressedFile } = await compressImage(file, {
+        maxWidth: 1000,
+        maxHeight: 1000,
+        quality: 0.82,
+        targetMimeType: "image/webp",
+      });
 
       // 2. Upload via Server Action
       startTransition(async () => {
@@ -144,7 +130,6 @@ export function AdminImageUpload({
 
   const handleRemoveImage = () => {
     onChange("");
-    setSavingsMessage(null);
     setUploadError(null);
     setStatusMessage(null);
     setPreviewError(false);
@@ -213,11 +198,6 @@ export function AdminImageUpload({
                   <p className="text-[11px] text-slate-500 truncate max-w-xs sm:max-w-md">
                     {value}
                   </p>
-                  {savingsMessage && (
-                    <p className="text-[11px] text-emerald-600 font-medium mt-0.5">
-                      ✓ {savingsMessage}
-                    </p>
-                  )}
                 </div>
               </div>
 
@@ -281,7 +261,7 @@ export function AdminImageUpload({
                   veya görseli buraya sürükleyip bırakın
                 </div>
                 <p className="text-[11px] text-slate-400">
-                  Maks. 5 MB (PNG, JPG, WebP veya AVIF). Tarayıcıda otomatik WebP formatında optimize edilir.
+                  Maks. 5 MB (PNG, JPG, WebP veya AVIF).
                 </p>
               </div>
 

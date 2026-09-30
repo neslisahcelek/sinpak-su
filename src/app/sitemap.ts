@@ -29,7 +29,13 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     {
       url: `${baseUrl}/kurumsal-tedarik`,
       lastModified: new Date(),
-      changeFrequency: "monthly",
+      changeFrequency: "weekly",
+      priority: 0.85,
+    },
+    {
+      url: `${baseUrl}/kurumsal-tedarik/urunler`,
+      lastModified: new Date(),
+      changeFrequency: "weekly",
       priority: 0.85,
     },
     ...productUrls,

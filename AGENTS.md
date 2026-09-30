@@ -33,6 +33,8 @@ Administrators can manage products and orders.
 11. Business logic must not be hidden inside UI components.
 12. Preserve loading, empty, success, and error states.
 13. Do not claim completion without running the required checks.
+14. SEO & Sitemap Integrity: Every new public user-facing route MUST include proper metadata (title, description, canonical alternate URL) and MUST be immediately added to `src/app/sitemap.ts` (with appropriate priority and changeFrequency). Every URL in `sitemap.ts` must resolve to an active route.
+15. Commit messages must always be in English following Conventional Commits (e.g. `feat:`, `fix:`, `refactor:`, `chore:`).
 
 ## Implementation & working tree modification rules
 
@@ -82,6 +84,7 @@ Before a feature is considered complete:
 - relevant E2E tests pass
 - production build passes
 - git diff has been inspected
+- all new public routes have canonical metadata and are registered in `src/app/sitemap.ts`
 - reviewer verdict is `APPROVED`
 
 Do not commit when the reviewer reports a `BLOCKER` or `HIGH` issue.

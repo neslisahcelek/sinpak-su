@@ -31,7 +31,8 @@ Assume the implementation contains defects until evidence shows otherwise.
 5. Inspect changed files and surrounding implementation.
 6. Check database/API implications.
 7. Check tests.
-8. Run appropriate verification commands when possible.
+8. Check SEO & Sitemap: Verify every new/modified public route has canonical metadata and is registered in `src/app/sitemap.ts`.
+9. Run appropriate verification commands when possible.
 
 ## Review categories
 
