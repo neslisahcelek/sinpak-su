@@ -4,22 +4,22 @@ import { renderToString } from "react-dom/server";
 import { SinpakTedarikLogo, SinpakTedarikIcon } from "./sinpak-tedarik-logo";
 
 describe("SinpakTedarikLogo", () => {
-  it("renders brand name and pure vector travertine icon by default", () => {
+  it("renders brand name and logo image by default", () => {
     const html = renderToString(<SinpakTedarikLogo size="md" />);
 
     expect(html).toContain("Sinpak");
     expect(html).toContain("Tedarik");
     expect(html).toContain("Kurumsal Temizlik Hizmetleri");
-    expect(html).toContain("<svg");
-    expect(html).toContain("p-water-top");
+    expect(html).toContain("Pamukkale Travertenleri Simgesi");
   });
 
-  it("renders raster symbol when useVector is false", () => {
-    const html = renderToString(<SinpakTedarikLogo size="sm" useVector={false} />);
+  it("renders vector symbol when useVector is true", () => {
+    const html = renderToString(<SinpakTedarikLogo size="sm" useVector={true} />);
 
     expect(html).toContain("Sinpak");
     expect(html).toContain("Tedarik");
-    expect(html).toContain("Pamukkale Travertenleri Simgesi");
+    expect(html).toContain("<svg");
+    expect(html).toContain("p-water-top");
   });
 
   it("renders standalone SinpakTedarikIcon with custom size", () => {

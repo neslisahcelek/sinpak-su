@@ -66,7 +66,7 @@ export function SinpakTedarikLogo({
   size = "md",
   variant = "light",
   showTagline = true,
-  useVector = true,
+  useVector = false,
   className = "",
 }: LogoProps) {
   const isDark = variant === "dark";
@@ -98,7 +98,7 @@ export function SinpakTedarikLogo({
     <div className={`inline-flex items-center gap-2.5 ${className}`}>
       {/* Pamukkale Travertine Symbol Badge */}
       <div
-        className={`${currentSize.iconBox} shrink-0 relative overflow-hidden shadow-xs border border-sky-200/80 bg-sky-50 transition-transform duration-200 group-hover:scale-105 flex items-center justify-center`}
+        className={`${currentSize.iconBox} shrink-0 relative overflow-hidden shadow-xs border border-sky-200/80 bg-white transition-transform duration-200 group-hover:scale-105 flex items-center justify-center`}
       >
         {useVector ? (
           <SinpakTedarikIcon size={currentSize.vectorSize} />
