@@ -52,9 +52,11 @@ const localBusinessSchema = {
   description:
     "İzmit genelinde Abant Su yetkili bayisi olarak damacana doğal kaynak suyu, pet şişe su ve soğuk içecek teslimatı.",
   url: siteConfig.url,
-  telephone: brandConfig.su.phone,
+  telephone: "+905513634141",
   priceRange: "₺",
-  image: `${siteConfig.url}/opengraph-image`,
+  image: `${siteConfig.url}/images/sinpak-tedarik-banner-clean.jpg`,
+  currenciesAccepted: "TRY",
+  paymentAccepted: "Nakit, Kredi Kartı",
   address: {
     "@type": "PostalAddress",
     streetAddress: siteConfig.address.street,
@@ -62,6 +64,11 @@ const localBusinessSchema = {
     addressRegion: "Kocaeli",
     postalCode: "41000",
     addressCountry: "TR",
+  },
+  geo: {
+    "@type": "GeoCoordinates",
+    latitude: 40.7667,
+    longitude: 29.95,
   },
   areaServed: {
     "@type": "City",
@@ -85,7 +92,7 @@ const localBusinessSchema = {
   ],
   contactPoint: {
     "@type": "ContactPoint",
-    telephone: brandConfig.su.phone,
+    telephone: "+905513634141",
     contactType: "customer service",
     availableLanguage: "Turkish",
   },

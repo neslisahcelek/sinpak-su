@@ -54,6 +54,12 @@ export default async function ProductDetailPage({ params }: Props) {
     notFound();
   }
 
+  const productImageUrl = product.imageUrl
+    ? product.imageUrl.startsWith("http")
+      ? product.imageUrl
+      : `${siteConfig.url}${product.imageUrl}`
+    : `${siteConfig.url}/images/sinpak-tedarik-banner-clean.jpg`;
+
   const productSchema = {
     "@context": "https://schema.org",
     "@type": "Product",
@@ -61,7 +67,7 @@ export default async function ProductDetailPage({ params }: Props) {
     description:
       product.description ||
       `${product.name} - Sinpak Su ile İzmit içi hızlı teslimat.`,
-    ...(product.imageUrl ? { image: product.imageUrl } : {}),
+    image: productImageUrl,
     sku: product.id,
     brand: {
       "@type": "Brand",
@@ -72,6 +78,8 @@ export default async function ProductDetailPage({ params }: Props) {
       url: `${siteConfig.url}/urunler/${product.slug}`,
       priceCurrency: "TRY",
       price: product.price,
+      priceValidUntil: "2027-12-31",
+      itemCondition: "https://schema.org/NewCondition",
       availability: "https://schema.org/InStock",
       seller: {
         "@type": "Organization",

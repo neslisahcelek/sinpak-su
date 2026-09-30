@@ -1,8 +1,9 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { Chip } from "@heroui/react";
-import { Droplets, PhoneCall, Clock } from "lucide-react";
+import { PhoneCall, Clock } from "lucide-react";
 // import { useCart } from "@/features/cart/cart-context";
 import { brandConfig, type BrandKey } from "@/lib/site-config";
 import { SinpakTedarikLogo } from "@/components/sinpak-tedarik-logo";
@@ -27,9 +28,16 @@ export function Header({ brand = "su" }: HeaderProps) {
             className="group flex items-center gap-2 transition-transform active:scale-98 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 rounded-lg shrink-0"
           >
             {isSu ? (
-              <div className="flex items-center gap-2 font-extrabold text-xl tracking-tight text-sky-700 hover:text-sky-800 transition-colors">
-                <span className="w-8 h-8 rounded-xl flex items-center justify-center text-white shadow-xs bg-linear-to-tr from-sky-600 to-sky-400">
-                  <Droplets className="w-5 h-5 text-white" />
+              <div className="flex items-center gap-2.5 font-extrabold text-xl tracking-tight text-sky-700 hover:text-sky-800 transition-colors">
+                <span className="w-9 h-9 rounded-xl relative overflow-hidden shadow-xs border border-sky-200/80 bg-white shrink-0 flex items-center justify-center transition-transform group-hover:scale-105">
+                  <Image
+                    src="/images/sinpak-pamukkale-logo.jpg"
+                    alt="Sinpak Su Logo"
+                    fill
+                    sizes="36px"
+                    priority
+                    className="object-cover"
+                  />
                 </span>
                 <span>{config.name}</span>
               </div>

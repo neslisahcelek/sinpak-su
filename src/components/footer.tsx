@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { brandConfig, type BrandKey } from "@/lib/site-config";
 
 interface FooterProps {
@@ -15,7 +16,16 @@ export function Footer({ brand = "su" }: FooterProps) {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 lg:gap-12">
           {/* Company identity */}
           <div className="space-y-3">
-            <div className="flex flex-wrap items-center gap-2">
+            <div className="flex flex-wrap items-center gap-2.5">
+              <span className="w-8 h-8 rounded-lg relative overflow-hidden shrink-0 border border-slate-700 bg-white flex items-center justify-center">
+                <Image
+                  src="/images/sinpak-pamukkale-logo.jpg"
+                  alt="Sinpak Logo"
+                  fill
+                  sizes="32px"
+                  className="object-cover"
+                />
+              </span>
               <span className="text-xl font-bold text-white tracking-tight">
                 {config.name}
               </span>

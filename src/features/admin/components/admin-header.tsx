@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { AdminLogoutButton } from "./admin-logout-button";
 
@@ -42,8 +43,17 @@ export function AdminHeader({ username }: AdminHeaderProps) {
             <Link
               href="/admin/orders"
               onClick={() => handleNavClick("/admin/orders")}
-              className="flex items-center gap-2 font-bold text-base sm:text-lg text-white hover:text-sky-400 transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-sky-400 rounded shrink-0"
+              className="flex items-center gap-2.5 font-bold text-base sm:text-lg text-white hover:text-sky-400 transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-sky-400 rounded shrink-0"
             >
+              <span className="w-7 h-7 rounded-lg relative overflow-hidden shrink-0 border border-slate-700 bg-white flex items-center justify-center">
+                <Image
+                  src="/images/sinpak-pamukkale-logo.jpg"
+                  alt="Sinpak Logo"
+                  fill
+                  sizes="28px"
+                  className="object-cover"
+                />
+              </span>
               <span>SinpakSU</span>
               <span className="hidden sm:inline-flex text-xs px-2 py-0.5 rounded bg-sky-950 text-sky-400 border border-sky-800">
                 Yönetim Paneli

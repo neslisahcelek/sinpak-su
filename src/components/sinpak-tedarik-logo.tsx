@@ -104,7 +104,7 @@ export function SinpakTedarikLogo({
           <SinpakTedarikIcon size={currentSize.vectorSize} />
         ) : (
           <Image
-            src="/images/pamukkale-symbol.png"
+            src="/images/sinpak-pamukkale-logo.jpg"
             alt="Pamukkale Travertenleri Simgesi"
             fill
             priority

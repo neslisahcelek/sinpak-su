@@ -50,7 +50,9 @@ const kurumsalSchema = {
   provider: {
     "@type": "LocalBusiness",
     name: siteConfig.companyName,
-    telephone: "05454543477",
+    telephone: "+905454543477",
+    url: `${siteConfig.url}/kurumsal-tedarik`,
+    image: `${siteConfig.url}/images/sinpak-tedarik-banner-clean.jpg`,
     address: {
       "@type": "PostalAddress",
       streetAddress: siteConfig.address.street,
