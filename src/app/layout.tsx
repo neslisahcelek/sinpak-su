@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Plus_Jakarta_Sans } from "next/font/google";
+import { Analytics } from "@vercel/analytics/next";
 import { siteConfig } from "@/lib/site-config";
 import { NavigationProgressBar } from "@/components/navigation-progress-bar";
 import { GoogleAnalytics } from "@/components/google-analytics";
@@ -72,6 +73,7 @@ export default function RootLayout({
         <GoogleAnalytics />
         <NavigationProgressBar />
         {children}
+        <Analytics />
       </body>
     </html>
   );
