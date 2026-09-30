@@ -37,6 +37,14 @@ vi.mock("next/cache", () => ({
   revalidatePath: vi.fn(),
 }));
 
+vi.mock("@/server/db/client", () => ({
+  prisma: {
+    adminUser: {
+      findUnique: vi.fn().mockResolvedValue(null),
+    },
+  },
+}));
+
 describe("Admin Authentication Server Actions", () => {
   beforeEach(() => {
     vi.clearAllMocks();

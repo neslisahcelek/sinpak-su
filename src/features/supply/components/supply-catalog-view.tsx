@@ -106,7 +106,30 @@ export function SupplyCatalogView({
       </div>
 
       {/* Product Grid */}
-      {filteredProducts.length === 0 ? (
+      {products.length === 0 ? (
+        <div className="p-12 text-center bg-white rounded-3xl border border-slate-200 space-y-4">
+          <div className="w-14 h-14 rounded-2xl bg-emerald-50 text-emerald-600 mx-auto flex items-center justify-center text-2xl">
+            📦
+          </div>
+          <div className="space-y-1.5 max-w-md mx-auto">
+            <h3 className="text-base font-bold text-slate-900">
+              Tedarik Kataloğumuz Güncelleniyor
+            </h3>
+            <p className="text-xs sm:text-sm text-slate-500 leading-relaxed">
+              Kurumsal sarf ve temizlik malzemeleri ürün kataloğumuz hazırlanmaktadır. Fiyat listesi ve toptan sipariş talepleriniz için lütfen bizimle iletişime geçiniz.
+            </p>
+          </div>
+          <div className="pt-2">
+            <a
+              href={config.phoneHref}
+              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-emerald-700 hover:bg-emerald-800 text-white font-semibold text-xs sm:text-sm shadow-xs transition-colors"
+            >
+              <PhoneCall className="w-4 h-4" />
+              <span>{config.phoneFormatted}</span>
+            </a>
+          </div>
+        </div>
+      ) : filteredProducts.length === 0 ? (
         <div className="p-12 text-center bg-white rounded-3xl border border-slate-200 space-y-4">
           <div className="w-14 h-14 rounded-2xl bg-emerald-50 text-emerald-600 mx-auto flex items-center justify-center text-2xl">
             🔍

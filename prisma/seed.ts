@@ -1,5 +1,7 @@
 import crypto from "node:crypto";
 import { promisify } from "node:util";
+import path from "node:path";
+import { fileURLToPath } from "node:url";
 import { PrismaClient, ProductType } from "@prisma/client";
 
 const prisma = new PrismaClient();
@@ -166,6 +168,11 @@ async function main() {
   }
 }
 
-if (import.meta.url === `file://${process.argv[1]}`) {
+const isDirectExecution =
+  process.argv[1] &&
+  path.resolve(process.argv[1]).toLowerCase() ===
+    fileURLToPath(import.meta.url).toLowerCase();
+
+if (isDirectExecution) {
   main();
 }

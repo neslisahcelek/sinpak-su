@@ -6,7 +6,6 @@ import {
   Factory,
   GraduationCap,
   Coffee,
-  CheckCircle2,
   ArrowRight,
 } from "lucide-react";
 import { brandConfig, siteConfig } from "@/lib/site-config";
@@ -105,28 +104,20 @@ import Image from "next/image";
 import { listActiveSupplyCategories } from "@/server/services/admin-supply-category.service";
 import { listActiveSupplyProducts } from "@/server/services/admin-supply-product.service";
 
-const FALLBACK_PRODUCTS = [
-  {
-    category: "Kağıt & Hijyen",
-    items: ["Kağıt Havlu", "Z Katlama Peçete", "Tuvalet Kağıdı", "Dispenser Sistemleri"],
-  },
-  {
-    category: "Temizlik Kimyasalları",
-    items: ["Köpük Sabun", "Yüzey & Genel Temizleyici", "Çamaşır Suyu & Dezenfektan", "Bulaşık Deterjanı"],
-  },
-  {
-    category: "Ambalaj & Çöp",
-    items: ["Çöp Torbası (Küçük / Orta / Büyük)", "Naylon Torba", "Ambalaj Malzemeleri"],
-  },
-];
-
 export default async function KurumsalTedarikPage() {
   const [categories, products] = await Promise.all([
     listActiveSupplyCategories(),
     listActiveSupplyProducts(),
   ]);
 
-  const hasDynamicProducts = categories.length > 0 && products.length > 0;
+  const categoriesWithProducts = categories
+    .map((cat) => ({
+      ...cat,
+      products: products.filter((p) => p.categoryId === cat.id),
+    }))
+    .filter((cat) => cat.products.length > 0);
+
+  const hasProducts = categoriesWithProducts.length > 0;
 
   return (
     <>
@@ -181,12 +172,14 @@ export default async function KurumsalTedarikPage() {
                 <PhoneCall className="w-5 h-5 text-emerald-200" />
                 <span>Teklif Alın: {config.phoneFormatted}</span>
               </a>
-              <Link
-                href="/kurumsal-tedarik/urunler"
-                className="inline-flex items-center justify-center px-5 py-3.5 rounded-2xl bg-white hover:bg-slate-50 text-slate-700 font-semibold text-sm sm:text-base border border-slate-200/90 shadow-2xs hover:shadow-xs transition-all"
-              >
-                Tüm Ürünler Kataloğu →
-              </Link>
+              {hasProducts && (
+                <Link
+                  href="/kurumsal-tedarik/urunler"
+                  className="inline-flex items-center justify-center px-5 py-3.5 rounded-2xl bg-white hover:bg-slate-50 text-slate-700 font-semibold text-sm sm:text-base border border-slate-200/90 shadow-2xs hover:shadow-xs transition-all"
+                >
+                  Tüm Ürünler Kataloğu →
+                </Link>
+              )}
             </div>
 
 
@@ -234,27 +227,23 @@ export default async function KurumsalTedarikPage() {
         </section>
 
         {/* Product Grid */}
-        <section aria-labelledby="urun-gruplari-heading" className="space-y-6">
-          <div>
-            <h2
-              id="urun-gruplari-heading"
-              className="text-xl sm:text-2xl font-bold text-slate-900"
-            >
-              Tedarik Ettiğimiz Ürün Grupları
-            </h2>
-            <p className="text-xs sm:text-sm text-slate-500 mt-1">
-              Toplu alımlar ve periyodik işletme tedariki için öne çıkan ürünlerimiz
-            </p>
-          </div>
+        {hasProducts && (
+          <section aria-labelledby="urun-gruplari-heading" className="space-y-6">
+            <div>
+              <h2
+                id="urun-gruplari-heading"
+                className="text-xl sm:text-2xl font-bold text-slate-900"
+              >
+                Tedarik Ettiğimiz Ürün Grupları
+              </h2>
+              <p className="text-xs sm:text-sm text-slate-500 mt-1">
+                Toplu alımlar ve periyodik işletme tedariki için öne çıkan ürünlerimiz
+              </p>
+            </div>
 
-          {hasDynamicProducts ? (
             <div className="space-y-10">
-              {categories.map((cat) => {
-                const catProducts = products.filter(
-                  (p) => p.categoryId === cat.id
-                );
-                if (catProducts.length === 0) return null;
-                const previewProducts = catProducts.slice(0, 3);
+              {categoriesWithProducts.map((cat) => {
+                const previewProducts = cat.products.slice(0, 3);
 
                 return (
                   <div key={cat.id} className="space-y-4">
@@ -274,7 +263,7 @@ export default async function KurumsalTedarikPage() {
                         href={`/kurumsal-tedarik/urunler?kategori=${cat.slug}`}
                         className="inline-flex items-center gap-1 text-xs sm:text-sm font-semibold text-emerald-700 hover:text-emerald-800 hover:underline transition-colors shrink-0"
                       >
-                        <span>Tümünü Gör ({catProducts.length})</span>
+                        <span>Tümünü Gör ({cat.products.length})</span>
                         <ArrowRight className="w-3.5 h-3.5" />
                       </Link>
                     </div>
@@ -294,15 +283,15 @@ export default async function KurumsalTedarikPage() {
                             className="rounded-2xl border border-slate-200 bg-white p-4 shadow-xs hover:shadow-md transition-shadow flex flex-col justify-between"
                           >
                             <div className="space-y-3">
-                                <div className="w-full h-40 rounded-xl bg-slate-50 relative overflow-hidden border border-slate-100 mb-3">
-                                  <Image
-                                    src={prod.imageUrl || "/images/sinpak-pamukkale-logo.jpg"}
-                                    alt={prod.name}
-                                    fill
-                                    sizes="(max-width: 768px) 100vw, 33vw"
-                                    className="object-contain p-2"
-                                  />
-                                </div>
+                              <div className="w-full h-40 rounded-xl bg-slate-50 relative overflow-hidden border border-slate-100 mb-3">
+                                <Image
+                                  src={prod.imageUrl || "/images/sinpak-pamukkale-logo.jpg"}
+                                  alt={prod.name}
+                                  fill
+                                  sizes="(max-width: 768px) 100vw, 33vw"
+                                  className="object-contain p-2"
+                                />
+                              </div>
                               <div>
                                 <h4 className="font-bold text-slate-900 text-sm sm:text-base">
                                   {prod.name}
@@ -365,32 +354,8 @@ export default async function KurumsalTedarikPage() {
                 </Link>
               </div>
             </div>
-          ) : (
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              {FALLBACK_PRODUCTS.map(({ category, items }) => (
-                <div
-                  key={category}
-                  className="rounded-2xl border border-slate-200 bg-white p-5 shadow-xs"
-                >
-                  <p className="font-bold text-sky-700 text-sm uppercase tracking-wide mb-3">
-                    {category}
-                  </p>
-                  <ul className="space-y-2">
-                    {items.map((item) => (
-                      <li
-                        key={item}
-                        className="flex items-center gap-2 text-sm text-slate-700"
-                      >
-                        <CheckCircle2 className="w-4 h-4 text-emerald-500 shrink-0" />
-                        {item}
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              ))}
-            </div>
-          )}
-        </section>
+          </section>
+        )}
 
 
         {/* Why Us */}
