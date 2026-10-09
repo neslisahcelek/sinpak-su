@@ -14,6 +14,7 @@ import {
   toggleProductActiveAction,
   uploadProductImageAction,
 } from "./actions";
+import { resetRateLimits } from "@/server/security/rate-limiter";
 
 // Mock next/headers cookies
 const mockCookieMap = new Map<string, { value: string; options?: unknown }>();
@@ -49,9 +50,33 @@ describe("Admin Authentication Server Actions", () => {
   beforeEach(() => {
     vi.clearAllMocks();
     mockCookieMap.clear();
+    resetRateLimits();
     process.env.ADMIN_USERNAME = "admin";
     process.env.ADMIN_PASSWORD = "testpassword123";
     process.env.AUTH_SECRET = "test-secret-key-1234567890123456";
+  });
+
+  it("should rate limit after 5 failed login attempts", async () => {
+    for (let i = 0; i < 5; i++) {
+      const res = await loginAdminAction({
+        username: "admin",
+        password: "wrongpassword",
+      });
+      expect(res.success).toBe(false);
+      if (!res.success) {
+        expect(res.error.code).toBe("INVALID_CREDENTIALS");
+      }
+    }
+
+    // 6th attempt should be blocked by rate limiter
+    const blockedRes = await loginAdminAction({
+      username: "admin",
+      password: "wrongpassword",
+    });
+    expect(blockedRes.success).toBe(false);
+    if (!blockedRes.success) {
+      expect(blockedRes.error.code).toBe("RATE_LIMIT_EXCEEDED");
+    }
   });
 
   it("should successfully log in with valid credentials and establish session cookie", async () => {
@@ -647,4 +672,3 @@ describe("Admin Authentication Server Actions", () => {
     });
   });
 });
-

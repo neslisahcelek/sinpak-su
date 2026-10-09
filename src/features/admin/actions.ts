@@ -1,6 +1,13 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
+import { headers } from "next/headers";
+import {
+  checkRateLimit,
+  clearRateLimit,
+  getClientIp,
+  RATE_LIMIT_CONFIGS,
+} from "@/server/security/rate-limiter";
 import {
   adminLoginInputSchema,
   updateOrderStatusSchema,
@@ -41,6 +48,30 @@ import { err, makeSafeError, ok, type Result } from "@/server/types/result";
 export async function loginAdminAction(
   rawInput: AdminLoginInput
 ): Promise<Result<{ success: true }>> {
+  let clientIp = "127.0.0.1";
+  try {
+    const headersList = await headers();
+    clientIp = getClientIp(headersList);
+  } catch {
+    // In unit tests where headers() is not mocked, use fallback
+  }
+
+  const rateLimitKey = `admin-login:${clientIp}`;
+  const rateLimit = checkRateLimit(
+    rateLimitKey,
+    RATE_LIMIT_CONFIGS.ADMIN_LOGIN.limit,
+    RATE_LIMIT_CONFIGS.ADMIN_LOGIN.windowSeconds
+  );
+
+  if (!rateLimit.allowed) {
+    return err(
+      makeSafeError(
+        "RATE_LIMIT_EXCEEDED",
+        `Çok fazla başarısız giriş denemesi. Lütfen ${rateLimit.retryAfterSeconds} saniye sonra tekrar deneyin.`
+      )
+    );
+  }
+
   const validationResult = adminLoginInputSchema.safeParse(rawInput);
   if (!validationResult.success) {
     return err(
@@ -60,6 +91,9 @@ export async function loginAdminAction(
       makeSafeError("INVALID_CREDENTIALS", "Kullanıcı adı veya şifre hatalı.")
     );
   }
+
+  // Clear rate limit on successful authentication
+  clearRateLimit(rateLimitKey);
 
   const session = createAdminSessionPayload(username);
   await setAdminSessionCookie(session);
@@ -266,10 +300,7 @@ export async function uploadProductImageAction(
 
   if (file.size > 5 * 1024 * 1024) {
     return err(
-      makeSafeError(
-        "VALIDATION_ERROR",
-        "Görsel boyutu maksimum 5MB olabilir."
-      )
+      makeSafeError("VALIDATION_ERROR", "Görsel boyutu maksimum 5MB olabilir.")
     );
   }
 
@@ -302,4 +333,3 @@ export async function uploadProductImageAction(
     );
   }
 }
-

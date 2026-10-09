@@ -4,7 +4,10 @@ import { redirect } from "next/navigation";
 import { getAdminSession } from "@/server/auth/session";
 import { listAllSupplyProducts } from "@/server/services/admin-supply-product.service";
 import { listAllSupplyCategories } from "@/server/services/admin-supply-category.service";
-import { AdminSupplyProductList } from "@/features/admin/components";
+import {
+  AdminSupplyProductList,
+  AdminExcelImportButton,
+} from "@/features/admin/components";
 
 export const metadata: Metadata = {
   title: "Tedarik Ürünleri | Yönetim Paneli",
@@ -47,6 +50,7 @@ export default async function AdminSupplyProductsPage() {
         </div>
 
         <div className="flex items-center gap-2.5 self-start sm:self-auto">
+          <AdminExcelImportButton mode="supply" categories={categories} />
           <Link
             href="/admin/tedarik/categories"
             className="inline-flex items-center justify-center px-3.5 py-2 text-xs sm:text-sm font-semibold text-slate-700 bg-white hover:bg-slate-50 border border-slate-200 rounded-xl shadow-2xs transition-colors"

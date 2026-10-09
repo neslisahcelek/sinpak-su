@@ -3,7 +3,10 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import { getAdminSession } from "@/server/auth/session";
 import { listAllAdminProducts } from "@/server/services/admin-product.service";
-import { AdminProductList } from "@/features/admin/components";
+import {
+  AdminProductList,
+  AdminExcelImportButton,
+} from "@/features/admin/components";
 
 export const metadata: Metadata = {
   title: "Ürünler | Yönetim Paneli",
@@ -38,12 +41,15 @@ export default async function AdminProductsPage() {
           </p>
         </div>
 
-        <Link
-          href="/admin/products/new"
-          className="inline-flex items-center justify-center px-4 py-2 text-sm font-semibold text-white bg-sky-600 hover:bg-sky-700 rounded-lg shadow-sm transition-colors self-start sm:self-auto"
-        >
-          + Yeni Ürün Ekle
-        </Link>
+        <div className="flex items-center gap-2.5 self-start sm:self-auto">
+          <AdminExcelImportButton mode="retail" />
+          <Link
+            href="/admin/products/new"
+            className="inline-flex items-center justify-center px-4 py-2 text-sm font-semibold text-white bg-sky-600 hover:bg-sky-700 rounded-lg shadow-sm transition-colors"
+          >
+            + Yeni Ürün Ekle
+          </Link>
+        </div>
       </div>
 
       <AdminProductList products={products} />

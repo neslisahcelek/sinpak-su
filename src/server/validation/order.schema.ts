@@ -82,6 +82,7 @@ export const createOrderInputSchema = z.object({
     .nullable()
     .transform((val) => (val && val.length > 0 ? val : null)),
   paymentMethod: paymentMethodEnum,
+  website: z.string().optional().nullable(),
   items: z
     .array(orderItemInputSchema)
     .min(1, "At least one item is required in the order"),

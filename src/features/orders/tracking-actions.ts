@@ -6,6 +6,12 @@ import {
 } from "@/server/services/order-tracking.service";
 import type { Result } from "@/server/types/result";
 import { err, makeSafeError, ok } from "@/server/types/result";
+import { headers } from "next/headers";
+import {
+  checkRateLimit,
+  getClientIp,
+  RATE_LIMIT_CONFIGS,
+} from "@/server/security/rate-limiter";
 import { z } from "zod";
 
 const lookupSchema = z.object({
@@ -22,6 +28,30 @@ export type OrderTrackingActionInput = z.infer<typeof lookupSchema>;
 export async function lookupOrderAction(
   rawInput: OrderTrackingActionInput
 ): Promise<Result<OrderTrackingDto>> {
+  let clientIp = "127.0.0.1";
+  try {
+    const headersList = await headers();
+    clientIp = getClientIp(headersList);
+  } catch {
+    // Test environments or contexts without headers
+  }
+
+  const rateLimitKey = `order-track:${clientIp}`;
+  const rateLimit = checkRateLimit(
+    rateLimitKey,
+    RATE_LIMIT_CONFIGS.ORDER_TRACKING.limit,
+    RATE_LIMIT_CONFIGS.ORDER_TRACKING.windowSeconds
+  );
+
+  if (!rateLimit.allowed) {
+    return err(
+      makeSafeError(
+        "RATE_LIMIT_EXCEEDED",
+        `Çok fazla sorgulama yaptınız. Lütfen ${rateLimit.retryAfterSeconds} saniye sonra tekrar deneyiniz.`
+      )
+    );
+  }
+
   const parsed = lookupSchema.safeParse(rawInput);
   if (!parsed.success) {
     return err(

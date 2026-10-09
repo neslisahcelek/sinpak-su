@@ -26,6 +26,7 @@ export function CheckoutForm() {
   const [paymentMethod, setPaymentMethod] =
     useState<PaymentMethod>("CASH_ON_DELIVERY");
   const idempotencyKeyRef = useRef<string | null>(null);
+  const [honeypot, setHoneypot] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [fieldErrors, setFieldErrors] = useState<FieldErrors>({});
   const [serverError, setServerError] = useState<string | null>(null);
@@ -103,6 +104,7 @@ export function CheckoutForm() {
         addressLine1: addressLine1.trim(),
         deliveryNotes: deliveryNotes.trim() ? deliveryNotes.trim() : undefined,
         paymentMethod,
+        website: honeypot.trim() ? honeypot.trim() : undefined,
         items: orderItems,
       });
 
@@ -114,6 +116,17 @@ export function CheckoutForm() {
           case "OUT_OF_OPERATING_HOURS":
             setServerError(
               "Siparişler yalnızca 09:00 - 19:00 saatleri arasında kabul edilmektedir."
+            );
+            break;
+          case "RATE_LIMIT_EXCEEDED":
+            setServerError(
+              err.message ||
+                "Kısa sürede çok fazla sipariş denemesi yapıldı. Lütfen biraz bekleyiniz."
+            );
+            break;
+          case "BOT_DETECTED":
+            setServerError(
+              "Güvenlik denetimi geçilemedi. Lütfen sayfayı yenileyip tekrar deneyiniz."
             );
             break;
           case "PRODUCT_UNAVAILABLE":
@@ -212,6 +225,24 @@ export function CheckoutForm() {
           {fieldErrors.general}
         </div>
       )}
+
+      {/* Hidden honeypot field for passive anti-bot protection */}
+      <div
+        className="hidden opacity-0 pointer-events-none absolute -left-[9999px]"
+        aria-hidden="true"
+        style={{ display: "none" }}
+      >
+        <label htmlFor="checkout-website-field">Website</label>
+        <input
+          id="checkout-website-field"
+          type="text"
+          name="website"
+          value={honeypot}
+          onChange={(e) => setHoneypot(e.target.value)}
+          tabIndex={-1}
+          autoComplete="off"
+        />
+      </div>
 
       {/* Contact & Delivery Details */}
       <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-4 lg:p-6 flex flex-col gap-4">

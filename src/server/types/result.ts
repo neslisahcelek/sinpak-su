@@ -20,7 +20,9 @@ export type AdminErrorCode =
   | "CONCURRENT_MODIFICATION"
   | "INTERNAL_ERROR";
 
-export type AppErrorCode = OrderErrorCode | AdminErrorCode;
+export type SecurityErrorCode = "RATE_LIMIT_EXCEEDED" | "BOT_DETECTED";
+
+export type AppErrorCode = OrderErrorCode | AdminErrorCode | SecurityErrorCode;
 
 export interface SafeError<TCode extends string = AppErrorCode> {
   code: TCode;

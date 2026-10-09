@@ -15,7 +15,8 @@ const STATUS_LABELS: Record<string, string> = {
 };
 
 const STATUS_DESCRIPTIONS: Record<string, string> = {
-  PENDING: "Siparişiniz sistemimize ulaştı ve kurye ekibimiz tarafından hazırlanıyor.",
+  PENDING:
+    "Siparişiniz sistemimize ulaştı ve kurye ekibimiz tarafından hazırlanıyor.",
   OUT_FOR_DELIVERY:
     "Siparişiniz kuryemiz tarafından teslimat adresinize ulaştırılmak üzere yola çıktı.",
   DELIVERED: "Siparişiniz başarıyla teslim edilmiştir. Afiyet olsun!",
@@ -97,7 +98,11 @@ export function OrderTrackingView({
     <div className="flex flex-col gap-6">
       {/* Lookup Form */}
       <Card className="rounded-2xl shadow-sm border border-slate-200/90 bg-white p-6 sm:p-7">
-        <form onSubmit={handleSubmit} noValidate className="flex flex-col gap-5">
+        <form
+          onSubmit={handleSubmit}
+          noValidate
+          className="flex flex-col gap-5"
+        >
           <div className="flex flex-col gap-1.5">
             <label
               htmlFor="order-number"
@@ -115,7 +120,8 @@ export function OrderTrackingView({
               className="w-full rounded-xl border border-slate-300 px-3.5 py-3 text-base font-mono text-slate-900 placeholder:text-slate-400 placeholder:font-sans transition-all focus:border-sky-600 focus:ring-2 focus:ring-sky-500/20 focus-visible:outline-none min-h-[46px] uppercase"
             />
             <p className="text-xs text-slate-500">
-              Sipariş onay sayfasında gösterilen numarayı giriniz (örn: SP-260830-4F3A).
+              Sipariş onay sayfasında gösterilen numarayı giriniz (örn:
+              SP-260830-4F3A).
             </p>
           </div>
 
