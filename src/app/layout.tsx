@@ -58,6 +58,9 @@ export const metadata: Metadata = {
   },
   verification: {
     google: "google2246d9a51b58da92",
+    ...(process.env.BING_SITE_VERIFICATION
+      ? { other: { "msvalidate.01": process.env.BING_SITE_VERIFICATION } }
+      : {}),
   },
   alternates: {
     canonical: "/",
@@ -69,7 +72,9 @@ export default function RootLayout({
 }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="tr" className={plusJakartaSans.variable}>
-      <body className={`${plusJakartaSans.className} bg-slate-50 min-h-screen antialiased`}>
+      <body
+        className={`${plusJakartaSans.className} bg-slate-50 min-h-screen antialiased`}
+      >
         <GoogleAnalytics />
         <NavigationProgressBar />
         {children}

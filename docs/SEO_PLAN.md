@@ -6,16 +6,17 @@ Bu belge, Sinpak Su (B2C perakende su dağıtımı) ve Sinpak Tedarik (B2B kurum
 
 ## 1. Temel Hedefler ve Kitle Ayrımı
 
-| Marka | Hedef Kitle | Hizmet Bölgesi | Odak Arama Niyeti |
-| :--- | :--- | :--- | :--- |
-| **Sinpak Su** | Ev ve küçük ofis müşterileri | İzmit (Merkez, Yahyakaptan, Alikahya, Bekirdere vb.) | Yerel su siparişi, damacana su bayisi, telefonla hızlı sipariş |
-| **Sinpak Tedarik** | Fabrikalar, okullar, ofisler, kafe ve restoranlar | İzmit & Kocaeli geneli | Toptan kağıt grubu, kurumsal temizlik sarf malzemeleri, periyodik teslimat |
+| Marka              | Hedef Kitle                                       | Hizmet Bölgesi                                       | Odak Arama Niyeti                                                          |
+| :----------------- | :------------------------------------------------ | :--------------------------------------------------- | :------------------------------------------------------------------------- |
+| **Sinpak Su**      | Ev ve küçük ofis müşterileri                      | İzmit (Merkez, Yahyakaptan, Alikahya, Bekirdere vb.) | Yerel su siparişi, damacana su bayisi, telefonla hızlı sipariş             |
+| **Sinpak Tedarik** | Fabrikalar, okullar, ofisler, kafe ve restoranlar | İzmit & Kocaeli geneli                               | Toptan kağıt grubu, kurumsal temizlik sarf malzemeleri, periyodik teslimat |
 
 ---
 
 ## 2. Hedef Anahtar Kelimeler
 
 ### Sinpak Su (Yerel Su Dağıtımı):
+
 - `İzmit su siparişi`
 - `damacana su İzmit`
 - `Abant Su yetkili bayii İzmit`
@@ -25,6 +26,7 @@ Bu belge, Sinpak Su (B2C perakende su dağıtımı) ve Sinpak Tedarik (B2B kurum
 - `19L damacana su siparişi`
 
 ### Sinpak Tedarik (Kurumsal Sarf Malzeme):
+
 - `kurumsal temizlik tedariki İzmit`
 - `ofis sarf malzeme Kocaeli`
 - `fabrika temizlik ürünleri İzmit`
@@ -37,6 +39,7 @@ Bu belge, Sinpak Su (B2C perakende su dağıtımı) ve Sinpak Tedarik (B2B kurum
 ## 3. Teknik SEO Altyapısı
 
 ### 3.1. Sitemap ve Robots.txt
+
 - **Sitemap URL:** `https://sinpaktedarik.com/sitemap.xml`
   - Kaynak: [src/app/sitemap.ts](file:///c:/Users/Nesli/Belgeler/Clones/sinpak-su/src/app/sitemap.ts)
   - Otomatik olarak ana sayfa (`/`), kurumsal sayfa (`/kurumsal-tedarik`) ve veritabanındaki tüm aktif ürünleri (`/urunler/[slug]`) içerir.
@@ -45,23 +48,46 @@ Bu belge, Sinpak Su (B2C perakende su dağıtımı) ve Sinpak Tedarik (B2B kurum
   - Gizli sayfaları (`/admin/`, `/checkout`, `/siparis-onay/`, `/siparis-takip`) taramaya kapatır, Googlebot'u doğrudan `sitemap.xml` adresine yönlendirir.
 
 ### 3.2. Google Search Console Doğrulaması
+
 - **HTML Doğrulama Dosyası:** `public/google2246d9a51b58da92.html`
 - **Meta Tag Doğrulaması:** [src/app/layout.tsx](file:///c:/Users/Nesli/Belgeler/Clones/sinpak-su/src/app/layout.tsx) içinde `google-site-verification` meta etiketi eklendi.
 - **Mülk Türü:** Alan adı mülkü (`sinpaktedarik.com`).
 
 ### 3.3. Yapılandırılmış Veri (Schema.org JSON-LD)
+
 Arama motorlarının zengin sonuçlar (Rich Snippets) sunabilmesi için uygulanan standartlar:
+
 1. **LocalBusiness & OpeningHours:** Ana sayfada onaylı şirket adı, İzmit adresi, +905513634141 telefon numarası, coğrafi koordinatlar ve 09:00-19:00 çalışma saatleri.
 2. **FAQPage:** Ana sayfada sık sorulan sorular (bölge, ödeme yöntemleri, kurumsal cari hesap).
 3. **Product & Offer:** Ürün detay sayfalarında (`/urunler/[slug]`) dinamik ürün adı, fiyat, TL para birimi, stok durumu (`InStock`) ve geçerlilik tarihi.
 4. **Service:** `/kurumsal-tedarik` sayfasında B2B kurumsal hizmet ve tedarik kategorileri şeması.
 
 ### 3.4. Sosyal Medya ve Paylaşım (OpenGraph & Twitter Cards)
+
 - [src/app/layout.tsx](file:///c:/Users/Nesli/Belgeler/Clones/sinpak-su/src/app/layout.tsx) içerisinde WhatsApp ve sosyal ağ paylaşımları için 1200x630 banner görseli (`/images/sinpak-tedarik-banner-clean.jpg`), başlık ve açıklamalar tanımlandı.
 
 ### 3.5. Google Analytics 4 (GA4) Desteği
+
 - [src/components/google-analytics.tsx](file:///c:/Users/Nesli/Belgeler/Clones/sinpak-su/src/components/google-analytics.tsx) bileşeni hazırlandı.
 - Ortam değişkenine (`.env.local` veya Vercel Settings) `NEXT_PUBLIC_GA_ID=G-XXXXXXXXXX` eklendiğinde Google Analytics otomatik olarak aktif olur.
+
+### 3.6. Bing Webmaster Tools & IndexNow Entegrasyonu
+
+- **Amaç:** Yeni veya güncellenen sayfaların Microsoft Bing, Yandex, Seznam ve Naver arama motorlarına bot taraması beklenmeden anlık (push) olarak iletilmesi.
+- **IndexNow API Anahtarı:** `5b4dd40b7c5541babe8307ca504528dd`
+- **Doğrulama Dosyası:** `public/5b4dd40b7c5541babe8307ca504528dd.txt` (`https://sinpaktedarik.com/5b4dd40b7c5541babe8307ca504528dd.txt`)
+- **Manuel / CI/CD Gönderim Scripti:**
+  ```bash
+  npm run seo:indexnow
+  ```
+  _(Veritabanındaki tüm aktif ürünleri ve temel rotaları çekip `https://api.indexnow.org/indexnow` adresine toplu gönderir.)_
+- **Programatik API Uç Noktası:** `POST /api/seo/indexnow`
+  - URL listesi gövdede gönderilebilir (`{ "urls": ["https://..."] }`) veya boş bırakılırsa tüm aktif sitemap rotaları taranarak gönderilir.
+  - Güvenlik: `Authorization: Bearer <AUTH_SECRET>` veya `?key=5b4dd40b7c5541babe8307ca504528dd` ile korunur.
+- **Bing Webmaster Tools Kurulumu:**
+  1. [bing.com/webmasters](https://www.bing.com/webmasters) adresine Google hesabı ile giriş yapılır.
+  2. "Google Search Console'dan İçe Aktar" seçilerek `sinpaktedarik.com` ve `sitemap.xml` anında otomatik doğrulanır.
+  3. İsteğe bağlı meta etiket doğrulaması için `BING_SITE_VERIFICATION` ortam değişkeni `src/app/layout.tsx` içinde hazırdır.
 
 ---
 
@@ -80,6 +106,6 @@ Organik siparişlerin en büyük kaynağı Google Haritalar'dır. Aşağıdaki b
 
 ## 5. Rutin Takip ve Kontrol Listesi
 
-- [ ] **Haftalık:** Google Search Console üzerinden "Performans" sekmesinden hangi arama terimlerinden tık alındığının incelenmesi.
-- [ ] **Aylık:** "Sayfalar" sekmesinden dizine eklenmeyen (Noindex, 404, yönlendirme vb.) sayfa olup olmadığının kontrolü.
-- [ ] **Ürün Değişikliği:** Yeni ürün eklendiğinde veya fiyat güncellendiğinde `sitemap.xml` ve `Product` Schema'nın doğrulanması.
+- [ ] **Haftalık:** Google Search Console ve Bing Webmaster Tools üzerinden "Performans / Arama Raporları" sekmesinden tıklama ve gösterimlerin incelenmesi.
+- [ ] **Aylık:** "Sayfalar / Dizin" sekmesinden taranmayan veya hata veren sayfaların kontrolü.
+- [ ] **Ürün Değişikliği / Yeni Sayfa:** Yeni ürün eklendiğinde `npm run seo:indexnow` çalıştırılarak veya API çağrılarak Bing ve arama motorlarının anında haberdar edilmesi.
