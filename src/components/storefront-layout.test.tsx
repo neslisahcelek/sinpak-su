@@ -26,7 +26,7 @@ describe("StorefrontLayout", () => {
     // [ORİJİNAL SEPET MODU BEKLENTİSİ]: expect(html).toContain("Sepeti aç");
     expect(html).toContain("Sipariş Takip");
     expect(html).toContain("Sinpak Tedarik");
-    expect(html).toContain("0 551 363 41 41");
+    expect(html).toContain("0 545 454 34 77");
     expect(html).toContain("Yenişehir");
     expect(html).toContain("child-content");
     expect(html).toContain("Customer Page");

@@ -52,7 +52,7 @@ const localBusinessSchema = {
   description:
     "İzmit genelinde Abant Su yetkili bayisi olarak damacana doğal kaynak suyu, pet şişe su ve soğuk içecek teslimatı.",
   url: siteConfig.url,
-  telephone: "+905513634141",
+  telephone: `+90${siteConfig.phone.slice(1)}`,
   priceRange: "₺",
   image: `${siteConfig.url}/images/sinpak-tedarik-banner-clean.jpg`,
   currenciesAccepted: "TRY",
@@ -70,10 +70,19 @@ const localBusinessSchema = {
     latitude: 40.7667,
     longitude: 29.95,
   },
-  areaServed: {
-    "@type": "City",
-    name: "İzmit",
-  },
+  areaServed: [
+    { "@type": "City", name: "İzmit" },
+    { "@type": "AdministrativeArea", name: "Yahyakaptan" },
+    { "@type": "AdministrativeArea", name: "Alikahya" },
+    { "@type": "AdministrativeArea", name: "Bekirdere" },
+    { "@type": "AdministrativeArea", name: "Yenişehir" },
+    { "@type": "AdministrativeArea", name: "Yeşilova" },
+    { "@type": "AdministrativeArea", name: "Plajyolu" },
+    { "@type": "AdministrativeArea", name: "Sanayi Mahallesi" },
+    { "@type": "State", name: "Kocaeli" },
+  ],
+  hasMap:
+    "https://maps.google.com/?q=Yeni%C5%9Fehir+mah.+Asilkent+sk.+No:+6/A+%C4%B0zmit+/+Kocaeli",
   openingHoursSpecification: [
     {
       "@type": "OpeningHoursSpecification",
@@ -92,7 +101,7 @@ const localBusinessSchema = {
   ],
   contactPoint: {
     "@type": "ContactPoint",
-    telephone: "+905513634141",
+    telephone: `+90${siteConfig.phone.slice(1)}`,
     contactType: "customer service",
     availableLanguage: "Turkish",
   },
@@ -104,26 +113,26 @@ const faqSchema = {
   mainEntity: [
     {
       "@type": "Question",
-      "name": "Hangi bölgelere teslimat yapıyorsunuz?",
-      "acceptedAnswer": {
+      name: "Hangi bölgelere teslimat yapıyorsunuz?",
+      acceptedAnswer: {
         "@type": "Answer",
-        "text": "İzmit merkez mahalleleri başta olmak üzere Yahyakaptan, Alikahya, Bekirdere, Plajyolu, Sanayi ve çevre sanayi sitelerine aynı gün doğrudan araçlarımızla teslimat sağlıyoruz.",
+        text: "İzmit merkez mahalleleri başta olmak üzere Yahyakaptan, Alikahya, Bekirdere, Plajyolu, Sanayi ve çevre sanayi sitelerine aynı gün doğrudan araçlarımızla teslimat sağlıyoruz.",
       },
     },
     {
       "@type": "Question",
-      "name": "Kapıda ödeme yapabilir miyim?",
-      "acceptedAnswer": {
+      name: "Kapıda ödeme yapabilir miyim?",
+      acceptedAnswer: {
         "@type": "Answer",
-        "text": "Evet, su siparişlerinizde kapıda nakit veya mobil POS cihazlarımızla kredi/banka kartı ile güvenle ödeme yapabilirsiniz.",
+        text: "Evet, su siparişlerinizde kapıda nakit veya mobil POS cihazlarımızla kredi/banka kartı ile güvenle ödeme yapabilirsiniz.",
       },
     },
     {
       "@type": "Question",
-      "name": "İşletmeler için kurumsal fatura ve cari hesap açılıyor mu?",
-      "acceptedAnswer": {
+      name: "İşletmeler için kurumsal fatura ve cari hesap açılıyor mu?",
+      acceptedAnswer: {
         "@type": "Answer",
-        "text": "Evet. Fabrika, ofis, okul ve kurumlar için e-Fatura kesilmekte ve düzenli periyodik alımlarda kurumsal cari hesap anlaşması yapılabilmektedir.",
+        text: "Evet. Fabrika, ofis, okul ve kurumlar için e-Fatura kesilmekte ve düzenli periyodik alımlarda kurumsal cari hesap anlaşması yapılabilmektedir.",
       },
     },
   ],
@@ -187,8 +196,8 @@ export default async function HomePage() {
               </h1>
 
               <p className="text-sm sm:text-base text-slate-600 leading-relaxed max-w-xl">
-                Abant Su kalitesiyle damacana ve pet su siparişlerinizi İzmit genelinde
-                aynı gün kapınıza teslim ediyoruz.
+                Abant Su kalitesiyle damacana ve pet su siparişlerinizi İzmit
+                genelinde aynı gün kapınıza teslim ediyoruz.
               </p>
 
               {/* Direct Phone Order CTA */}
@@ -198,7 +207,9 @@ export default async function HomePage() {
                   className="inline-flex items-center gap-2.5 px-6 py-3.5 rounded-2xl bg-sky-700 hover:bg-sky-800 active:scale-98 text-white font-bold text-sm sm:text-base shadow-md hover:shadow-lg transition-all focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sky-700"
                 >
                   <PhoneCall className="w-5 h-5 text-sky-200" />
-                  <span>Hemen Sipariş Ver: {brandConfig.su.phoneFormatted}</span>
+                  <span>
+                    Hemen Sipariş Ver: {brandConfig.su.phoneFormatted}
+                  </span>
                 </a>
                 <a
                   href="#urunler"
@@ -277,7 +288,11 @@ export default async function HomePage() {
         {/* ================================================================= */}
         {/* PRODUCT CATALOG SECTION                                           */}
         {/* ================================================================= */}
-        <section id="urunler" aria-labelledby="catalog-heading" className="space-y-5 scroll-mt-20">
+        <section
+          id="urunler"
+          aria-labelledby="catalog-heading"
+          className="space-y-5 scroll-mt-20"
+        >
           <div className="flex items-center justify-between">
             <div>
               <h2
@@ -286,7 +301,6 @@ export default async function HomePage() {
               >
                 Ürünlerimiz
               </h2>
-
             </div>
           </div>
 
@@ -316,7 +330,9 @@ export default async function HomePage() {
               Toptan Temizlik, Kağıt & Sarf Malzeme Tedariki
             </h3>
             <p className="text-xs sm:text-sm text-slate-300 max-w-xl leading-relaxed">
-              İzmit genelindeki ofis, fabrika, okul ve işletmelere toptan kağıt grubu, endüstriyel temizlik kimyasalı, çöp torbası ve sarf malzeme tedariki.
+              İzmit genelindeki ofis, fabrika, okul ve işletmelere toptan kağıt
+              grubu, endüstriyel temizlik kimyasalı, çöp torbası ve sarf malzeme
+              tedariki.
             </p>
           </div>
 
@@ -355,15 +371,14 @@ export default async function HomePage() {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-
             <div className="rounded-2xl border border-slate-100 bg-slate-50/70 p-5 space-y-2">
               <h3 className="font-bold text-slate-900 text-sm sm:text-base">
                 Hangi bölgelere teslimat yapıyorsunuz?
               </h3>
               <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
-                İzmit merkez mahalleleri başta olmak üzere Yahyakaptan, Alikahya, Bekirdere,
-                Plajyolu, Sanayi ve çevre sanayi sitelerine aynı gün doğrudan araçlarımızla
-                teslimat sağlıyoruz.
+                İzmit merkez mahalleleri başta olmak üzere Yahyakaptan,
+                Alikahya, Bekirdere, Plajyolu, Sanayi ve çevre sanayi sitelerine
+                aynı gün doğrudan araçlarımızla teslimat sağlıyoruz.
               </p>
             </div>
 
@@ -372,8 +387,9 @@ export default async function HomePage() {
                 Kapıda ödeme yapabilir miyim?
               </h3>
               <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
-                Evet, su siparişlerinizde kapıda nakit veya mobil POS cihazlarımızla
-                kredi/banka kartı ile güvenle ödeme yapabilirsiniz.
+                Evet, su siparişlerinizde kapıda nakit veya mobil POS
+                cihazlarımızla kredi/banka kartı ile güvenle ödeme
+                yapabilirsiniz.
               </p>
             </div>
 
@@ -382,8 +398,9 @@ export default async function HomePage() {
                 İşletmeler için kurumsal fatura ve cari hesap açılıyor mu?
               </h3>
               <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
-                Evet. Fabrika, ofis, okul ve kurumlar için e-Fatura kesilmekte ve düzenli
-                periyodik alımlarda kurumsal cari hesap anlaşması yapılabilmektedir.
+                Evet. Fabrika, ofis, okul ve kurumlar için e-Fatura kesilmekte
+                ve düzenli periyodik alımlarda kurumsal cari hesap anlaşması
+                yapılabilmektedir.
               </p>
             </div>
           </div>

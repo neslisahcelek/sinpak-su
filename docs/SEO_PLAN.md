@@ -111,16 +111,19 @@ Arama motorlarının zengin sonuçlar (Rich Snippets) sunabilmesi için uygulana
 
 ---
 
-## 4. Yerel SEO (Local SEO) ve Google İşletme Profili Eylemleri
+## 4. Yerel SEO (Local SEO), Haritalar ve İşletme Profili Eylemleri
 
-Organik siparişlerin en büyük kaynağı Google Haritalar'dır. Aşağıdaki bilgilerin birebir Google İşletme Profilinde tutulması zorunludur (NAP Tutarlılığı - Name, Address, Phone):
+Organik siparişlerin en büyük kaynağı harita uygulamalarıdır (Google, Apple, Yandex). Aşağıdaki bilgilerin tüm harita profillerinde birebir aynı tutulması zorunludur (NAP Tutarlılığı - Name, Address, Phone):
 
 - **İşletme Adı:** Sinpak Su - Abant Su Yetkili Bayisi (İkinci profil veya kategori: Sinpak Tedarik)
 - **Adres:** Yenişehir mah. Asilkent sk. No: 6/A İzmit / Kocaeli
-- **Telefon:** 0 551 363 41 41
+- **Telefon:** 0 545 454 34 77 (Doğrudan Sipariş Hattı)
 - **Web Sitesi:** https://sinpaktedarik.com
-- **Hizmet Verilen Yerler:** İzmit ve çevre sanayi siteleri
-- **Aksiyon:** Müşterilerden Google Haritalar üzerinden yıldızlı yorum ve değerlendirme toplanmalıdır.
+- **Hizmet Verilen Yerler:** İzmit (Yahyakaptan, Alikahya, Bekirdere, Yenişehir vb.) ve Kocaeli sanayi siteleri
+- **Apple Business Connect:** `businessconnect.apple.com` üzerinden kayıt (iPhone/Siri kullanıcıları için).
+- **Yandex Business:** `yandex.com.tr/business` üzerinden kayıt (Yandex Navigasyon/Harita kullanıcıları için).
+- **Detaylı Uygulama Rehberi:** [docs/LOCAL_SEO_GUIDE.md](file:///c:/Users/Nesli/Belgeler/Clones/sinpak-su/docs/LOCAL_SEO_GUIDE.md) belgesinde adım adım açıklanmıştır.
+- **Aksiyon:** Müşterilerden teslimat sonrası Google Haritalar üzerinden yıldızlı yorum ve değerlendirme toplanmalıdır.
 
 ---
 

@@ -24,9 +24,9 @@ export const brandConfig = {
     name: "Sinpak Su",
     tagline: "Abant Su Yetkili Bayisi",
     authorizedDealer: "Abant Su Yetkili Bayisi",
-    phone: "05513634141",
-    phoneFormatted: "0 551 363 41 41",
-    phoneHref: "tel:05513634141",
+    phone: "05454543477",
+    phoneFormatted: "0 545 454 34 77",
+    phoneHref: "tel:05454543477",
     themeColor: "#0369a1", // sky-700
     description:
       "Abant Su Yetkili Bayisi Sinpak Su - İzmit geneline doğal damacana su, pet su ve soğuk içecek teslimatı.",

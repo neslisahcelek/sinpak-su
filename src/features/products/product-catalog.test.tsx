@@ -83,7 +83,7 @@ describe("ProductCard", () => {
     expect(html).toContain("19L Damacana Su");
     expect(html).toContain("180,00");
     expect(html).toContain("Hemen Ara");
-    expect(html).toContain("tel:05513634141");
+    expect(html).toContain("tel:05454543477");
     // [ORİJİNAL SEPET MODU BEKLENTİSİ]: expect(html).toContain("Sepete Ekle");
     expect(html).not.toContain("depozito");
   });
@@ -94,7 +94,7 @@ describe("ProductCard", () => {
     expect(html).toContain("0.5L Pet Su (12li)");
     expect(html).toContain("75,00");
     expect(html).toContain("Hemen Ara");
-    expect(html).toContain("tel:05513634141");
+    expect(html).toContain("tel:05454543477");
     // [ORİJİNAL SEPET MODU BEKLENTİSİ]: expect(html).toContain("Sepete Ekle");
     expect(html).not.toContain("depozito");
   });
@@ -120,8 +120,8 @@ describe("FloatingContactButtons", () => {
   it("renders direct call link with phone number (WhatsApp temporarily hidden)", () => {
     const html = renderToString(<FloatingContactButtons />);
 
-    expect(html).toContain("tel:05513634141");
-    expect(html).toContain("0 551 363 41 41");
+    expect(html).toContain("tel:05454543477");
+    expect(html).toContain("0 545 454 34 77");
     // [ORİJİNAL WHATSAPP BEKLENTİSİ - GERİ AÇILDIĞINDA AKTİF EDİLECEK]:
     // expect(html).toContain("wa.me/905513634141");
     // expect(html).toContain("WhatsApp ile Sipariş");

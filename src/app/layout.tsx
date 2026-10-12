@@ -58,9 +58,18 @@ export const metadata: Metadata = {
   },
   verification: {
     google: "google2246d9a51b58da92",
+    ...(process.env.YANDEX_SITE_VERIFICATION
+      ? { yandex: process.env.YANDEX_SITE_VERIFICATION }
+      : {}),
     ...(process.env.BING_SITE_VERIFICATION
       ? { other: { "msvalidate.01": process.env.BING_SITE_VERIFICATION } }
       : {}),
+  },
+  other: {
+    "geo.region": "TR-41",
+    "geo.placename": "İzmit, Kocaeli",
+    "geo.position": "40.7667;29.9500",
+    ICBM: "40.7667, 29.9500",
   },
   alternates: {
     canonical: "/",
