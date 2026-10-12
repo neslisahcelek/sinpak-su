@@ -41,6 +41,16 @@ import {
 } from "@/server/services/admin-product.service";
 import { uploadProductImage } from "@/server/storage/supabase-storage";
 import { err, makeSafeError, ok, type Result } from "@/server/types/result";
+import { submitToIndexNow } from "@/lib/indexnow";
+import { siteConfig } from "@/lib/site-config";
+
+function notifyIndexNowForProduct(slug?: string | null) {
+  const urls = [
+    siteConfig.url,
+    ...(slug ? [`${siteConfig.url}/urunler/${slug}`] : []),
+  ];
+  submitToIndexNow(urls).catch(() => {});
+}
 
 /**
  * Server action to authenticate admin staff and establish a signed session cookie.
@@ -193,6 +203,7 @@ export async function createProductAction(
     if (result.data.slug) {
       revalidatePath(`/urunler/${result.data.slug}`);
     }
+    notifyIndexNowForProduct(result.data.slug);
   }
 
   return result;
@@ -233,6 +244,7 @@ export async function updateProductAction(
     if (result.data.slug) {
       revalidatePath(`/urunler/${result.data.slug}`);
     }
+    notifyIndexNowForProduct(result.data.slug);
   }
 
   return result;
@@ -273,6 +285,7 @@ export async function toggleProductActiveAction(
     if (result.data.slug) {
       revalidatePath(`/urunler/${result.data.slug}`);
     }
+    notifyIndexNowForProduct(result.data.slug);
   }
 
   return result;

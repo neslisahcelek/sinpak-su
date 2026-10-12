@@ -88,11 +88,40 @@ export default async function ProductDetailPage({ params }: Props) {
     },
   };
 
+  const breadcrumbSchema = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      {
+        "@type": "ListItem",
+        position: 1,
+        name: "Ana Sayfa",
+        item: siteConfig.url,
+      },
+      {
+        "@type": "ListItem",
+        position: 2,
+        name: "Ürünler",
+        item: `${siteConfig.url}/#urunler`,
+      },
+      {
+        "@type": "ListItem",
+        position: 3,
+        name: product.name,
+        item: `${siteConfig.url}/urunler/${product.slug}`,
+      },
+    ],
+  };
+
   return (
     <>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(productSchema) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
       />
       {/* Extra bottom padding on mobile so sticky bar doesn't cover content */}
       <main className="px-4 lg:px-6 py-8 max-w-5xl mx-auto pb-32 lg:pb-8">

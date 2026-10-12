@@ -35,12 +35,18 @@ import {
   type SupplyProductDto,
 } from "@/server/services/admin-supply-product.service";
 import { err, makeSafeError, type Result } from "@/server/types/result";
+import { submitToIndexNow } from "@/lib/indexnow";
+import { siteConfig } from "@/lib/site-config";
 
 function revalidateSupplyPaths() {
   revalidatePath("/admin/tedarik/categories");
   revalidatePath("/admin/tedarik/products");
   revalidatePath("/kurumsal-tedarik");
   revalidatePath("/kurumsal-tedarik/urunler");
+  submitToIndexNow([
+    `${siteConfig.url}/kurumsal-tedarik`,
+    `${siteConfig.url}/kurumsal-tedarik/urunler`,
+  ]).catch(() => {});
 }
 
 // ==========================================
@@ -116,8 +122,7 @@ export async function toggleSupplyCategoryActiveAction(
     );
   }
 
-  const validationResult =
-    toggleSupplyCategoryActiveSchema.safeParse(rawInput);
+  const validationResult = toggleSupplyCategoryActiveSchema.safeParse(rawInput);
   if (!validationResult.success) {
     return err(
       makeSafeError(
@@ -239,8 +244,7 @@ export async function toggleSupplyProductActiveAction(
     );
   }
 
-  const validationResult =
-    toggleSupplyProductActiveSchema.safeParse(rawInput);
+  const validationResult = toggleSupplyProductActiveSchema.safeParse(rawInput);
   if (!validationResult.success) {
     return err(
       makeSafeError(

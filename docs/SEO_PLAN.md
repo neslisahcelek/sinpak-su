@@ -89,6 +89,26 @@ Arama motorlarının zengin sonuçlar (Rich Snippets) sunabilmesi için uygulana
   2. "Google Search Console'dan İçe Aktar" seçilerek `sinpaktedarik.com` ve `sitemap.xml` anında otomatik doğrulanır.
   3. İsteğe bağlı meta etiket doğrulaması için `BING_SITE_VERIFICATION` ortam değişkeni `src/app/layout.tsx` içinde hazırdır.
 
+### 3.7. Görsel Formatı Optimizasyonu (AVIF & WebP)
+
+- `next.config.ts` içinde `images.formats: ['image/avif', 'image/webp']` aktif edildi.
+- Destekleyen modern tarayıcılarda ürün görselleri ve logolar %40-50 daha az veriyle yüklenir; Google LCP (Largest Contentful Paint) hız skorunu iyileştirir.
+
+### 3.8. BreadcrumbList (Ekmek Kırıntısı) Yapılandırılmış Verisi
+
+- Ürün detay (`/urunler/[slug]`) ve kurumsal katalog (`/kurumsal-tedarik/urunler`) sayfalarına Schema.org `BreadcrumbList` JSON-LD eklendi.
+- Arama motorlarında düz URL yerine zengin hiyerarşik gezinme bağlantıları (`Ana Sayfa > Ürünler > ...`) sunulur.
+
+### 3.9. PWA Desteği (Web App Manifest)
+
+- [src/app/manifest.ts](file:///c:/Users/Nesli/Belgeler/Clones/sinpak-su/src/app/manifest.ts) tanımlandı (`/manifest.webmanifest`).
+- Müşterilerin iOS ve Android cihazlarında siteyi doğrudan "Ana Ekrana Ekle / Uygulama Yükle" ile kaydetmesini sağlar.
+
+### 3.10. GA4 İletişim & Arama Dönüşüm Takibi (Conversion Events)
+
+- [src/components/google-analytics.tsx](file:///c:/Users/Nesli/Belgeler/Clones/sinpak-su/src/components/google-analytics.tsx) bileşenine global tıklama dinleyicisi eklendi.
+- `tel:` bağlantılarına tıklandığında `contact_phone`, WhatsApp bağlantılarına tıklandığında `contact_whatsapp` eventleri GA4'e otomatik gönderilir.
+
 ---
 
 ## 4. Yerel SEO (Local SEO) ve Google İşletme Profili Eylemleri

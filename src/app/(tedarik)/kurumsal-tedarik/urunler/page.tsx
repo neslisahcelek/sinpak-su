@@ -32,56 +32,88 @@ export default async function KurumsalUrunlerPage({ searchParams }: Props) {
     listActiveSupplyProducts(),
   ]);
 
-  return (
-    <main className="px-4 lg:px-6 py-8 max-w-5xl mx-auto space-y-8">
-      {/* Breadcrumb */}
-      <nav
-        aria-label="Breadcrumb"
-        className="text-xs text-slate-500 flex items-center gap-1.5"
-      >
-        <Link href="/" className="hover:text-sky-700 transition-colors">
-          Ana Sayfa
-        </Link>
-        <span>/</span>
-        <Link
-          href="/kurumsal-tedarik"
-          className="hover:text-emerald-700 transition-colors"
-        >
-          Kurumsal Tedarik
-        </Link>
-        <span>/</span>
-        <span className="text-slate-800 font-medium">Tüm Ürünler</span>
-      </nav>
+  const breadcrumbSchema = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      {
+        "@type": "ListItem",
+        position: 1,
+        name: "Ana Sayfa",
+        item: config.url,
+      },
+      {
+        "@type": "ListItem",
+        position: 2,
+        name: "Kurumsal Tedarik",
+        item: `${config.url}/kurumsal-tedarik`,
+      },
+      {
+        "@type": "ListItem",
+        position: 3,
+        name: "Tüm Ürünler",
+        item: `${config.url}/kurumsal-tedarik/urunler`,
+      },
+    ],
+  };
 
-      {/* Hero / Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 bg-linear-to-r from-emerald-950 via-slate-900 to-slate-950 p-6 sm:p-8 rounded-3xl text-white shadow-sm border border-slate-800">
-        <div className="space-y-2">
-          <span className="text-xs uppercase font-bold text-emerald-400 tracking-wider">
-            Kurumsal Ürün Kataloğu
-          </span>
-          <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight">
-            Toptan Sarf & Temizlik Malzemeleri
-          </h1>
-          <p className="text-xs sm:text-sm text-slate-300 max-w-xl">
-            Ofis ve tesisleriniz için koli bazlı toptan alımlarda en uygun fiyat teklifini sunuyoruz.
-          </p>
+  return (
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
+      />
+      <main className="px-4 lg:px-6 py-8 max-w-5xl mx-auto space-y-8">
+        {/* Breadcrumb */}
+        <nav
+          aria-label="Breadcrumb"
+          className="text-xs text-slate-500 flex items-center gap-1.5"
+        >
+          <Link href="/" className="hover:text-sky-700 transition-colors">
+            Ana Sayfa
+          </Link>
+          <span>/</span>
+          <Link
+            href="/kurumsal-tedarik"
+            className="hover:text-emerald-700 transition-colors"
+          >
+            Kurumsal Tedarik
+          </Link>
+          <span>/</span>
+          <span className="text-slate-800 font-medium">Tüm Ürünler</span>
+        </nav>
+
+        {/* Hero / Header */}
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 bg-linear-to-r from-emerald-950 via-slate-900 to-slate-950 p-6 sm:p-8 rounded-3xl text-white shadow-sm border border-slate-800">
+          <div className="space-y-2">
+            <span className="text-xs uppercase font-bold text-emerald-400 tracking-wider">
+              Kurumsal Ürün Kataloğu
+            </span>
+            <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight">
+              Toptan Sarf & Temizlik Malzemeleri
+            </h1>
+            <p className="text-xs sm:text-sm text-slate-300 max-w-xl">
+              Ofis ve tesisleriniz için koli bazlı toptan alımlarda en uygun
+              fiyat teklifini sunuyoruz.
+            </p>
+          </div>
+
+          <a
+            href={config.phoneHref}
+            className="inline-flex items-center gap-2.5 px-5 py-3 rounded-2xl bg-emerald-600 hover:bg-emerald-700 active:scale-98 text-white font-bold text-xs sm:text-sm shadow-md transition-all shrink-0 self-start sm:self-auto"
+          >
+            <PhoneCall className="w-4 h-4 text-emerald-200" />
+            <span>Hemen Arayın: {config.phoneFormatted}</span>
+          </a>
         </div>
 
-        <a
-          href={config.phoneHref}
-          className="inline-flex items-center gap-2.5 px-5 py-3 rounded-2xl bg-emerald-600 hover:bg-emerald-700 active:scale-98 text-white font-bold text-xs sm:text-sm shadow-md transition-all shrink-0 self-start sm:self-auto"
-        >
-          <PhoneCall className="w-4 h-4 text-emerald-200" />
-          <span>Hemen Arayın: {config.phoneFormatted}</span>
-        </a>
-      </div>
-
-      {/* Interactive Catalog */}
-      <SupplyCatalogView
-        categories={categories}
-        products={products}
-        initialCategorySlug={kategori}
-      />
-    </main>
+        {/* Interactive Catalog */}
+        <SupplyCatalogView
+          categories={categories}
+          products={products}
+          initialCategorySlug={kategori}
+        />
+      </main>
+    </>
   );
 }
