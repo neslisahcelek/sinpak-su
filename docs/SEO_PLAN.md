@@ -117,7 +117,9 @@ Organik siparişlerin en büyük kaynağı harita uygulamalarıdır (Google, App
 
 - **İşletme Adı:** Sinpak Su - Abant Su Yetkili Bayisi (İkinci profil veya kategori: Sinpak Tedarik)
 - **Adres:** Yenişehir mah. Asilkent sk. No: 6/A İzmit / Kocaeli
-- **Telefon:** 0 545 454 34 77 (Doğrudan Sipariş Hattı)
+- **Telefon:**
+  - **Sinpak Su (Perakende Su):** 0 551 363 41 41
+  - **Sinpak Tedarik (Kurumsal Tedarik):** 0 545 454 34 77
 - **Web Sitesi:** https://sinpaktedarik.com
 - **Hizmet Verilen Yerler:** İzmit (Yahyakaptan, Alikahya, Bekirdere, Yenişehir vb.) ve Kocaeli sanayi siteleri
 - **Apple Business Connect:** `businessconnect.apple.com` üzerinden kayıt (iPhone/Siri kullanıcıları için).

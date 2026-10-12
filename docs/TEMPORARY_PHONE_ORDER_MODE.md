@@ -1,6 +1,6 @@
 # Geçici Telefonla Sipariş Modu ve Geri Alma Rehberi
 
-Bu doküman, sitede sipariş verme sürecinin geçici olarak **yalnızca telefonla arayarak** (`tel:05454543477`) gerçekleştirilmesi amacıyla yapılan değişiklikleri ve ileride online sepet/sipariş ile WhatsApp butonlarını **tekrar aktif hale getirmek için yapılması gereken adımları** açıklar.
+Bu doküman, sitede sipariş verme sürecinin geçici olarak **yalnızca telefonla arayarak** (`tel:05513634141`) gerçekleştirilmesi amacıyla yapılan değişiklikleri ve ileride online sepet/sipariş ile WhatsApp butonlarını **tekrar aktif hale getirmek için yapılması gereken adımları** açıklar.
 
 Hiçbir geliştirme veya dosya silinmemiştir; tüm kodlar ilgili dosyalarda açıklayıcı yorum blokları (`/* ... */` veya `{/* ... */}`) içine alınarak korunmuştur.
 

@@ -8,9 +8,11 @@ Bu rehber, Sinpak Su ve Sinpak Tedarik işletmelerinin İzmit ve Kocaeli bölges
 
 Arama motorları (Google, Apple, Yandex), bir yerel işletmenin güvenilirliğini web sitesindeki bilgiler ile harita dizinlerindeki bilgilerin **birebir harfi harfine aynı** olmasıyla ölçer:
 
-- **İşletme Adı:** Sinpak Su - Abant Su Yetkili Bayisi (Tedarik için: Sinpak Tedarik)
+- **İşletme Adı:** Sinpak Su - Abant Su Yetkili Bayisi (Kurumsal için: Sinpak Tedarik)
 - **Adres:** Yenişehir mah. Asilkent sk. No: 6/A İzmit / Kocaeli
-- **Telefon:** 0 545 454 34 77 (Sinpak Su & Tedarik Doğrudan Sipariş Hattı)
+- **Telefon:**
+  - **Sinpak Su (Damacana / Perakende):** 0 551 363 41 41
+  - **Sinpak Tedarik (Kurumsal Sarf / Toptan):** 0 545 454 34 77
 - **Web Sitesi:** https://sinpaktedarik.com
 - **Çalışma Saatleri:** Pazartesi - Pazar: 09:00 - 19:00
 
@@ -28,13 +30,13 @@ Arama motorları (Google, Apple, Yandex), bir yerel işletmenin güvenilirliğin
    - **İşletme Adı:** `Sinpak Su - Abant Su Yetkili Bayisi`
    - **Kategori:** `Su Dağıtım Hizmeti` (_Water Delivery Service_) veya `İçecek Mağazası` (_Beverage Store_).
    - **Adres:** `Yenişehir mah. Asilkent sk. No: 6/A İzmit, Kocaeli`
-   - **Telefon:** `+90 545 454 34 77`
+   - **Telefon:** `+90 551 363 41 41` _(Kurumsal Tedarik profili için: `+90 545 454 34 77`)_
    - **Web Sitesi:** `https://sinpaktedarik.com`
 4. **Görseller & Logo:**
    - Projedeki `public/images/logo.jpg` veya `public/images/sinpak-pamukkale-logo.jpg` logosunu yükleyin.
    - `public/images/sinpak-tedarik-banner-clean.jpg` kapak görselini ekleyin.
 5. **Eylem Butonu (Action Button):**
-   - Apple Haritalar kartınıza "Ara" (_Call_) butonu ekleyin (Doğrudan `tel:05454543477` ile bağlanır).
+   - Apple Haritalar kartınıza "Ara" (_Call_) butonu ekleyin (Sinpak Su için doğrudan `tel:05513634141`).
 6. **Doğrulama:** Apple genellikle telefon araması (otomatik kod) veya resmi vergi levhası/fatura yüklemesi ile işletmeyi 24-48 saat içinde onaylar.
 
 ---
@@ -50,7 +52,7 @@ Türkiye'de araç içi navigasyon ve haritada Yandex çok yaygın kullanılmakta
    - **Ad:** `Sinpak Su - Abant Su Yetkili Bayisi İzmit`
    - **Faaliyet Alanı:** `Su Dağıtımı` / `Damacana Su Satışı`.
    - **Adres:** Haritada pini Yenişehir Mah. Asilkent Sk. No: 6/A konumuna bırakın.
-   - **Telefon:** `0545 454 34 77`
+   - **Telefon:** `0551 363 41 41` _(Kurumsal tedarik için: `0545 454 34 77`)_
    - **Web Sitesi:** `https://sinpaktedarik.com`
 3. **Yandex Webmaster Doğrulaması:**
    - [webmaster.yandex.com](https://webmaster.yandex.com) adresine gidin ve sitenizi ekleyin.
